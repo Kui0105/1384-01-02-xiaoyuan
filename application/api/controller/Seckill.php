@@ -1,21 +1,5 @@
 <?php
-// +----------------------------------------------------------------------
-// | likeshop开源商城系统
-// +----------------------------------------------------------------------
-// | 欢迎阅读学习系统程序代码，建议反馈是我们前进的动力
-// | gitee下载：https://gitee.com/likeshop_gitee
-// | github下载：https://github.com/likeshop-github
-// | 访问官网：https://www.likeshop.cn
-// | 访问社区：https://home.likeshop.cn
-// | 访问手册：http://doc.likeshop.cn
-// | 微信公众号：likeshop技术社区
-// | likeshop系列产品在gitee、github等公开渠道开源版本可免费商用，未经许可不能去除前后端官方版权标识
-// |  likeshop系列产品收费版本务必购买商业授权，购买去版权授权后，方可去除前后端官方版权标识
-// | 禁止对系统程序代码以任何目的，任何形式的再发布
-// | likeshop团队版权所有并拥有最终解释权
-// +----------------------------------------------------------------------
-// | author: likeshop.cn.team
-// +----------------------------------------------------------------------
+
 namespace app\api\controller;
 use app\api\logic\SeckillLogic;
 
@@ -32,7 +16,7 @@ class Seckill extends ApiBase{
      * @description 获取秒杀时间段
      * @method get
      * @url /seckill/seckillTime
-     * @return {"code":1,"msg":"获取成功","data":[{"id":"1","start_time":"08:00","end_time":"10:00","is_open":0,"tips":"已结束"},{"id":"2","start_time":"11:00","end_time":"14:00","is_open":1,"tips":"抢购中"},{"id":"3","start_time":"14:00","end_time":"18:00","is_open":0,"tips":"未开始"},{"id":"4","start_time":"20:00","end_time":"22:00","is_open":0,"tips":"未开始"}],"show":0,"time":"0.274701","debug":{"request":{"get":[],"post":[],"header":{"connection":"keep-alive","accept-encoding":"gzip, deflate, br","host":"www.likeb2b2c.com:20002","postman-token":"bd852ce3-cbe9-4c66-bb91-7e34eb223716","cache-control":"no-cache","accept":"*\/*","user-agent":"PostmanRuntime\/7.26.1","content-type":"","content-length":""}}}}
+     * @return {"code":1,"msg":"获取成功","data":[{"id":"1","start_time":"08:00","end_time":"10:00","is_open":0,"tips":"已结束"},{"id":"2","start_time":"11:00","end_time":"14:00","is_open":1,"tips":"抢购中"},{"id":"3","start_time":"14:00","end_time":"18:00","is_open":0,"tips":"未开始"},{"id":"4","start_time":"20:00","end_time":"22:00","is_open":0,"tips":"未开始"}],"show":0,"time":"0.274701","debug":{"request":{"get":[],"post":[],"header":{"connection":"keep-alive","accept-encoding":"gzip, deflate, br","host":"www.ehaiba.com:20002","postman-token":"bd852ce3-cbe9-4c66-bb91-7e34eb223716","cache-control":"no-cache","accept":"*\/*","user-agent":"PostmanRuntime\/7.26.1","content-type":"","content-length":""}}}}
      * @return_param id int 活动id
      * @return_param start_time varchar 开始时间
      * @return_param end_time varchar 结束时间
@@ -53,7 +37,7 @@ class Seckill extends ApiBase{
      * @description 获取秒杀商品
      * @method get
      * @url /seckill/seckillGoods
-     * @return {"code":1,"msg":"获取成功","data":{"list":[{"name":"华为儿童手表3 pro智能电话中小学生天才男女孩防水可爱运动多功能视频拍照通话gps定位4g电信版官方旗舰店","id":"2","image":"http:\/\/www.likeb2b2c.com:20002\/uploads\/images\/20200709\/161c78cbefc68afbbb0e1856b1a9a596.png","min_price":"789.00","seckill_price":"720.00","sales_sum":"0"},{"name":"雀巢（Nestle）脆脆鲨 休闲零食 威化饼干巧克力味24*20g+8*20g","id":"7","image":"http:\/\/www.likeb2b2c.com:20002\/uploads\/images\/20200710\/cd7dfb551061f353ba53d21c2a2275c4.jpg","min_price":"42.99","seckill_price":"40.00","sales_sum":"0"}],"page":1,"size":15,"count":2,"more":0},"show":0,"time":"0.449604","debug":{"request":{"get":{"id":"2"},"post":[],"header":{"connection":"keep-alive","accept-encoding":"gzip, deflate, br","host":"www.likeb2b2c.com:20002","postman-token":"91999655-047e-4144-8de2-bedf1e3fac90","cache-control":"no-cache","accept":"*\/*","user-agent":"PostmanRuntime\/7.26.1","content-type":"","content-length":""}}}}
+     * @return {"code":1,"msg":"获取成功","data":{"list":[{"name":"华为儿童手表3 pro智能电话中小学生天才男女孩防水可爱运动多功能视频拍照通话gps定位4g电信版官方旗舰店","id":"2","image":"http:\/\/www.ehaiba.com:20002\/uploads\/images\/20200709\/161c78cbefc68afbbb0e1856b1a9a596.png","min_price":"789.00","seckill_price":"720.00","sales_sum":"0"},{"name":"雀巢（Nestle）脆脆鲨 休闲零食 威化饼干巧克力味24*20g+8*20g","id":"7","image":"http:\/\/www.ehaiba.com:20002\/uploads\/images\/20200710\/cd7dfb551061f353ba53d21c2a2275c4.jpg","min_price":"42.99","seckill_price":"40.00","sales_sum":"0"}],"page":1,"size":15,"count":2,"more":0},"show":0,"time":"0.449604","debug":{"request":{"get":{"id":"2"},"post":[],"header":{"connection":"keep-alive","accept-encoding":"gzip, deflate, br","host":"www.ehaiba.com:20002","postman-token":"91999655-047e-4144-8de2-bedf1e3fac90","cache-control":"no-cache","accept":"*\/*","user-agent":"PostmanRuntime\/7.26.1","content-type":"","content-length":""}}}}
      * @param id 必填 int 活动id
      * @param page_no 选填 int 页码(默认第一页)
      * @param page_size 选填 int 每页数量(默认15)

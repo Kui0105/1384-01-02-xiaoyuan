@@ -3,7 +3,7 @@
 use think\facade\Env;
 
 return [
-    'file_domain'       => Env::get('project.file_domain', 'likeshop.yixiangonline.com'),
+    'file_domain'       => Env::get('project.file_domain', 'Y.ehaiba.com'),
     'sms'               => Env::get('project.sms', true),
     'version'           => Env::get('project.version', '3.5.2.20250319'),
     'front_version'     => Env::get('project.version', '3.5.2.20250319'),

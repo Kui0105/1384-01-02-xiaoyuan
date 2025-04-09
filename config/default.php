@@ -1,16 +1,16 @@
 <?php
 return [
     'copyright' => [
-        'company_name' => 'Copyright © 2019-2021 广州好象科技有限公司',
+        'company_name' => 'Copyright © 2019-2021 湖南海拔科技有限公司',
         'number' => '京ICP证000000号',
         'link' => 'http://www.beian.gov.cn/portal/index.do'
     ],
     'website' => [
         'admin_image' => '/static/common/image/default/login_form_img.png',
-        'admin_title' => 'likeshop管理后台',
+        'admin_title' => 'Y管理后台',
         'partner_image' => '/static/common/image/default/login_form_img.png',
-        'partner_title' => 'LIKE 机构后台登录',
-        'name' => 'likeshop',
+        'partner_title' => 'Y 机构后台登录',
+        'name' => 'Y',
         'mall_logo' => '/static/common/image/default/mall_logo@3x.png',
         'pc_logo' => '/static/common/image/default/backstage_logo.png',
         'login_logo' => '/static/common/image/default/login_logo_mall.png',

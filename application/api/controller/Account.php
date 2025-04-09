@@ -1,21 +1,5 @@
 <?php
-// +----------------------------------------------------------------------
-// | likeshop开源商城系统
-// +----------------------------------------------------------------------
-// | 欢迎阅读学习系统程序代码，建议反馈是我们前进的动力
-// | gitee下载：https://gitee.com/likeshop_gitee
-// | github下载：https://github.com/likeshop-github
-// | 访问官网：https://www.likeshop.cn
-// | 访问社区：https://home.likeshop.cn
-// | 访问手册：http://doc.likeshop.cn
-// | 微信公众号：likeshop技术社区
-// | likeshop系列产品在gitee、github等公开渠道开源版本可免费商用，未经许可不能去除前后端官方版权标识
-// |  likeshop系列产品收费版本务必购买商业授权，购买去版权授权后，方可去除前后端官方版权标识
-// | 禁止对系统程序代码以任何目的，任何形式的再发布
-// | likeshop团队版权所有并拥有最终解释权
-// +----------------------------------------------------------------------
-// | author: likeshop.cn.team
-// +----------------------------------------------------------------------
+
 
 
 namespace app\api\controller;
@@ -52,7 +36,7 @@ class Account extends ApiBase
      * @description 手机号账号登录
      * @method post
      * @url /account/login
-     * @return {"code":1,"msg":"登录成功","data":["token":"3237676fa733d73333341",//登录令牌"nickname":"好象cms-小林",//昵称"avatar":"http://b2c.yixiangonline.com/uploads/user/avatar/3f102df244d5b40f21c4b25dc321c5ab.jpeg",//头像url"level":0,//等级],"show":0,"time":"0.775400"}
+     * @return {"code":1,"msg":"登录成功","data":["token":"3237676fa733d73333341",//登录令牌"nickname":"好象cms-小林",//昵称"avatar":"http://www.ehaiba.com/uploads/user/avatar/3f102df244d5b40f21c4b25dc321c5ab.jpeg",//头像url"level":0,//等级],"show":0,"time":"0.775400"}
      * @param account 必填 string 账号或手机号
      * @param id 必填 int 1-密码登录-2-验证码登录
      * @param password 必填 string 密码
@@ -100,7 +84,7 @@ class Account extends ApiBase
      * @description 小程序登录
      * @method post
      * @url /account/mnpLogin
-     * @return {"code":1,"msg":"登录成功","data":["token":"3237676fa733d73333341",//登录令牌"nickname":"好象cms-小林",//昵称"avatar":"http://b2c.yixiangonline.com/uploads/user/avatar/3f102df244d5b40f21c4b25dc321c5ab.jpeg",//头像url"level":0,//等级],"show":0,"time":"0.775400"}
+     * @return {"code":1,"msg":"登录成功","data":["token":"3237676fa733d73333341",//登录令牌"nickname":"好象cms-小林",//昵称"avatar":"http://www.ehaiba.com/uploads/user/avatar/3f102df244d5b40f21c4b25dc321c5ab.jpeg",//头像url"level":0,//等级],"show":0,"time":"0.775400"}
      * @param code 必填 string code
      * @param iv 必填 string iv
      * @param encrypted_data 必填 string encrypted_data
@@ -148,7 +132,7 @@ class Account extends ApiBase
      * @description 微信H5登录
      * @method post
      * @url /account/oalogin
-     * @return {"code":1,"msg":"登录成功","data":["token":"3237676fa733d73333341",//登录令牌"nickname":"好象cms-小林",//昵称"avatar":"http://b2c.yixiangonline.com/uploads/user/avatar/3f102df244d5b40f21c4b25dc321c5ab.jpeg",//头像url"level":0,//等级],"show":0,"time":"0.775400"}
+     * @return {"code":1,"msg":"登录成功","data":["token":"3237676fa733d73333341",//登录令牌"nickname":"好象cms-小林",//昵称"avatar":"http://www.ehaiba.com/uploads/user/avatar/3f102df244d5b40f21c4b25dc321c5ab.jpeg",//头像url"level":0,//等级],"show":0,"time":"0.775400"}
      * @param code 必填 string code
      * @return_param token string 登录令牌
      * @return_param nickname string 昵称
@@ -174,7 +158,7 @@ class Account extends ApiBase
      * @description 微信第三方app登录
      * @method post
      * @url /account/oplogin
-     * @return {"code":1,"msg":"登录成功","data":["token":"3237676fa733d73333341",//登录令牌"nickname":"好象cms-小林",//昵称"avatar":"http://b2c.yixiangonline.com/uploads/user/avatar/3f102df244d5b40f21c4b25dc321c5ab.jpeg",//头像url"level":0,//等级],"show":0,"time":"0.775400"}
+     * @return {"code":1,"msg":"登录成功","data":["token":"3237676fa733d73333341",//登录令牌"nickname":"好象cms-小林",//昵称"avatar":"http://www.ehaiba.com/uploads/user/avatar/3f102df244d5b40f21c4b25dc321c5ab.jpeg",//头像url"level":0,//等级],"show":0,"time":"0.775400"}
      * @param code 必填 string code
      * @param client 必填 int 客户端类型：3-ios，4-android
      * @return_param token string 登录令牌

@@ -19,11 +19,11 @@ return [
     // 缓存保存目录
     'path'   => '',
     // 缓存前缀
-    'prefix' => 'likeshopb2c-'.Env::get('database.database'),
+    'prefix' => 'Y-'.Env::get('database.database'),
     // 缓存有效期 0表示永久缓存
     'expire' => 0,
 
     'port' =>Env::get('cache.port','6379'),
 
-    'host' => Env::get('cache.host','like-redis'),
+    'host' => Env::get('cache.host','Y-redis'),
 ];

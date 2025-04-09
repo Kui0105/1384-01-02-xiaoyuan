@@ -15,9 +15,9 @@ return [
     // 数据库类型
     'type'            => 'mysql',
     // 服务器地址
-    'hostname'        => Env::get('database.hostname','likeshop-mysql'),
+    'hostname'        => Env::get('database.hostname','Y-mysql'),
     // 数据库名
-    'database'        => Env::get('database.database','localhost_likeshop'),
+    'database'        => Env::get('database.database','localhost_Y'),
     // 用户名
     'username'        => Env::get('database.username','root'),
     // 密码

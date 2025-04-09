@@ -1,21 +1,5 @@
 <?php
-// +----------------------------------------------------------------------
-// | likeshop开源商城系统
-// +----------------------------------------------------------------------
-// | 欢迎阅读学习系统程序代码，建议反馈是我们前进的动力
-// | gitee下载：https://gitee.com/likeshop_gitee
-// | github下载：https://github.com/likeshop-github
-// | 访问官网：https://www.likeshop.cn
-// | 访问社区：https://home.likeshop.cn
-// | 访问手册：http://doc.likeshop.cn
-// | 微信公众号：likeshop技术社区
-// | likeshop系列产品在gitee、github等公开渠道开源版本可免费商用，未经许可不能去除前后端官方版权标识
-// |  likeshop系列产品收费版本务必购买商业授权，购买去版权授权后，方可去除前后端官方版权标识
-// | 禁止对系统程序代码以任何目的，任何形式的再发布
-// | likeshop团队版权所有并拥有最终解释权
-// +----------------------------------------------------------------------
-// | author: likeshop.cn.team
-// +----------------------------------------------------------------------
+
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
@@ -30,7 +14,7 @@
 use think\Db;
 
 /**
- * User: 意象信息科技 lr
+ * User:  lr
  * Desc:debug专用
  */
 function dd()
@@ -44,7 +28,7 @@ function dd()
 }
 
 /**
- * User: 意象信息科技 lr
+ * User:  lr
  * Desc：生成密码密文
  * @param $plaintext string 明文
  * @param $salt string 密码盐
@@ -58,7 +42,7 @@ function create_password($plaintext, $salt)
 }
 
 /**
- * User: 意象信息科技 lr
+ * User:  lr
  * Desc: 数组成功拼装
  * @param string $msg
  * @param array $data
@@ -78,7 +62,7 @@ function data_success($msg = '', $data = [], $code = 1, $show = 1)
 }
 
 /**
- * User: 意象信息科技 lr
+ * User:  lr
  * Desc: 组装失败数据
  * @param string $msg
  * @param array $data
@@ -98,7 +82,7 @@ function data_error($msg = '', $data = [], $code = 0, $show = 1)
 }
 
 /**
- * User: 意象信息科技 lr
+ * User:  lr
  * Desc: 下载文件
  * @param $url 文件url
  * @param $save_dir 保存目录
@@ -179,7 +163,7 @@ function distance($lat1, $lng1, $lat2, $lng2, $len_type = 1, $decimal = 2)
 
 
 /**
- * User: 意象信息科技 lr
+ * User:  lr
  * Desc: 表单多维数据转换
  * 例：
  * 转换前：{"x":0,"a":[1,2,3],"b":[11,22,33],"c":[111,222,3333,444],"d":[1111,2222,3333]}
@@ -317,7 +301,7 @@ function multilevel_linear_sort($data, $symbol = '', $name = 'name', $id_name = 
 
 
 /**
- * User: 意象信息科技 cjh
+ * User:  cjh
  * Desc: 返回是否有下一页
  * @param $count 总记录数
  * @param $page  当前页码
@@ -338,7 +322,7 @@ function is_more($count, $page, $size)
 }
 
 /**
- * User: 意象信息科技 mjf
+ * User:  mjf
  * Desc: 用时间生成订单编号
  * @param $table
  * @param $field
