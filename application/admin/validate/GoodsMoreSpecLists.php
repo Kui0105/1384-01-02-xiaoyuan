@@ -10,6 +10,8 @@ class GoodsMoreSpecLists extends Validate
     protected $rule = [
         'market_price'  => [],
         'price'         => 'require|egt:0.01|checkExpress',
+        'hos_price'     => 'require|egt:0.01|checkExpress',
+        'agent_price'   => 'require|egt:0.01|checkExpress',
         'cost_price'    => [],
         'stock'         => 'require|integer|egt:0',
         'weight'        => [],
@@ -17,18 +19,22 @@ class GoodsMoreSpecLists extends Validate
     ];
 
     protected $message = [
-        'volume.require'        => '请输入体积',
+        'volume.require'         => '请输入体积',
         'volume.egt'             => '体积必须大于或等于0',
-        'weight.require'        => '请输入重量',
+        'weight.require'         => '请输入重量',
         'weight.egt'             => '重量必须大于或等于0',
-//        'market_price.require'  => '请输入市场价',
-        'market_price.egt'      => '市场价不能小于0',
-        'price.require'         => '请输入价格',
+//        'market_price.require' => '请输入市场价',
+        'market_price.egt'       => '市场价不能小于0',
+        'price.require'          => '请输入价格',
         'price.egt'              => '价格必须大于或等于0.01',
-        'cost_price.require'    => '请输入成本价',
+        'hos_price.require'      => '请输入诊所价格',
+        'hos_price.egt'          => '诊所价格必须大于或等于0.01',
+        'agent_price.require'    => '请输入代理价格',
+        'agent_price.egt'        => '代理价格必须大于或等于0.01',
+        'cost_price.require'     => '请输入成本价',
         'cost_price.egt'         => '成本价必须大于或等于0.01',
-        'stock.require'         => '请输入库存',
-        'stock.integer'         => '库存必须为整数',
+        'stock.require'          => '请输入库存',
+        'stock.integer'          => '库存必须为整数',
         'stock.egt'              => '库存必须大于或等于0',
     ];
     

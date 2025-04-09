@@ -145,7 +145,9 @@
                                 <tr style="background-color: #f3f5f9">
                                     <th>规格图片</th>
                                     <th>市场价(元)</th>
-                                    <th><span class="form-label-asterisk">*</span>价格(元)</th>
+                                    <th><span class="form-label-asterisk">*</span>会员价(元)</th>
+                                    <th><span class="form-label-asterisk">*</span>诊所价(元)</th>
+                                    <th><span class="form-label-asterisk">*</span>代理价(元)</th>
                                     <th>成本价(元)</th>
                                     <th><span class="form-label-asterisk">*</span>库存</th>
                                     <th>体积(m3)</th>
@@ -172,6 +174,14 @@
                                                name="one_price"></td>
                                     <td><input type="number" class="layui-input"
                                                lay-verType="tips"
+                                               autocomplete="off" switch-tab="1" verify-msg="请输入价格"
+                                               name="one_hos_price"></td>
+                                    <td><input type="number" class="layui-input"
+                                               lay-verType="tips"
+                                               autocomplete="off" switch-tab="1" verify-msg="请输入价格"
+                                               name="one_agent_price"></td>
+                                    <td><input type="number" class="layui-input"
+                                               lay-verType="tips"
                                                autocomplete="off" switch-tab="1"
                                                name="one_cost_price"></td>
                                     <td><input type="number" class="layui-input" lay-verify="one_spec_required|one_stock"
@@ -196,7 +206,9 @@
                             <div class="batch-div"><span class="batch-spec-title">批量设置：</span>
                                 <div>
                                     <span class="batch-spec-content click-a" input-name="market_price">市场价</span>
-                                    <span class="batch-spec-content click-a" input-name="price">价格</span>
+                                    <span class="batch-spec-content click-a" input-name="price">会员价</span>
+                                    <span class="batch-spec-content click-a" input-name="hos_price">诊所价</span>
+                                    <span class="batch-spec-content click-a" input-name="agent_price">代理价</span>
                                     <span class="batch-spec-content click-a" input-name="cost_price">成本价</span>
                                     <span class="batch-spec-content click-a" input-name="stock">库存</span>
                                     <span class="batch-spec-content click-a" input-name="volume">体积</span>
@@ -428,7 +440,9 @@
         {spec_th}
         <th>规格图片</th>
         <th>市场价(元)</th>
-        <th><span class="form-label-asterisk">*</span>价格(元)</th>
+        <th><span class="form-label-asterisk">*</span>会员价(元)</th>
+        <th><span class="form-label-asterisk">*</span>诊所价(元)</th>
+        <th><span class="form-label-asterisk">*</span>代理价(元)</th>
         <th>成本价(元)</th>
         <th><span class="form-label-asterisk">*</span>库存</th>
         <th>体积(m3)</th>
@@ -448,6 +462,10 @@
                autocomplete="off" switch-tab="1"name="market_price[]"></td>
     <td><input type="number" class="layui-input" lay-verify="more_spec_required|more_price" lay-verType="tips"
                autocomplete="off" switch-tab="1" verify-msg="请输入价格" name="price[]"></td>
+    <td><input type="number" class="layui-input" lay-verify="more_spec_required|more_price" lay-verType="tips"
+               autocomplete="off" switch-tab="1" verify-msg="请输入诊所价格" name="hos_price[]"></td>
+    <td><input type="number" class="layui-input" lay-verify="more_spec_required|more_price" lay-verType="tips"
+               autocomplete="off" switch-tab="1" verify-msg="请输入代理价格" name="agent_price[]"></td>
     <td><input type="number" class="layui-input" lay-verType="tips"
                autocomplete="off" switch-tab="1" name="cost_price[]"></td>
     <td><input type="number" class="layui-input" lay-verify="more_spec_required|more_stock" lay-verType="tips"
@@ -1234,6 +1252,22 @@
                     }
                 }
             },
+            one_hos_price: function (value, item) {
+                if ($('input[name="spec_type"]:checked').val() == 2) {
+                    if (value && value < 0.01) {
+                        switchTab($(item).attr('switch-tab'));
+                        return '诊所价格必须大于或等于0.01';
+                    }
+                }
+            },
+            one_agent_price: function (value, item) {
+                if ($('input[name="spec_type"]:checked').val() == 2) {
+                    if (value && value < 0.01) {
+                        switchTab($(item).attr('switch-tab'));
+                        return '代理价格必须大于或等于0.01';
+                    }
+                }
+            },
             one_cost_price: function (value, item) {
                 if ($('input[name="spec_type"]:checked').val() == 2) {
                     if (value && value < 0.01) {
@@ -1416,6 +1450,8 @@
                 $('.goods-one-spec-img-add').parent().html('<input name="one_spec_image" type="hidden" value="' + goods_info['item'][0]['image'] + '"><a class="goods-one-spec-img-del-x">x</a><img class="goods-spec-img" src="' + goods_info['item'][0]['abs_image'] + '">');
             }
             $('input[name="one_price"]').val(goods_info['item'][0]['price']);
+            $('input[name="one_hos_price"]').val(goods_info['item'][0]['hos_price']);
+            $('input[name="one_agent_price"]').val(goods_info['item'][0]['agent_price']);
             $('input[name="one_cost_price"]').val(goods_info['item'][0]['cost_price']);
             $('input[name="one_market_price"]').val(goods_info['item'][0]['market_price']);
             $('input[name="one_stock"]').val(goods_info['item'][0]['stock']);
@@ -1444,6 +1480,8 @@
                         spec_value_temp_ids = $(this).attr('spec-value-temp-ids');
                         spec_table_data["spec_image[]"+spec_value_temp_ids] = goods_info['item'][i]['abs_image'];
                         spec_table_data["price[]"+spec_value_temp_ids] = goods_info['item'][i]['price'];
+                        spec_table_data["hos_price[]"+spec_value_temp_ids] = goods_info['item'][i]['hos_price'];
+                        spec_table_data["agent_price[]"+spec_value_temp_ids] = goods_info['item'][i]['agent_price'];
                         spec_table_data["cost_price[]"+spec_value_temp_ids] = goods_info['item'][i]['cost_price'];
                         spec_table_data["market_price[]"+spec_value_temp_ids] = goods_info['item'][i]['market_price'];
                         spec_table_data["stock[]"+spec_value_temp_ids] = goods_info['item'][i]['stock'];
