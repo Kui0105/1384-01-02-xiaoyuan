@@ -7,6 +7,7 @@ use app\common\logic\AccountLogLogic;
 use app\common\logic\LogicBase;
 use app\common\logic\UserLevelLogic;
 use app\common\model\AccountLog;
+use app\common\model\DevRegion;
 use app\common\model\Order;
 use app\common\model\Pay;
 use app\common\model\User;
@@ -744,7 +745,7 @@ class UserLogic extends LogicBase
 
     public static function getInfo($id)
     {
-        $user =  User::field('id,sn,level,nickname,avatar,birthday,group_id,sex,mobile,create_time,login_time,user_money,user_growth,earnings,first_leader')
+        $user =  User::field('id,sn,level,nickname,avatar,birthday,group_id,sex,mobile,create_time,login_time,user_money,user_growth,earnings,first_leader,new_level,new_level_province,new_level_city,new_level_area')
             ->findOrEmpty($id);
         if($user->isEmpty()) {
             return [];
@@ -783,4 +784,84 @@ class UserLogic extends LogicBase
 
         return $user;
     }
+
+    //获取新等级信息
+    public static function getNewLevelInfo($id,$level=1)
+    {
+        $name = '';
+        $user =  User::field('id,new_level,new_level_province,new_level_city,new_level_area')
+            ->findOrEmpty($id);
+        if($user->isEmpty()) {
+            return $name;
+        }
+        switch($level) {
+            // 省
+            case '1':
+                if($user['new_level'] == 1){
+                    $name = DevRegion::getMoreArea($user['new_level_province']);
+                }
+                break;
+            // 市
+            case '2':
+                if($user['new_level'] == 2){
+                    $name = DevRegion::getMoreArea($user['new_level_city']);
+                }
+                break;
+            case '3':
+                if($user['new_level'] == 3){
+                    $name = DevRegion::getMoreArea($user['new_level_area']);
+                }
+                break;
+            case '4':
+
+                break;
+        }
+        return $name;
+    }
+
+    public static function adjustProvince($post_data)
+    {
+        $id = $post_data['id']??0;
+        $user =  User::field('id,new_level,new_level_province,new_level_city,new_level_area')
+            ->findOrEmpty($id);
+        if($user->isEmpty()) {
+            return '用户不存在';
+        }
+        // switch ($user['new_level']){
+        //     case 0://用户 转 省代
+        //         break;
+        //     case 1:
+        //         break;
+        //     default:
+        //         return '当前等级错误';
+        // }
+        if(!in_array($user['new_level'],[0,1])){
+            return '当前等级错误';
+        }
+        Db::startTrans();
+        try {
+            $time = time();
+            Db::name('user')->where('id',$id)->update(['new_level'=>1,'new_level_province'=>$post_data['level']]);
+            Db::name('user_new_level')->where('user_id',$id)->delete();
+            Db::name('user_new_level')->insert([
+                'user_id'   => $id,
+                'pid'       => 0,
+                'self_id'   => $post_data['level'],
+                'level'     => 1,
+                'create_time'   => $time,
+            ]);
+            Db::name('user_new_level_log')->insert([
+                'user_id'   => $id,
+                'remark'    => '后台调整省代:'.$post_data['remark'],
+                'content'   => json_encode($post_data),
+                'create_time'   => $time
+            ]);
+            Db::commit();
+            return true;
+        } catch (Exception $e) {
+            Db::rollback();
+            return $e->getMessage();
+        }
+    }
+
 }

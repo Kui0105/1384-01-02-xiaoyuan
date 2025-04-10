@@ -40,16 +40,7 @@
             <input type="text" name="title" value="{$help.title}" lay-verify="required"   lay-verType="tips"  placeholder="请输入标题" autocomplete="off" class="layui-input">
         </div>
     </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label"><font color="red">*</font>帮助分类</label>
-        <div class="layui-input-block">
-            <select name="cid"  placeholder="请选择帮助分类" >
-                {foreach $category_list as $item => $val}
-                <option value="{$item}" {if condition="$item eq $help.cid "}selected="selected"{/if} >{$val.name}</option>
-                {/foreach}
-            </select>
-        </div>
-    </div>
+
     <div class="layui-form-item">
         <label class="layui-form-label">帮助简介</label>
         <div class="layui-input-block">
@@ -77,13 +68,6 @@
             </div>
         </div>
     </div>
-
-<!--    <div class="layui-form-item">-->
-<!--        <label class="layui-form-label">帮助简介</label>-->
-<!--        <div class="layui-input-block">-->
-<!--            <textarea name="synopsis"  lay-verify="required"  lay-verType="tips"  placeholder="请输入帮助简介" class="layui-textarea">{$help['synopsis']}</textarea>-->
-<!--        </div>-->
-<!--    </div>-->
 
     <div class="layui-form-item">
         <label class="layui-form-label">帮助排序</label>

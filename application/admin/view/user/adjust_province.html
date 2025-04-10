@@ -1,0 +1,56 @@
+{layout name="layout2" /}
+<!--<div class="layui-colla-item">-->
+
+<!--    <div class="layui-colla-content layui-show">-->
+<!--        <p>调整后 原推广线会清空</p>-->
+<!--        <p>谨慎操作</p>-->
+<!--    </div>-->
+<!--</div>-->
+<div class="layui-form" lay-filter="layuiadmin-form-user" id="layuiadmin-form-user" style="padding: 20px 30px 0 0;">
+    <input type="hidden" value="{$id}" name="id">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">当前区域：</label>
+        <div class="layui-input-inline">
+            <label class="layui-form-mid">{$info}</label>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">调整省代：</label>
+        <div class="layui-inline">
+            <div class="layui-input-inline">
+                <select id="level" name="level"   style="height:80px;width: 80px" >
+                    <option value=" ">请选择代理省份</option>
+                    {foreach $area_list as $item}
+                    <option value="{$item.id}">{$item.name}</option>
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">备注:</label>
+        <div class="layui-input-block">
+            <textarea type="text" name="remark"  autocomplete="off" class="layui-textarea"></textarea>
+            <label class="layui-form-mid layui-word-aux">不超过100字</label>
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-hide">
+        <input type="button" lay-submit lay-filter="adjust_province-submit" id="adjust_province-submit" value="确认">
+    </div>
+</div>
+<script>
+    layui.config({
+        version:"{$front_version}",
+        base: '/static/plug/layui-admin/dist/layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'form','like_area'], function(){
+        var $ = layui.$
+            ,like_area = layui.like_area
+            ,form = layui.form ;
+
+    })
+</script>

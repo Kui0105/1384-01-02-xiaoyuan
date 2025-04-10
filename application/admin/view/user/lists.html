@@ -143,6 +143,7 @@
                 <a class="layui-btn layui-btn-normal layui-btn-sm" lay-event="edit">编辑</a>
                 <a class="layui-btn layui-btn-normal layui-btn-sm"  id="adjust_user" lay-event="adjust_user">账户调整</a>
                 <a class="layui-btn layui-btn-normal layui-btn-sm"  id="adjust_level" lay-event="adjust_level">等级调整</a>
+                <a class="layui-btn layui-btn-normal layui-btn-sm"  id="adjust_province" lay-event="adjust_province">省代调整</a>
                 <a class="layui-btn layui-btn-normal layui-btn-sm"  id="adjust_first_leader" lay-event="adjust_first_leader">推荐人调整</a>
 
             </script>
@@ -539,6 +540,50 @@
                     }
                 })
             }
+            if(obj.event === 'adjust_province'){
+                var id = obj.data.id;
+                layer.open({
+                    type: 2
+                    ,title: '省代调整'
+                    ,content: '{:url("user/adjustProvince")}?id='+id
+                    ,area: ['90%', '90%']
+                    ,btn: ['确定', '取消']
+                    ,yes: function(index, layero){
+                        var iframeWindow = window['layui-layer-iframe'+ index]
+                            ,submit = layero.find('iframe').contents().find('#adjust_province-submit');
+                        //监听提交
+                        iframeWindow.layui.form.on('submit(adjust_province-submit)', function(data){
+                            var field = data.field;
+                            $.ajax({
+                                url:'{:url("user/adjustProvince")}',
+                                data:field,
+                                type:"post",
+                                success:function(res)
+                                {
+                                    if(res.code == 1)
+                                    {
+                                        layui.layer.msg(res.msg, {
+                                            offset: '15px'
+                                            , icon: 1
+                                            , time: 1000
+                                        });
+                                        layer.close(index); //关闭弹层
+                                        table.reload('user-lists'); //数据刷新
+                                    }else{
+                                        layer.msg(res.msg, {
+                                            offset: '15px'
+                                            , icon: 2
+                                            , time: 1000
+                                        });
+                                    }
+                                }
+                            });
+                        });
+                        submit.trigger('click');
+                    }
+                })
+            }
+
             if(obj.event === 'adjust_first_leader'){
                 var id = obj.data.id;
                 layer.open({

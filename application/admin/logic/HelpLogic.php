@@ -50,7 +50,7 @@ class HelpLogic
         $help = new Help();
         $data = [
             'title' => $post['title'],
-            'cid' => $post['cid'],
+            // 'cid' => $post['cid'],
             'image' => $post['image'],
             'content' => $post['content'],
             'is_show' => $post['is_show'],
@@ -67,7 +67,7 @@ class HelpLogic
         $help = new Help();
         $data = [
             'title' => $post['title'],
-            'cid' => $post['cid'],
+            // 'cid' => $post['cid'],
             'image' => $post['image'],
             'content' => $post['content'],
             'is_show' => $post['is_show'],
@@ -92,7 +92,7 @@ class HelpLogic
 
         $data = [
             'del' => time(),
-            'update_time' => 1
+            'update_time' => time(),
         ];
         return $help->save($data, ['id' => $id, 'del' => 0]);
     }

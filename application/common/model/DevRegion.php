@@ -3,10 +3,39 @@
 
 namespace app\common\model;
 
-
+use think\Db;
+use think\facade\Cache;
 use think\Model;
 
 class DevRegion extends Model
 {
+
+    public static function getLevelArea($pid=100000)
+    {
+        $cache = Cache::get('area_pid_'.$pid);
+        if ($cache) {
+            return $cache;
+        }
+        $list =  self::field(['name', 'id', 'parent_id as pid', 'level'])->where('parent_id',$pid)->select()->toArray();
+        Cache::set('area_pid_'.$pid, $list);
+        return $list;
+    }
+
+    public static function getMoreArea($ids)
+    {
+        if(!$ids){
+            return '';
+        }
+        $cache_name = str_replace(',', '_', $ids);
+        $cache = Cache::get('area_ids_'.$cache_name);
+        if ($cache) {
+            return $cache;
+        }
+        $name_arr =  self::where('id','in',$ids)->column('name');
+        $str = implode(',',$name_arr);
+        Cache::set('area_ids_'.$cache_name, $str);
+        return $str;
+    }
+
 
 }

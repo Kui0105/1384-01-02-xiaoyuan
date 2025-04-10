@@ -4,6 +4,7 @@
 namespace app\admin\logic;
 
 use app\admin\model\ArticleCategory;
+use app\common\server\UrlServer;
 use think\Db;
 
 class ArticleCategoryLogic
@@ -36,9 +37,16 @@ class ArticleCategoryLogic
     public static function addArticleCategory($post)
     {
         $article_category = new ArticleCategory();
+        $level = 0;
+        if ($post['pid']) {
+            $level = Db::name('article_category')->where(['id' => $post['pid']], ['del' => 0])->value('level');
+        }
         $data = [
-            'name' => $post['name'],
-            'is_show' => $post['is_show'],
+            'name'      => $post['name'],
+            'pid'       => $post['pid'],
+            'type'      => $post['type'],
+            'is_show'   => $post['is_show'],
+            'level'     => $level +1,
             'create_time' => time(),
         ];
         return $article_category->save($data);
@@ -52,9 +60,15 @@ class ArticleCategoryLogic
     public static function editArticleCategory($post)
     {
         $article_category = new ArticleCategory();
+        $level = 0;
+        if ($post['pid']) {
+            $level = Db::name('goods_category')->where(['id' => $post['pid']], ['del' => 0])->value('level');
+        }
         $data = [
-            'name' => $post['name'],
-            'is_show' => $post['is_show'],
+            'name'      => $post['name'],
+            'pid'       => $post['pid'],
+            'is_show'   => $post['is_show'],
+            'level'     => $level +1,
             'update_time' => time(),
         ];
         return $article_category->save($data, ['id' => $post['id'], 'del' => 0]);
@@ -93,9 +107,48 @@ class ArticleCategoryLogic
     public static function switchStatus($post)
     {
         $data = [
-            'is_show' => $post['is_show'],
+            'is_show' => $post['status'],
             'update_time' => time(),
         ];
         return Db::name('article_category')->where(['del' => 0, 'id' => $post['id']])->update($data);
+    }
+
+    /**
+     *  Desc: 获取完整的商品分类
+     * @return array
+     */
+    public static function categoryTwoTree($type=1)
+    {
+        $article_category = new ArticleCategory();
+        $lists = $article_category
+            ->where(['del' => 0,'type'=>$type])
+            ->order('sort asc,id asc')
+            ->column('id,name,pid,is_show,level,sort');
+        $lists = linear_to_tree($lists);
+        return $lists;
+    }
+
+    public static function getTopCategory($type=1)
+    {
+        $article_category = new ArticleCategory();
+        $lists = $article_category->field('id,name,level')->where(['del' => 0,'level'=>1,'type'=>$type])->order('sort asc,id asc')->select();
+        return $lists;
+    }
+
+    /**
+     * Desc: 返回该分类下有多少级子类
+     * @param array $category 分类信息
+     * @return string
+     */
+    public static function getCategoryLevel($category)
+    {
+        $level = 1;
+        $two_id = Db::name('article_category')->where(['pid' => $category['id'], 'del' => 0])->value('id');
+        if ($two_id) {
+            $level = 2;
+            $three_id = Db::name('article_category')->where(['pid' => $two_id, 'del' => 0])->value('id');
+            if ($three_id) $level = 3;
+        }
+        return $level;
     }
 }

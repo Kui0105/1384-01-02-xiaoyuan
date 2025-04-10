@@ -3,7 +3,7 @@
 
 namespace app\admin\controller;
 
-
+use app\common\model\DevRegion;
 use app\admin\logic\UserLogic;
 use app\common\server\ConfigServer;
 
@@ -198,5 +198,27 @@ class User extends AdminBase
             return $this->_success('', $lists);
         }
         return view();
+    }
+
+    /*
+     * 省代调整
+     */
+    public function adjustProvince($id){
+        if ($this->request->isAjax()) {
+            $post = $this->request->post();
+            $result = $this->validate($post,'app\admin\validate\AdjustProvince');
+            if($result === true){
+                $result = UserLogic::adjustProvince($post); //逻辑层处理信息
+                if($result === true){
+                    $this->_success('操作成功');
+                }
+            }
+            $this->_error($result);
+        }
+        $this->assign('info',UserLogic::getNewLevelInfo($id,1));
+        $this->assign('id',$id);
+        $this->assign('area_list',DevRegion::getLevelArea());
+        return $this->fetch();
+
     }
 }
