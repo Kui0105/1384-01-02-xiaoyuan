@@ -94,11 +94,14 @@ class ArticleCategoryLogic
      * @param $id int 文章分类id
      * @return boolean
      */
-    public static function getArticleCategory($id = 0)
+    public static function getArticleCategory($id = 0,$type = 0)
     {
         $where[] = ['del', '=', 0];
         if ($id) {
             $where[] = ['id', '=', $id];
+        }
+        if($type){
+            $where[] = ['type', '=', $type];
         }
         $article_category = new ArticleCategory();
         return $article_category->where($where)->column('*', 'id');
@@ -150,5 +153,25 @@ class ArticleCategoryLogic
             if ($three_id) $level = 3;
         }
         return $level;
+    }
+
+    //获取二级分类
+    public static function getTwoCategory($type = 1)
+    {
+        $arr = [];
+        $article_category = new ArticleCategory();
+        $one_level = $article_category->field('id,name,level')->where(['pid'=>0,'type'=>$type,'del'=>0])->select()->toArray();
+        $two_level = $article_category->where(['type'=>$type,'del'=>0])->where('pid','<>',0)->column('id,name,level','pid');
+        if(empty($one_level)){
+            return $arr;
+        }
+        foreach ($one_level as $k => &$v){
+            if(empty($two_level[$v['id']])){
+                unset($one_level[$k]);
+                continue;
+            }
+            $v['child'][] = array_merge($two_level[$v['id']]);
+        }
+        return array_merge($one_level);
     }
 }

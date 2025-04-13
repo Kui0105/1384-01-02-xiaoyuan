@@ -30,7 +30,10 @@
                         <select name="cid"  id="cid" >
                             <option value="">全部</option>
                             {foreach $category_list as $item => $val }
-                            <option value="{$item}">{$val['name']}</option>
+                            <option value="{$val['id']}">{$val['name']}</option>
+                            {foreach $val['child'] as  $son }
+                            <option value="{$son['id']}">|--{$son['name']}</option>
+                            {/foreach}
                             {/foreach}
                         </select>
                     </div>
@@ -48,7 +51,7 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">类型</label>
                     <div class="layui-input-block">
-                        <select name="status"  id="status" >
+                        <select name="small_type"  id="small_type" >
                             <option value="">全部</option>
                             <option value="1">文章</option>
                             <option value="2">视频</option>
@@ -126,6 +129,7 @@
             $('#title').val('');
             $('#cid').val('');
             $('#status').val('');
+            $('#small_type').val('');
             form.render('select');
             //刷新列表
             table.reload('article-lists', {
@@ -143,7 +147,7 @@
                 layer.open({
                     type: 2
                     ,title: '添加课堂'
-                    ,content: '{:url("article/add")}'
+                    ,content: '{:url("article/add")}?type=1'
                     ,area: ['90%','90%']
                     ,btn: ['确定', '取消']
                     ,yes: function(index, layero){
@@ -224,14 +228,14 @@
             elem: '#article-lists'
             ,url: '{:url("Article/lists")}'
             ,cols: [[
-                {type: 'checkbox',title: '当页全选'}
-                ,{field: 'title', title: '课堂标题',width:150}
+                // {type: 'checkbox',title: '当页全选'}
+                {field: 'title', title: '课堂标题',width:150}
                 ,{field: 'image', title: '课堂封面图',toolbar: '#image',width:150}
                 ,{field: 'cat_name', title: '课堂分类',width:150}
                 ,{field: 'type_txt', title:'课堂类型',  align: 'center',width:100}
                 ,{field: 'is_show_text', title:'课堂状态',align: 'center',width:100}
                 ,{field: 'visit', title: '浏览量',width:100}
-                ,{field: 'likes', title: '点赞量',width:100}
+                // ,{field: 'likes', title: '点赞量',width:100}
                 ,{field: 'sort', title: '排序',sort:true,width:100}
                 ,{field: 'create_time', title: '创建时间',width:160}
                 ,{fixed: 'right', title: '操作', align: 'center', toolbar: '#article-operation',width:230}

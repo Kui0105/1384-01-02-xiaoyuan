@@ -52,26 +52,26 @@ class Ad extends Model{
                     'path'      => '/bundle/pages/luckly_wheel/luckly_wheel',
                     'is_tab'    => 0,
                 ],
-                [
-                    'name'      => '限时秒杀',
-                    'path'      => '/bundle/pages/goods_seckill/goods_seckill',
-                    'is_tab'    => 0,
-                ],
-                [
-                    'name'      => '拼团活动',
-                    'path'      => '/bundle/pages/goods_combination/goods_combination',
-                    'is_tab'    => 0,
-                ],
-                [
-                    'name'      => '砍价活动',
-                    'path'      => '/bundle/pages/bargain/bargain',
-                    'is_tab'    => 0,
-                ],
-                [
-                    'name'      => '热销榜单',
-                    'path'      => '/bundle/pages/hot_list/hot_list',
-                    'is_tab'    => 0,
-                ],
+                // [
+                //     'name'      => '限时秒杀',
+                //     'path'      => '/bundle/pages/goods_seckill/goods_seckill',
+                //     'is_tab'    => 0,
+                // ],
+                // [
+                //     'name'      => '拼团活动',
+                //     'path'      => '/bundle/pages/goods_combination/goods_combination',
+                //     'is_tab'    => 0,
+                // ],
+                // [
+                //     'name'      => '砍价活动',
+                //     'path'      => '/bundle/pages/bargain/bargain',
+                //     'is_tab'    => 0,
+                // ],
+                // [
+                //     'name'      => '热销榜单',
+                //     'path'      => '/bundle/pages/hot_list/hot_list',
+                //     'is_tab'    => 0,
+                // ],
                 [
                     'name'      => '商城资讯',
                     'path'      => '/pages/news_list/news_list',

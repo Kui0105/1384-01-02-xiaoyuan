@@ -68,17 +68,17 @@
             <input type="text" name="name" lay-verify="required" placeholder="请输入广告标题" autocomplete="off" class="layui-input">
         </div>
     </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label"><span class="tips">*</span>广告位置：</label>
-        <div class="layui-input-inline">
-            <select  name="pid" id="pid" lay-filter="search_position">
-                <option value="">请选择广告位置</option>
-                {foreach $position_list as $item => $val}
-                <option value="{$item}" >{$val}</option>
-                {/foreach}
-            </select>
-        </div>
-    </div>
+<!--    <div class="layui-form-item">-->
+<!--        <label class="layui-form-label"><span class="tips">*</span>广告位置：</label>-->
+<!--        <div class="layui-input-inline">-->
+<!--            <select  name="pid" id="pid" lay-filter="search_position">-->
+<!--                <option value="">请选择广告位置</option>-->
+<!--                {foreach $position_list as $item => $val}-->
+<!--                <option value="{$item}" >{$val}</option>-->
+<!--                {/foreach}-->
+<!--            </select>-->
+<!--        </div>-->
+<!--    </div>-->
     <div class="layui-form-item category">
         <label class="layui-form-label"><span class="tips">*</span>商品分类：</label>
         <div class="layui-input-inline">
@@ -106,9 +106,12 @@
     <div class="layui-form-item">
         <label class="layui-form-label">链接类型：</label>
         <div class="layui-input-block">
-            <input type="radio" name="link_type" title="商城页面" value="1" lay-filter="link">
+<!--            <input type="radio" name="link_type" title="商城页面" value="1" lay-filter="link">-->
             <input type="radio" name="link_type" title="商品页面" value="2" lay-filter="link">
-            <input type="radio" name="link_type" title="自定义链接" value="3" lay-filter="link">
+<!--            <input type="radio" name="link_type" title="自定义链接" value="3" lay-filter="link">-->
+            <input type="radio" name="link_type" title="成长课堂" value="4" lay-filter="link">
+            <input type="radio" name="link_type" title="成长知识" value="5" lay-filter="link">
+            <input type="radio" name="link_type" title="成长时讯" value="6" lay-filter="link">
         </div>
     </div>
     <div class="layui-form-item link page">
@@ -127,10 +130,11 @@
             <a class="layui-btn layui-btn-normal select-goods" >选择商品</a>
         </div>
     </div>
+    <input type="hidden" name="goods_id" id="goods_id" value="">
     <div class="layui-form-item link goods-tips">
         <label class="layui-form-label"></label>
         <div class="layui-input-block ">
-            <input type="hidden" name="goods_id" value="">
+
             <table id="goods_list" class="layui-table" lay-size="sm">
                 <colgroup>
                     <col width="40px">
@@ -139,6 +143,83 @@
                 <tr style="background-color: #f3f5f9">
                     <th style="width: 120px;text-align: center">商品信息</th>
                     <th style="width: 60px;text-align: center">商品价格</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="layui-form-item link article1">
+        <label class="layui-form-label">成长课堂：</label>
+        <div class="layui-input-inline">
+            <a class="layui-btn layui-btn-normal select-article1" >选择课堂</a>
+        </div>
+    </div>
+    <div class="layui-form-item link article1-tips">
+        <label class="layui-form-label"></label>
+        <div class="layui-input-block ">
+
+            <table id="article1_list" class="layui-table" lay-size="sm">
+                <colgroup>
+                    <col width="40px">
+                </colgroup>
+                <thead>
+                <tr style="background-color: #f3f5f9">
+                    <th style="width: 120px;text-align: center">信息</th>
+                    <th style="width: 60px;text-align: center">类型</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="layui-form-item link article2">
+        <label class="layui-form-label">成长知识：</label>
+        <div class="layui-input-inline">
+            <a class="layui-btn layui-btn-normal select-article2" >选择知识</a>
+        </div>
+    </div>
+    <div class="layui-form-item link article2-tips">
+        <label class="layui-form-label"></label>
+        <div class="layui-input-block ">
+
+            <table id="article2_list" class="layui-table" lay-size="sm">
+                <colgroup>
+                    <col width="40px">
+                </colgroup>
+                <thead>
+                <tr style="background-color: #f3f5f9">
+                    <th style="width: 120px;text-align: center">信息</th>
+                    <th style="width: 60px;text-align: center">类型</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="layui-form-item link article3">
+        <label class="layui-form-label">成长时讯：</label>
+        <div class="layui-input-inline">
+            <a class="layui-btn layui-btn-normal select-article3" >选择时讯</a>
+        </div>
+    </div>
+    <div class="layui-form-item link article3-tips">
+        <label class="layui-form-label"></label>
+        <div class="layui-input-block ">
+
+            <table id="article3_list" class="layui-table" lay-size="sm">
+                <colgroup>
+                    <col width="40px">
+                </colgroup>
+                <thead>
+                <tr style="background-color: #f3f5f9">
+                    <th style="width: 120px;text-align: center">信息</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -253,6 +334,18 @@
                     $('.url').show();
                     $('.url-tips').show();
                     break;
+                case '4':
+                    $('.article1').show();
+                    $('.article1-tips').show();
+                    break;
+                case '5':
+                    $('.article2').show();
+                    $('.article2-tips').show();
+                    break;
+                case '6':
+                    $('.article3').show();
+                    $('.article3-tips').show();
+                    break;
             }
 
         })
@@ -292,14 +385,92 @@
                             '                    <td style="text-align: center"><img class="image-show" width="80px" height="80px" src="'+goods.image +'">'+goods.name+'</td>\n' +
                             '                    <td style="text-align: center">'+goods.price+'</td>\n' +
                             '                </tr>';
-                        $('#goods_list').prev().val(goods.id);
+                        // $('#goods_list').prev().val(goods.id);
+                        $('#goods_id').val(goods.id);
                         $('#goods_list').append(goods_html);
                         $('.goods').show();
                     }
                 }
 
             })
-        })
+        });
+
+        $(document).on('click','.select-article1',function () {
+            layer.open({
+                type: 2
+                ,title: '选择课堂'
+                ,content: '{:url("common/selectArticles")}?type=1'
+                ,area: ['90%', '90%']
+                ,btn: ['确认', '取消']
+                ,yes: function(index, layero){
+                    var data = window["layui-layer-iframe" + index].callbackdata();
+                    if(data.length){
+                        $('#article1_list tbody').remove();
+                        var goods = data[0];
+                        var goods_html = '<tr>\n' +
+                            '                    <td style="text-align: center"><img class="image-show" width="80px" height="80px" src="'+goods.image +'">'+goods.title+'</td>\n' +
+                            '                    <td style="text-align: center">'+goods.type_txt+'</td>\n' +
+                            '                </tr>';
+
+                        // $('#article1_list').prev().val(goods.id);
+                        $('#goods_id').val(goods.id);
+                        $('#article1_list').append(goods_html);
+                        $('.article1').show();
+                    }
+                }
+
+            })
+        });
+
+        $(document).on('click','.select-article2',function () {
+            layer.open({
+                type: 2
+                ,title: '选择知识'
+                ,content: '{:url("common/selectArticles")}?type=2'
+                ,area: ['90%', '90%']
+                ,btn: ['确认', '取消']
+                ,yes: function(index, layero){
+                    var data = window["layui-layer-iframe" + index].callbackdata();
+                    if(data.length){
+                        $('#article2_list tbody').remove();
+                        var goods = data[0];
+                        var goods_html = '<tr>\n' +
+                            '                    <td style="text-align: center"><img class="image-show" width="80px" height="80px" src="'+goods.image +'">'+goods.title+'</td>\n' +
+                            '                    <td style="text-align: center">'+goods.type_txt+'</td>\n' +
+                            '                </tr>';
+                        $('#goods_id').val(goods.id);
+                        $('#article2_list').append(goods_html);
+                        $('.article2').show();
+                    }
+                }
+
+            })
+        });
+
+        $(document).on('click','.select-article3',function () {
+            layer.open({
+                type: 2
+                ,title: '选择时讯'
+                ,content: '{:url("common/selectIndexArticles")}'
+                ,area: ['90%', '90%']
+                ,btn: ['确认', '取消']
+                ,yes: function(index, layero){
+                    var data = window["layui-layer-iframe" + index].callbackdata();
+                    if(data.length){
+                        $('#article3_list tbody').remove();
+                        var goods = data[0];
+                        var goods_html = '<tr>\n' +
+                            '                    <td style="text-align: center"><img class="image-show" width="80px" height="80px" src="'+goods.image +'">'+goods.title+'</td>\n' +
+                            '                </tr>';
+                        $('#goods_id').val(goods.id);
+                        $('#article3_list').append(goods_html);
+                        $('.article3').show();
+                    }
+                }
+
+            })
+        });
+
     })
 
 </script>

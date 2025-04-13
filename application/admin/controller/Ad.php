@@ -32,6 +32,7 @@ class Ad extends AdminBase
         if ($this->request->isAjax()) {
             $post = $this->request->post();
             $post['del'] = 0;
+            $post['pid'] = 1;
             $result = $this->validate($post, 'app\admin\validate\Ad.add');
             if ($result === true) {
                 $result = AdLogic::add($post);
@@ -60,6 +61,7 @@ class Ad extends AdminBase
         if ($this->request->isAjax()) {
             $post = $this->request->post();
             $post['del'] = 0;
+            $post['pid'] = 1;
             $result = $this->validate($post, 'app\admin\validate\Ad');
             if ($result === true) {
                 $result = AdLogic::edit($post);

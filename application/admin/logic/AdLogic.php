@@ -74,6 +74,36 @@ class AdLogic
                     break;
                 case 3:
                     $url = '自定义链接：' . $item['link'];
+                    break;
+                case 4:
+                    $article = Db::name('article')
+                        ->where(['id' => $item['link']])
+                        ->field('title,small_type')
+                        ->find();
+                    if ($article) {
+                        $type_txt = $article['small_type']==1?'文章':'视频';
+                        $url = '成长课堂页面:' . $article['title'] . '(' . $type_txt.')';
+                    }
+                    break;
+                case 5:
+                    $article = Db::name('article')
+                        ->where(['id' => $item['link']])
+                        ->field('title,small_type')
+                        ->find();
+                    if ($article) {
+                        $type_txt = $article['small_type']==1?'文章':'视频';
+                        $url = '成长知识页面:' . $article['title'] . '(' . $type_txt.')';
+                    }
+                    break;
+                case 6:
+                    $article = Db::name('index_article')
+                        ->where(['id' => $item['link']])
+                        ->field('title')
+                        ->find();
+                    if ($article) {
+                        $url = '成长时讯页面:' . $article['title'];
+                    }
+                    break;
             }
             $item['link'] = $url;
 
@@ -106,6 +136,9 @@ class AdLogic
                 $link = $post['page'];
                 break;
             case '2':
+            case '4':
+            case '5':
+            case '6':
                 $link = $post['goods_id'];
                 break;
             case '3':
@@ -150,6 +183,9 @@ class AdLogic
                 $link = $post['page'];
                 break;
             case '2':
+            case '4':
+            case '5':
+            case '6':
                 $link = $post['goods_id'];
                 break;
             case '3':
@@ -198,19 +234,46 @@ class AdLogic
         $ad = new Ad();
         $info = $ad::get(['id' => $id]);
         $info['goods'] = '';
-        if ($info['link_type'] == 2) {
-            $goods = Db::name('goods g')
-                ->where(['g.id' => $info['link']])
-                ->field('g.id, g.name, g.image, min_price, max_price')
-                ->find();
-            $price = '￥' . $goods['max_price'];
-            if ($goods['max_price'] !== $goods['min_price']) {
-                $price = '￥' . $goods['min_price'] . '~' . $goods['max_price'];
-            }
-            $goods['price'] = $price;
-            $goods['image'] = UrlServer::getFileUrl($goods['image']);
-            $info['goods'] = $goods;
+        switch ($info['link_type']){
+            case 2:
+                $goods = Db::name('goods g')
+                    ->where(['g.id' => $info['link']])
+                    ->field('g.id, g.name, g.image, min_price, max_price')
+                    ->find();
+                $price = '￥' . $goods['max_price'];
+                if ($goods['max_price'] !== $goods['min_price']) {
+                    $price = '￥' . $goods['min_price'] . '~' . $goods['max_price'];
+                }
+                $goods['price'] = $price;
+                $goods['image'] = UrlServer::getFileUrl($goods['image']);
+                $info['goods'] = $goods;
+                break;
+            case 4:
+            case 5:
+                $goods = Db::name('article')
+                    ->where(['id' => $info['link']])
+                    ->field('id,title,small_type,image')
+                    ->find();
+                if($goods){
+                    $goods['type_txt'] = $goods['small_type']==1?'文章':'视频';
+                    $goods['image'] = UrlServer::getFileUrl($goods['image']);
+                    $info['goods'] = $goods;
+                }
+
+                break;
+            case 6:
+                $goods = Db::name('index_article')
+                    ->where(['id' => $info['link']])
+                    ->field('id,title,image')
+                    ->find();
+                if($goods) {
+                    $goods['image'] = UrlServer::getFileUrl($goods['image']);
+                    $info['goods']  = $goods;
+                }
+
+                break;
         }
+
         $info['abs_image'] = UrlServer::getFileUrl($info['image']);
 
         $info['position_desc'] = '';

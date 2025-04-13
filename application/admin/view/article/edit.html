@@ -38,29 +38,39 @@
 <div class="layui-form" lay-filter="layuiadmin-form-category" id="layuiadmin-form-category" style="padding: 20px 30px 0 0;">
     <input type="hidden" value="{$article.id}" name="id">
     <div class="layui-form-item">
-        <label class="layui-form-label"><font color="red">*</font>文章标题</label>
+        <label class="layui-form-label">类型</label>
+        <div class="layui-input-inline" id="" >
+            <input disabled readonly type="radio" name="small_type" lay-filter="small_type" style="width: 500px" value=1 title="文章"  {if condition="$article.small_type eq 1" }checked{/if} >
+            <input disabled readonly type="radio" name="small_type" lay-filter="small_type" style="width: 500px" value=2 title="视频" {if condition="$article.small_type eq 2" }checked{/if}>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label"><font color="red">*</font>标题</label>
         <div class="layui-input-block">
             <input type="text" name="title" value="{$article.title}" lay-verify="required"   lay-verType="tips"  placeholder="请输入标题" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label"><font color="red">*</font>文章分类</label>
+        <label class="layui-form-label"><font color="red">*</font>分类</label>
         <div class="layui-input-block">
-            <select name="cid"  placeholder="请选择文章分类" >
-                {foreach $category_list as $item => $val}
-                <option value="{$item}" {if condition="$item eq $article.cid "}selected="selected"{/if} >{$val.name}</option>
+            <select name="cid"  placeholder="请选择分类" >
+                {foreach $category_list as $val}
+                <option value="0" readonly disabled>{$val.name}</option>
+                {foreach $val['child'] as $son}
+                <option value="{$son.id}" {if condition="$son.id eq $article.cid "}selected="selected"{/if} >|--   {$son.name}</option>
+                {/foreach}
                 {/foreach}
             </select>
         </div>
     </div>
+<!--    <div class="layui-form-item">-->
+<!--        <label class="layui-form-label">简介</label>-->
+<!--        <div class="layui-input-block">-->
+<!--            <input type="text"  name="synopsis" value="{$article.synopsis}" placeholder="请输入简介" class="layui-input">-->
+<!--        </div>-->
+<!--    </div>-->
     <div class="layui-form-item">
-        <label class="layui-form-label">文章简介</label>
-        <div class="layui-input-block">
-            <input type="text"  name="synopsis" value="{$article.synopsis}" placeholder="请输入文章简介" class="layui-input">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">文章封面图</label>
+        <label class="layui-form-label">封面图</label>
         <div class="layui-input-inline">
             <div style="height:80px;line-height:80px">
                 <input name="image" type="hidden" value="{$article.image}">
@@ -82,36 +92,30 @@
     </div>
 
     <div class="layui-form-item">
-        <label class="layui-form-label">商品公告</label>
-        <div class="layui-input-inline" id="" >
-            <input type="radio" name="is_notice" lay-filter="is_notice" style="width: 500px" value=1 title="是" {if condition="$article.is_notice eq 1" }checked{/if}>
-            <input type="radio" name="is_notice" lay-filter="is_notice" style="width: 500px" value=0 title="否"{if condition="$article.is_notice eq 0" }checked{/if}>
-        </div>
-        <div class="layui-form-item">
-            <label class=" layui-form-mid layui-word-aux" id="notice">商城公告会在商城首页的新闻速递显示</label>
-        </div>
-    </div>
-<!--    <div class="layui-form-item">-->
-<!--        <label class="layui-form-label">文章简介</label>-->
-<!--        <div class="layui-input-block">-->
-<!--            <textarea name="synopsis"  lay-verify="required"  lay-verType="tips"  placeholder="请输入文章简介" class="layui-textarea">{$article['synopsis']}</textarea>-->
-<!--        </div>-->
-<!--    </div>-->
-    <div class="layui-form-item">
-        <label class="layui-form-label">文章排序</label>
+        <label class="layui-form-label">排序</label>
         <div class="layui-input-block">
             <input type="number"  value="{$article.sort}" name="sort"  placeholder="请输入排序" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">文章状态</label>
+        <label class="layui-form-label">状态</label>
         <div class="layui-input-inline" >
             <input type="radio" name="is_show" lay-filter="is_show" style="width: 500px" value=1 title="显示" {if condition="$article.is_show eq 1" }checked{/if}>
             <input type="radio" name="is_show" lay-filter="is_show" style="width: 500px" value=0 title="隐藏"{if condition="$article.is_show eq 0" }checked{/if}>
         </div>
     </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">文章内容</label>
+    <div class="layui-form-item type_video" {if condition="$article.small_type eq 1" }style="display: none" {/if}>
+        <label class="layui-form-label">视频：</label>
+        <div class="upload-file-div video-style" id="video">
+            <a href="#" class="upload-file-title">+添加视频</a>
+        </div>
+
+    </div>
+    <div class="layui-form-item type_video" {if condition="$article.small_type eq 1" }style="display: none" {/if} ><label class="layui-form-label"></label><span
+            style="color: #a3a3a3;font-size: 9px">手机端播放，建议时长9-30秒，建议视频宽高比16:9</span>
+    </div>
+    <div class="layui-form-item type_article" {if condition="$article.small_type eq 2" }style="display: none" {/if}>
+        <label class="layui-form-label">内容</label>
         <div class="layui-input-block">
             <textarea  name="content" id="content" lay-verify="content" class="field-content">{$article.content}</textarea>
         </div>
@@ -187,5 +191,34 @@
         $(document).on('mouseout', '.goods-img-del-x', function () {
             $(this).hide();
         });
+
+        form.on('radio(small_type)', function (data) {
+            if (data.value != 1) {
+                $('.type_video').show();
+                $('.type_article').hide();
+            } else {
+                $('.type_video').hide();
+                $('.type_article').show();
+            }
+        })
+
+        // ========= 视频上传 开始
+        $('#video').click(function(){
+            layer.open({
+                type: 2,
+                title: '上传视频',
+                content: '{:url("file_new/lists")}?type=video',
+                area: ['90%', '90%']
+            });
+        });
+
+        window.videoCallback = function(uris) {
+            like.videoCallback(uris);
+        };
+        var article_info= {$article|raw|default=''};
+        if(article_info['small_type']==2 && article_info['content']){
+            like.videoCallback([article_info['content']]);
+        }
+        // ========== 视频上传 结束
     });
 </script>

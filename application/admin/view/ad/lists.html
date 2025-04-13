@@ -6,9 +6,6 @@
             <div class="layui-colla-item">
                 <h2 class="layui-colla-title like-layui-colla-title" style="background-color: #fff">操作提示</h2>
                 <div class="layui-colla-content layui-show">
-                    <p>*平台管理广告信息，系统默认了部分广告位，允许新建广告位。</p>
-                    <p>*广告区分不同的终端，移动端商城（含H5、小程序、APP）和PC端商城。</p>
-                    <p>*广告链接可以选择商城页面，商品页面，自定义链接，用户点击广告后跳转到相应的页面。</p>
                     <p>*广告停用之后，商城不展示该广告。</p>
                 </div>
             </div>
@@ -16,12 +13,12 @@
         </div>
         <div class="layui-tab layui-tab-card" lay-filter="tab-all">
 
-            <ul class="layui-tab-title">
-                <!--                <li data-type = ''>全部</li>-->
-                {foreach $type as $item => $val}
-                <li data-type = {$item} {if $item == 1} class="layui-this" {/if}  >{$val}</li>
-                {/foreach}
-            </ul>
+<!--            <ul class="layui-tab-title">-->
+<!--                &lt;!&ndash;                <li data-type = ''>全部</li>&ndash;&gt;-->
+<!--                {foreach $type as $item => $val}-->
+<!--                <li data-type = {$item} {if $item == 1} class="layui-this" {/if}  >{$val}</li>-->
+<!--                {/foreach}-->
+<!--            </ul>-->
 
             <div class="layui-tab-item layui-show">
                 <div class="layui-card">
@@ -35,7 +32,7 @@
                                 </div>
                             </div>
 
-                            <div class="layui-inline">
+                            <div class="layui-inline" style="display: none">
                                 <label class="layui-form-label">广告位置:</label>
                                 <div class="layui-input-block">
                                     <select name="pid" id="pid">
@@ -221,9 +218,9 @@
                 elem: '#ad-lists'
                 , url: '{:url("ad/lists")}?client='+client  //模拟接口
                 , cols: [[
-                    {field: 'client_name', title: '终端',width:200}
-                    ,{field: 'name', title: '广告标题',width:200}
-                    , {field: 'position_name', title: '广告位置',width:200}
+                    // {field: 'client_name', title: '终端',width:200}
+                    {field: 'name', title: '广告标题',width:200}
+                    // , {field: 'position_name', title: '广告位置',width:200}
                     , {field: 'image', title: '广告图片', templet: '#image',width:200}
                     , {field: 'link', title: '广告链接',width:300}
                     , {field: 'sort', title: '排序',width:80, align: 'center'}

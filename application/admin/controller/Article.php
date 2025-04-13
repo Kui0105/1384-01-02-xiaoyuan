@@ -16,11 +16,29 @@ class Article extends AdminBase
      */
     public function lists()
     {
-        $category = ArticleCategoryLogic::getArticleCategory();
         if ($this->request->isAjax()) {
             $get = $this->request->get();
-            $this->_success('', ArticleLogic::lists($get, $category));
+            $get['type'] = 1;
+            $this->_success('', ArticleLogic::lists($get));
         }
+        $category = ArticleCategoryLogic::getTwoCategory(1);
+        $this->assign('category_list', $category);
+        return $this->fetch();
+    }
+
+    /**
+     * 文章列表
+     * @return mixed
+     */
+    public function lists1()
+    {
+
+        if ($this->request->isAjax()) {
+            $get = $this->request->get();
+            $get['type'] = 2;
+            $this->_success('', ArticleLogic::lists($get));
+        }
+        $category = ArticleCategoryLogic::getTwoCategory(2);
         $this->assign('category_list', $category);
         return $this->fetch();
     }
@@ -41,7 +59,9 @@ class Article extends AdminBase
             $this->_error($result);
 
         }
-        $acticle_category = ArticleCategoryLogic::getArticleCategory();
+        $type = $this->request->get('type')??1;
+        $this->assign('type', $type);
+        $acticle_category = ArticleCategoryLogic::getTwoCategory($type);
         $this->assign('category_list', $acticle_category);
         return $this->fetch();
     }
@@ -65,7 +85,7 @@ class Article extends AdminBase
 
         }
         $article = ArticleLogic::getArticle($id);
-        $category_list = ArticleCategoryLogic::getArticleCategory();
+        $category_list = ArticleCategoryLogic::getTwoCategory($article['type']);
         $this->assign('article', $article);
         $this->assign('category_list', $category_list);
         return $this->fetch();

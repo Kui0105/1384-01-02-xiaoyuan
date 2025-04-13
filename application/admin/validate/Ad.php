@@ -62,6 +62,13 @@ class Ad extends Validate
                         return '请输入链接';
                     }
                     break;
+                case '4':
+                case '5':
+                case '6':
+                    if(empty($data['goods_id'])){
+                        return '请选择跳转的文章';
+                    }
+                    break;
             }
         }
         return true;
