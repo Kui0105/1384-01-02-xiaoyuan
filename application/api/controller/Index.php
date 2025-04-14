@@ -186,7 +186,6 @@ class Index extends ApiBase
             $this->_error('缺少经纬度');
         }
         $key =  ConfigServer::get('map','tx_map_key','');
-
         $result = file_get_contents("https://apis.map.qq.com/ws/geocoder/v1/?key={$key}&location={$lat},{$lon}");
         $result = json_decode($result,true);
         if($result['status'] == 0){
