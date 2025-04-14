@@ -38,6 +38,16 @@ class AdLogic
                         'id' => $ad['link'],
                     ];
                     break;
+                case 4:
+                case 5:
+                case 6:
+                    $goods_path = Ad::getArticlePath($ad['client']);
+                    $url = $goods_path;
+                    $params = [
+                        'id' => $ad['link'],
+                    ];
+                    break;
+
             }
             $list[] = [
                 'image'     => UrlServer::getFileUrl($ad['image']),

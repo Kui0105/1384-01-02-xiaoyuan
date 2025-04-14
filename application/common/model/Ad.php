@@ -153,5 +153,17 @@ class Ad extends Model{
 
     }
 
+    public static function getArticlePath($from = true){
+        $desc = [
+            self::mobile    => '/pages/article_details/article_details',
+            self::pc        => '/goods_details',
+        ];
+        if(true === $from){
+            return $desc;
+        }
+        return $desc[$from] ?? '';
+
+    }
+
 
 }

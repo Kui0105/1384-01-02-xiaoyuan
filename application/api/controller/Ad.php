@@ -31,13 +31,13 @@ class Ad extends ApiBase
      */
     public function lists()
     {
-        $pid = $this->request->get('pid');
+        // $pid = $this->request->get('pid');
         $client = $this->request->get('client', 1);
-        if ($pid) {
-            $list = AdLogic::lists($pid, $client);
-        } else {
-            $list = [];
-        }
+        // if ($pid) {
+            $list = AdLogic::lists(1, $client);
+        // } else {
+        //     $list = [];
+        // }
         $this->_success('获取成功', $list);
     }
 }

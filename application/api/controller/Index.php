@@ -11,7 +11,7 @@ use think\facade\Hook;
 use think\Db;
 class Index extends ApiBase
 {
-   public $like_not_need_login = ['test', 'lists', 'appInit', 'downLine', 'share', 'config','pcLists','copyright'];
+   public $like_not_need_login = ['test', 'lists', 'appInit', 'downLine', 'share', 'config','pcLists','copyright','getAddress'];
     /**
      * note 首页接口
      * create_time 2020/10/21 19:05
@@ -176,4 +176,36 @@ class Index extends ApiBase
         $result = IndexLogic::copyright();
         $this->_success('', $result);
     }
+
+    //经纬度获取地址信息
+    public function getAddress()
+    {
+        $lat = $this->request->get('latitude', '');
+        $lon = $this->request->get('longtude', '');
+        if(!$lat || !$lon){
+            $this->_error('缺少经纬度');
+        }
+        $key =  ConfigServer::get('map','tx_map_key','');
+
+        $result = file_get_contents("https://apis.map.qq.com/ws/geocoder/v1/?key={$key}&location={$lat},{$lon}");
+        $result = json_decode($result,true);
+        if($result['status'] == 0){
+            $result = $result['result'];
+            $address = [
+                'latitude' => $result['location']['lat'],
+                'longitude' => $result['location']['lng'],
+                'province' => $result['address_component']['province'],
+                'city' => $result['address_component']['city'],
+                'district' => $result['address_component']['district'],
+                'street' => $result['address_component']['street'],
+                'street_number' => $result['address_component']['street_number']??'',
+                'poiname'=> $result['formatted_addresses']['recommend']??'',
+                'poiaddress' => $result['address']??'',
+            ];
+            $this->_success('', $address);
+        }else{
+            $this->_error($result['message']);
+        }
+    }
+
 }

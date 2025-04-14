@@ -12,6 +12,7 @@
 
 // 应用公共文件
 use think\Db;
+use app\common\server\{UrlServer,ConfigServer};
 
 /**
  * User:  lr
@@ -488,6 +489,35 @@ function real_path()
     return $real_path;
 }
 
+/**
+ * 图片加上域名
+ */
+function addImgDomain($x)
+{
+    if(is_array($x)) {
+        $newX = [];
+        foreach($x as $v) {
+            $newX[] = trim(UrlServer::getFileUrl($v));
+        }
+        return $newX;
+    }
+    return  trim(UrlServer::getFileUrl($x));
+}
+
+/**
+ * 图片去除域名
+ */
+function clearDomain($x)
+{
+    if(is_array($x)) {
+        $newX = [];
+        foreach($x as $v) {
+            $newX[] = trim(UrlServer::setFileUrl($v));
+        }
+        return $newX;
+    }
+    return  trim(UrlServer::setFileUrl($x));
+}
 
 //生成用户邀请码
 function generate_invite_code()
@@ -1057,4 +1087,8 @@ function check_is_video($video) : bool
     return strpos($type, 'video') !== false;
 }
 
+function getCTime($str)
+{
+    return date('Y-m-d H:i:s',$str);
+}
 

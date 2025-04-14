@@ -1,6 +1,7 @@
 <?php
 
 namespace app\admin\logic;
+use app\admin\model\ArticleCategory;
 use app\common\server\UrlServer;
 use think\Db;
 class CommonLogic{
@@ -54,7 +55,7 @@ class CommonLogic{
         $where[] = ['status','=',1];
 
         if (isset($get['keyword']) && $get['keyword']) {
-            $where[] = ['name', 'like', '%' . $get['keyword'] . '%'];
+            $where[] = ['title', 'like', '%' . $get['keyword'] . '%'];
         }
         if(isset($get['cid']) && $get['cid']){
             $where[] = ['first_category_id|second_category_id|third_category_id','=',$get['cid']];
@@ -106,6 +107,64 @@ class CommonLogic{
             }
         }
         return ['count' => $goods_count, 'list' =>array_values($goods_list)];
+    }
+
+    //获取商品列表
+    public static function getArticleList($get){
+        $where = [];
+        $where[] = ['del', '=', '0'];
+        $where[] = ['is_show','=',1];
+
+        if (isset($get['keyword']) && $get['keyword']) {
+            $where[] = ['title', 'like', '%' . $get['keyword'] . '%'];
+        }
+        if (isset($get['cid']) && $get['cid']) {
+            $son_cid = ArticleCategory::where('pid',$get['cid'])->column('id');
+            $all_id = array_merge([$get['cid']],$son_cid);
+            $where[] = ['cid', 'in', $all_id];
+        }
+        if(isset($get['type']) && $get['type']){
+            $where[] = ['type','=',$get['type']];
+        }
+        if(isset($get['small_type']) && $get['small_type']){
+            $where[] = ['small_type','=',$get['small_type']];
+        }
+        $article_count = Db::name('article')
+            ->where($where)
+            ->count();
+
+        $article_list = Db::name('article')
+            ->where($where)
+            ->page($get['page'], $get['limit'])
+            ->column('*','id');
+
+        foreach ($article_list as &$item) {
+            $item['image'] = UrlServer::getFileUrl($item['image']);
+            $item['create_time'] = date('Y-m-d H:i:s', $item['create_time']);
+            $item['cat_name'] = ArticleCategory::where('id',$item['cid'])->value('name');
+            $item['type_txt'] = $item['small_type']==1?'文章':'视频';
+        }
+
+        return ['count' => $article_count, 'list' =>array_values($article_list)];
+    }
+
+    public static function getIndexArticleList($get){
+        $where = [];
+        $where[] = ['del', '=', '0'];
+        $where[] = ['is_show', '=', '1'];
+
+        if (isset($get['keyword']) && $get['keyword']) {
+            $where[] = ['title', 'like', '%' . $get['keyword'] . '%'];
+        }
+
+        $article_count = Db::name('index_article')->where($where)->count();
+        $article_list = Db::name('index_article')->where($where)->page($get['page'], $get['limit'])->order('sort asc,id desc')->select();
+
+        foreach ($article_list as &$item) {
+            $item['image'] = UrlServer::getFileUrl($item['image']);
+            $item['create_time'] = date('Y-m-d H:i:s', $item['create_time']);
+        }
+        return ['count' => $article_count, 'list' => $article_list];
     }
 
 
