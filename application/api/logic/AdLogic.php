@@ -26,7 +26,6 @@ class AdLogic
             $params = [];
             switch ($ad['link_type']) {
                 case 1:
-
                     $page = Ad::getLinkPage($ad['client'], $ad['link']);
                     $url = $page['path'];
                     $is_tab = $page['is_tab'] ?? 0;
