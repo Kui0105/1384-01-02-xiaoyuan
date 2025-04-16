@@ -16,14 +16,14 @@
         <div class="layui-form-item">
             <label class="layui-form-label">签到奖励：</label>
             <div class="layui-input-inline " style="margin-right: 0px;width: 110px">
-                <input type="checkbox" name="integral_status" title="赠送积分" lay-skin="primary">
+                <input type="checkbox" name="integral_status" title="赠送小元币" lay-skin="primary">
             </div>
             <div class="layui-input-inline">
-                <input type="number" name="integral"  lay-verType="tips" placeholder="请输入积分"
+                <input type="number" name="integral"  lay-verType="tips" placeholder="请输入小元币"
                        autocomplete="off" class="layui-input">
             </div>
             <div class="layui-input-inline">
-                <label class="layui-form-mid">积分</label>
+                <label class="layui-form-mid">小元币</label>
             </div>
 
         </div>
@@ -31,16 +31,38 @@
         <div class="layui-form-item">
             <label class="layui-form-label"></label>
             <div class="layui-input-inline" style="margin-right: 0px;width: 110px">
-                <input type="checkbox" name="growth_status" title="赠送成长值" lay-skin="primary">
+                <input type="checkbox" name="coupon_status" title="赠送优惠券" lay-skin="primary">
             </div>
-            <div class="layui-input-inline">
-                <input type="number" name="growth" lay-verify="" lay-verType="tips" placeholder="请输入成长值"
-                       autocomplete="off" class="layui-input">
-            </div>
-            <div class="layui-input-inline">
-                <label class="layui-form-mid">成长值</label>
-            </div>
+
+                <div class="layui-input-inline">
+                    <div class="layui-col-xs12 layui-col-md8">
+                        <select name="coupon_id" xm-select="coupon_id" xm-select-search="" xm-select-search-type="dl" xm-select-skin="normal">
+                            {foreach $coupon_list as $val}
+                            <option value="{$val.id}">{$val.name} </option>
+                            {/foreach}
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label"></label>
+                    <span style="color: #a3a3a3;font-size: 9px">选择赠送的指定发放优惠券，可以多选或不选。</span>
+                </div>
+
         </div>
+
+<!--        <div class="layui-form-item">-->
+<!--            <label class="layui-form-label"></label>-->
+<!--            <div class="layui-input-inline" style="margin-right: 0px;width: 110px">-->
+<!--                <input type="checkbox" name="growth_status" title="赠送成长值" lay-skin="primary">-->
+<!--            </div>-->
+<!--            <div class="layui-input-inline">-->
+<!--                <input type="number" name="growth" lay-verify="" lay-verType="tips" placeholder="请输入成长值"-->
+<!--                       autocomplete="off" class="layui-input">-->
+<!--            </div>-->
+<!--            <div class="layui-input-inline">-->
+<!--                <label class="layui-form-mid">成长值</label>-->
+<!--            </div>-->
+<!--        </div>-->
 
     </div>
 
@@ -49,6 +71,8 @@
         <input type="button" lay-submit lay-filter="add-sign_daily-submit" id="add-sign_daily-submit" value="确认">
     </div>
 </div>
+<link rel="stylesheet" href="/static/plug/formSelects/formSelects-v4.css" />
+<script src="/static/plug/formSelects/formSelects-v4.js" type="text/javascript" charset="utf-8"></script>
 <script>
     layui.config({
         version:"{$front_version}",
@@ -59,8 +83,8 @@
         var $ = layui.$
             , form = layui.form
             , like = layui.like
-            , likeedit = layui.likeedit;
-
+            , likeedit = layui.likeedit
+            ,formSelects = layui.formSelects;
 
     });
 </script>

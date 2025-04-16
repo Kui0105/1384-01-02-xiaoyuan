@@ -2,6 +2,7 @@
 
 
 namespace app\admin\logic;
+use app\admin\model\Coupon;
 use app\common\server\UrlServer;
 
 use app\common\server\ConfigServer;
@@ -27,10 +28,15 @@ class SignDailyLogic
         foreach ($lists as $key => $sign){
             $tips = '';
             if(1 == $sign['integral_status'] && $sign['integral'] > 0){
-                $tips.= '赠送'.$sign['integral'].'积分；';
+                $tips.= '赠送'.$sign['integral'].'小元币；';
             }
             if(1 == $sign['growth_status'] && $sign['growth'] > 0){
                 $tips.= '赠送'.$sign['growth'].'成长值';
+            }
+            if(1 == $sign['coupon_status'] && $sign['coupon_id']){
+                $coupon_name = Coupon::where('id','in',$sign['coupon_id'])->column('name');
+                $coupon_name_str = implode(',',$coupon_name);
+                $tips.= '赠送优惠券【'.$coupon_name_str.'】';
             }
             $lists[$key]['award_tips'] = $tips;
 
@@ -62,8 +68,8 @@ class SignDailyLogic
             ->where(['us.del'=>0,'u.del'=>0])
             ->where($where )
             ->join('user u','u.id = us.user_id')
-            ->field('us.user_id,sn,nickname,avatar,mobile,sex,u.create_time ,days,integral,growth,
-            continuous_integral, continuous_growth,sign_time,mobile,us.sign_time')
+            ->field('us.user_id,sn,nickname,avatar,mobile,sex,u.create_time ,days,integral,
+            continuous_integral, sign_time,mobile,us.sign_time,us.coupon_id')//continuous_growth,growth,
             ->order('us.id desc')
             ->page($get['page'], $get['limit'])
             ->select();
@@ -81,6 +87,12 @@ class SignDailyLogic
             $item['create_time'] = date('Y-m-d H:i:s', $item['create_time']);
             $item['sign_time']   = date('Y-m-d H:i:s', $item['sign_time']);
             $item['avatar'] = UrlServer::getFileUrl($item['avatar']);
+            $item['coupon_txt'] = '';
+            if($item['coupon_id']){
+                $coupon_name = Coupon::where('id','in',$item['coupon_id'])->column('name');
+                $coupon_name_str = implode(',',$coupon_name);
+                $item['coupon_txt'] =  '；赠送优惠券【'.$coupon_name_str.'】';
+            }
         }
         return ['count' => $count,'list' => $lists];
     }
@@ -93,16 +105,16 @@ class SignDailyLogic
     public static function add($post)
     {
         $data = [
-            'type'                =>'2',
+            'type'                => '2',
             'days'                => $post['days'],
             'integral'            => $post['integral'],
             'integral_status'     => $post['integral_status'],
-            'growth'              => $post['growth'],
-            'growth_status'       => $post['growth_status'],
-            'del'                 =>0,
-            'create_time'         =>time()
-
-
+            'growth'              => '',//$post['growth'],
+            'growth_status'       => 0,//$post['growth_status'],
+            'coupon_id'           => $post['coupon_id'],
+            'coupon_status'       => $post['coupon_status'],
+            'del'                 => 0,
+            'create_time'         => time()
         ];
         return Db::name('sign_daily')->insert($data);
     }
@@ -130,15 +142,18 @@ class SignDailyLogic
     public static  function edit($post,$id)
     {
         $data = [
-            'type'                =>'2',
+            'type'                => '2',
             'days'                => $post['days'],
             'integral'            => $post['integral'],
             'integral_status'     => $post['integral_status'],
-            'growth'              => $post['growth'],
-            'growth_status'       => $post['growth_status'],
-            'del'                 =>0,
-            'update_time'         =>time()
+            'growth'              => '',//$post['growth'],
+            'growth_status'       => 0,//$post['growth_status'],
+            'coupon_id'           => $post['coupon_id'],
+            'coupon_status'       => $post['coupon_status'],
+            'del'                 => 0,
+            'update_time'         => time()
             ];
+
         return Db::name('sign_daily')->where(['id' =>$id])->update($data);
 
     }

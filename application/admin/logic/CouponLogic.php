@@ -237,6 +237,7 @@ class CouponLogic{
             ->field('coupon_id,status,coupon_code,cl.create_time as create_time,cl.use_time,u.nickname,u.avatar,u.mobile,u.sex,u.sn,u.level,u.create_time as u_create_time')
             ->page($get['page'], $get['limit'])
             ->select();
+
         $coupon_list = Db::name('coupon')->where(['del'=>0])->column('name','id');
         $level_name = Db::name('user_level')->where(['del'=>0])->column('name','id');
         foreach ($log_list as &$item)
@@ -296,7 +297,6 @@ class CouponLogic{
                     'create_time'   => $now,
                 ];
                 Db::name('coupon_list')->insert($add_data);
-
             }
         }
         return true;

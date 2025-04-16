@@ -161,7 +161,8 @@ class SignLogic
             $total_growth = 0;                      //签到赠送的成长值
             $continuous_integral = 0;               //连续签到积分
             $continuous_growth = 0;                 //连续签到成长值
-
+            $coupon_id = '';
+            $coupon_name = '';
             $sign_day = 1;                  //累计签到天数
             //每天签到的奖励
             $everyday_sign = Db::name('sign_daily')
@@ -183,6 +184,15 @@ class SignLogic
                         $total_growth+=$sign['growth'];
                         $continuous_growth =$sign['growth'];
                     }
+                    //赠送优惠券
+                    if($sign['coupon_status'] && $sign['coupon_id']){
+                        $res = CouponLogic::signSendCoupon($user_id,$sign['coupon_id']);
+                        if(!empty($res)){
+                            $coupon_name = array_column($res,'name');
+                            $coupon_name = implode(',',$coupon_name);
+                        }
+                        $coupon_id = $sign['coupon_id'];
+                    }
                 }
                 //每天签到奖励
                 if($everyday_sign){
@@ -202,6 +212,7 @@ class SignLogic
                     'continuous_growth'     => $continuous_growth,
                     'sign_time'             => $now,
                     'create_time'           => $now,
+                    'coupon_id'             => $coupon_id,
                 ];
 
             }else{
@@ -216,6 +227,15 @@ class SignLogic
                     if($one_day_sign && $one_day_sign['growth_status'] && $one_day_sign['growth'] > 0){
                         $total_growth+=$one_day_sign['growth'];
                         $continuous_growth = $one_day_sign['growth'];
+                    }
+                    //赠送优惠券
+                    if($one_day_sign['coupon_status'] && $one_day_sign['coupon_id']){
+                        $res = CouponLogic::signSendCoupon($user_id,$one_day_sign['coupon_id']);
+                        if(!empty($res)){
+                            $coupon_name = array_column($res,'name');
+                            $coupon_name = implode(',',$coupon_name);
+                        }
+                        $coupon_id = $one_day_sign['coupon_id'];
                     }
                 }
 
@@ -236,6 +256,7 @@ class SignLogic
                     'continuous_growth'     => $continuous_growth,
                     'sign_time'             => $now,
                     'create_time'           => $now,
+                    'coupon_id'             => $coupon_id,
                 ];
             }
             Db::name('user_sign')->insert($sign_add);
@@ -260,6 +281,7 @@ class SignLogic
                 'integral'  => $total_integral,
                 'growth'    => $total_growth,
                 'days'      => $sign_day,
+                'coupon_name'   => $coupon_name
             ];
 
 

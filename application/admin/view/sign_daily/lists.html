@@ -19,7 +19,7 @@
                 <div class="layui-colla-item">
                     <h2 class="layui-colla-title like-layui-colla-title" style="background-color: #fff">操作提示</h2>
                     <div class="layui-colla-content layui-show">
-                        <p>*用户每天签到一次可获得每天签到奖励，包括积分和成长值。</p>
+                        <p>*用户每天签到一次可获得每天签到奖励，包括小元币。</p>
                         <p>*点击新增连续签到奖励可以设置满足连续签到天数时的额外奖励，连续天数规则不能重复。</p>
                         <p>*用户签到中断会重新计算连续天数；超过设置的最大连续签到奖励天数后，也会重新计算连续天数，循环发放连续奖励。</p>
                     </div>
@@ -57,36 +57,36 @@
             <div class="layui-form-item sigh">
                 <label class="layui-form-label " style="margin-left: 20px;width: 100px">每天签到奖励：</label>
                 <div class="layui-input-inline " style="margin-right: 0px;width: 110px">
-                    <input type="checkbox" name="integral_status" title="赠送积分" lay-skin="primary" {if
+                    <input type="checkbox" name="integral_status" title="赠送小元币" lay-skin="primary" {if
                            condition="$config['dailySign']['integral_status'] eq 1" }checked{/if}>
                 </div>
                 <div class="layui-input-inline">
                     <input type="number" name="integral" value="{$config.dailySign.integral}" lay-verify="required"
-                           lay-verType="tips" placeholder="请输入积分"
+                           lay-verType="tips" placeholder="请输入小元币"
                            autocomplete="off" class="layui-input">
                 </div>
                 <div class="layui-input-inline">
-                    <label class="layui-form-mid">积分</label>
+                    <label class="layui-form-mid">小元币</label>
                 </div>
 
             </div>
 
-            <div class="layui-form-item sigh">
-                <label class="layui-form-label" style="margin-left: 20px;width: 100px"></label>
-                <div class="layui-input-inline" style="margin-right: 0px;width: 110px">
-                    <input type="checkbox" name="growth_status" title="赠送成长值" lay-skin="primary"
-                           {if
-                           condition="$config['dailySign']['growth_status'] eq 1" }checked{/if}>
-                </div>
+<!--            <div class="layui-form-item sigh">-->
+<!--                <label class="layui-form-label" style="margin-left: 20px;width: 100px"></label>-->
+<!--                <div class="layui-input-inline" style="margin-right: 0px;width: 110px">-->
+<!--                    <input type="checkbox" name="growth_status" title="赠送成长值" lay-skin="primary"-->
+<!--                           {if-->
+<!--                           condition="$config['dailySign']['growth_status'] eq 1" }checked{/if}>-->
+<!--                </div>-->
 
-                <div class="layui-input-inline">
-                    <input type="number" name="growth" value="{$config.dailySign.growth}" lay-vertype="tips" placeholder="" autocomplete="off" class="layui-input">
-                </div>
-                <div class="layui-input-inline">
-                    <label class="layui-form-mid">成长值</label>
-                </div>
+<!--                <div class="layui-input-inline">-->
+<!--                    <input type="number" name="growth" value="{$config.dailySign.growth}" lay-vertype="tips" placeholder="" autocomplete="off" class="layui-input">-->
+<!--                </div>-->
+<!--                <div class="layui-input-inline">-->
+<!--                    <label class="layui-form-mid">成长值</label>-->
+<!--                </div>-->
 
-            </div>
+<!--            </div>-->
 
             <div class="layui-form-item sigh">
                 <div class="layui-inline">
@@ -128,7 +128,7 @@
 <!--                        ||d.growth == null ||d.growth == 0 ||d.growth == ''){ }}-->
 <!--                        &#45;&#45;&#45;&#45;-->
 <!--                        {{#  } else { }}-->
-<!--                        赠送{{d.integral}}积分；赠送{{d.growth}}成长值-->
+<!--                        赠送{{d.integral}}小元币；赠送{{d.growth}}成长值-->
 <!--                        {{#  } }}-->
 <!--                    </script>-->
 
@@ -149,14 +149,15 @@
                         </div>
                     </script>
 
-                    <!--签到奖励-->
+                    <!--签到奖励 ；赠送{{d.growth}}成长值-->
                     <script type="text/html" id="integral">
-                        赠送{{d.integral}}积分；赠送{{d.growth}}成长值
+                        赠送{{d.integral}}小元币
                     </script>
 
-                    <!--连续奖励-->
+                    <!--连续奖励 ；赠送{{d.continuous_growth}}成长值-->
                     <script type="text/html" id="continuous_integral">
-                        赠送{{d.continuous_integral}}积分；赠送{{d.continuous_growth}}成长值
+                        赠送{{d.continuous_integral}}小元币{{d.coupon_txt}}
+
                     </script>
                 </div>
             </div>

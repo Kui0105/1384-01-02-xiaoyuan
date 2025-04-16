@@ -6,7 +6,7 @@ use think\Model;
 class AccountLog extends Model{
     /*******************************
      ** 余额变动：100~199
-     ** 积分变动：200~299
+     ** 小元币变动：200~299
      ** 成长值变动：300~399
      ** 佣金变动: 400~499
      *******************************/
@@ -35,6 +35,15 @@ class AccountLog extends Model{
     const order_goods_give_integral    = 211;
     const luck_draw_dec_integral       = 212;
 
+    const check_height                 = 220;
+    const check_weight                 = 221;
+    const order_send                   = 222;
+    const invite_user                  = 223;
+    const community_like               = 224;
+    const community_comment            = 225;
+    const share_article                = 226;
+    const watch_video                  = 227;
+
     const admin_add_growth      = 300;
     const admin_reduce_growth   = 301;
     const sign_give_growth      = 302;
@@ -51,10 +60,11 @@ class AccountLog extends Model{
         self::admin_add_money,self::admin_reduce_money,self::recharge_money,self::balance_pay_order,self::cancel_order_refund,self::after_sale_refund
         , self::withdraw_to_balance,self::user_transfer_inc_balance, self::user_transfer_dec_balance, self::luck_draw_inc_balance
     ];
-    const integral_change = [   //积分变动类型
+    const integral_change = [   //小元币变动类型
         self::admin_add_integral,self::admin_reduce_integral,self::sign_in_integral,self::recharge_give_integral,self::order_add_integral,self::invite_add_integral
         , self::order_deduction_integral,self::register_add_integral,self::cancel_order_refund_integral,self::luck_draw_integral,self::deduct_order_first_integral
         , self::order_goods_give_integral, self::luck_draw_dec_integral
+        ,self::check_height,self::check_weight,self::order_send,self::invite_user,self::community_like,self::community_comment,self::share_article,self::watch_video
     ];
     const growth_change = [     //成长值变动类型
         self::admin_add_growth,self::admin_reduce_growth,self::recharge_give_growth,self::sign_give_growth, self::order_give_growth
@@ -69,14 +79,14 @@ class AccountLog extends Model{
             self::admin_add_money               => '系统增加余额',
             self::admin_reduce_money            => '系统扣减余额',
             self::recharge_money                => '用户充值余额',
-            self::admin_add_integral            => '系统增加积分',
-            self::admin_reduce_integral         => '系统扣减积分',
-            self::sign_in_integral              => '每日签到赠送积分',
-            self::recharge_give_integral        => '充值赠送积分',
-            self::order_add_integral            => '下单赠送积分',
-            self::order_deduction_integral      => '下单积分抵扣',
-            self::register_add_integral         => '注册赠送积分',
-            self::invite_add_integral           => '邀请会员赠送积分',
+            self::admin_add_integral            => '系统增加小元币',
+            self::admin_reduce_integral         => '系统扣减小元币',
+            self::sign_in_integral              => '每日签到赠送小元币',
+            self::recharge_give_integral        => '充值赠送小元币',
+            self::order_add_integral            => '下单赠送小元币',
+            self::order_deduction_integral      => '下单小元币抵扣',
+            self::register_add_integral         => '注册赠送小元币',
+            self::invite_add_integral           => '邀请会员赠送小元币',
             self::admin_add_growth              => '系统增加成长值',
             self::admin_reduce_growth           => '系统扣减成长值',
             self::sign_give_growth              => '每日签到赠送成长值',
@@ -88,17 +98,26 @@ class AccountLog extends Model{
             self::withdraw_dec_earnings         => '提现扣减佣金',
             self::withdraw_back_earnings        => '拒绝提现返还佣金',
             self::distribution_inc_earnings     => '订单结算获得佣金',
-            self::cancel_order_refund_integral  => '取消订单退回积分',
-            self::deduct_order_first_integral   => '扣除首单积分',
-            self::luck_draw_integral            => '积分抽奖中奖',
-            self::order_goods_give_integral     => '购买商品赠送积分',
+            self::cancel_order_refund_integral  => '取消订单退回小元币',
+            self::deduct_order_first_integral   => '扣除首单小元币',
+            self::luck_draw_integral            => '小元币抽奖中奖',
+            self::order_goods_give_integral     => '购买商品赠送小元币',
             self::user_transfer_inc_balance     => '会员转账(收入方)',
             self::user_transfer_dec_balance     => '会员转账(支出方)',
             self::order_give_growth             => '下单赠送成长值',
             self::admin_inc_earnings            => '后台增加佣金',
             self::admin_reduce_earnings         => '后台减少佣金',
-            self::luck_draw_dec_integral        => '积分抽奖消耗积分',
-            self::luck_draw_inc_balance         => '积分抽奖中奖余额',
+            self::luck_draw_dec_integral        => '小元币抽奖消耗小元币',
+            self::luck_draw_inc_balance         => '小元币抽奖中奖余额',
+
+            self::check_height                  => '记身高赠送小元币',
+            self::check_weight                  => '记体重赠送小元币',
+            self::order_send                    => '下单赠送小元币',
+            self::invite_user                   => '邀请好友赠送小元币',
+            self::community_like                => '动态点赞赠送小元币',
+            self::community_comment             => '动态评论赠送小元币',
+            self::share_article                 => '分享日志赠送小元币',
+            self::watch_video                   => '观看视频赠送小元币',
         ];
         if($from === true){
             return $desc;

@@ -3,6 +3,7 @@
 
 namespace app\admin\controller;
 
+use app\admin\logic\MarketingConfigLogic;
 use app\admin\logic\SignDailyLogic;
 
 /**
@@ -60,15 +61,17 @@ class SignDaily extends AdminBase
             $post = $this->request->post();
             $result =$this->validate($post,'app\admin\validate\SignDaily.add');
             if ($result === true){
-            $post['integral_status'] = isset($post['integral_status']) && $post['integral_status'] =='on'?1:0;
-            $post['growth_status'] = isset($post['growth_status']) && $post['growth_status'] =='on'?1:0;
-            SignDailyLogic::add($post);
-            $this ->success('添加成功');
+                $post['integral_status'] = isset($post['integral_status']) && $post['integral_status'] =='on'?1:0;
+                $post['growth_status'] = isset($post['growth_status']) && $post['growth_status'] =='on'?1:0;
+                $post['coupon_status'] = isset($post['coupon_status']) && $post['coupon_status'] =='on'?1:0;
+                SignDailyLogic::add($post);
+                $this ->success('添加成功');
             }
             $this->_error($result);
 
 
         }
+        $this->assign('coupon_list',MarketingConfigLogic::getCouponList());
         return $this->fetch();
     }
 
@@ -84,12 +87,14 @@ class SignDaily extends AdminBase
             if ($result === true){
             $post['integral_status'] = isset($post['integral_status']) && $post['integral_status'] == 'on'?1:0;
             $post['growth_status'] = isset($post['growth_status']) && $post['growth_status'] == 'on'?1:0;
+            $post['coupon_status'] = isset($post['coupon_status']) && $post['coupon_status'] =='on'?1:0;
             SignDailyLogic::edit($post,$id);
             $this->_success('修改成功');
             }
             $this->_error($result);
         }
         $info = SignDailyLogic::getSignDaily($id);
+        $this->assign('coupon_list',MarketingConfigLogic::getCouponList());
         $this->assign('info',$info);
         return $this->fetch();
     }

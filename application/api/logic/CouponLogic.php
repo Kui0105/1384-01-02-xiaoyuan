@@ -557,4 +557,76 @@ class CouponLogic{
 
     }
 
+
+    /**
+     * note 签到赠送优惠券
+     */
+    public static function signSendCoupon($user_id,$coupon_id){
+        $now = time();
+        $coupon_list = [];
+
+        if($coupon_id){
+            $coupon_id = explode(',', $coupon_id);
+            $list = Db::name('coupon')
+                ->where(['id'=>$coupon_id,'get_type'=>2,'status'=>1,'del'=>0])
+                ->select();
+
+            foreach ($list as $coupon){
+                $use_goods_type = '';
+                switch ($coupon['use_goods_type']){
+                    case 1:
+                        $use_goods_type = '全场通用';
+                        break;
+                    case 2:
+                        $use_goods_type = '指定商品可用';
+                        break;
+                    case 3:
+                        $use_goods_type = '指定商品不可用';
+                        break;
+                }
+                $coupon_list[] = [
+                    'id'            => $coupon['id'],
+                    'name'          => $coupon['name'],
+                    'money'         => $coupon['money'],
+                    'use_goods_type'=> $use_goods_type,
+                ];
+                //判断该优惠券是否可领取
+                if( $coupon['send_total_type'] === 2){
+                    $total_get_coupon = Db::name('coupon_list')->where(['coupon_id'=>$coupon['id']])->count();
+                    if($total_get_coupon >= $coupon['send_total']){
+                        continue;
+                    }
+                }
+                if($coupon['get_num_type'] !== 1 ){
+                    $where[] = ['coupon_id','=',$coupon['id']];
+                    $where[] = ['user_id','=',$user_id];
+                    if($coupon['get_num_type'] === 3){
+                        list($today_start,$end_start) = Time::today();
+                        $where[] = ['create_time','between time',[$today_start,$end_start]];
+                    }
+                    $total_get_coupon = Db::name('coupon_list')->where($where)->count();
+                    if($total_get_coupon >= $coupon['get_num']){
+                        continue;
+                    }
+                }
+
+                //生成券码
+                $coupon_code = create_coupon_code();
+                $add_data = [
+                    'user_id'       => $user_id,
+                    'coupon_id'     => $coupon['id'],
+                    'coupon_code'   => $coupon_code,
+                    'status'        => 0,
+                    'create_time'   => $now,
+                    'update_time'   => $now,
+                    'del'           => 0,
+                ];
+                Db::name('coupon_list')->insert($add_data);
+
+            }
+        }
+
+        return $coupon_list;
+
+    }
 }

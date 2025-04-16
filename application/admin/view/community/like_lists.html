@@ -1,0 +1,177 @@
+{layout name="layout1" /}
+<style>
+    .layui-table-cell {
+        height: auto;
+        /*        white-space: normal;*/
+    }
+</style>
+<div class="layui-fluid">
+    <div class="layui-card">
+<!--        <div class="layui-card-body">-->
+<!--            <div class="layui-collapse like-layui-collapse" lay-accordion="" style="border:1px dashed #c4c4c4">-->
+<!--                <div class="layui-colla-item">-->
+<!--                    <h2 class="layui-colla-title like-layui-colla-title" style="background-color: #fff">操作提示</h2>-->
+<!--                    <div class="layui-colla-content layui-show">-->
+<!--                        &lt;!&ndash; <p>*列表，对进行编辑，账户调整，等级调整和资料查看等操作。</p> &ndash;&gt;-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="layui-form layui-card-header layuiadmin-card-header-auto">-->
+<!--            <div class="layui-form-item">-->
+                <input type="hidden" name="id" id="id" value="<?php echo $_GET['id'] ?? 0 ;?>">
+<!--                <div class="layui-inline">-->
+<!--                    <label class="layui-form-label">关键词：</label>-->
+<!--                    <div class="layui-input-inline" style="width: 200px;">-->
+<!--                        <input type="text" id="name" name="name" placeholder="请输入关键词" autocomplete="off" class="layui-input">-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <div class="layui-inline">-->
+<!--                    <button class="layui-btn layui-btn-sm layuiadmin-btn-user {$view_theme_color}" lay-submit lay-filter="user-search">查询</button>-->
+<!--                    <button class="layui-btn layui-btn-sm layuiadmin-btn-user layui-btn-primary " lay-submit lay-filter="user-clear-search">清空查询</button>-->
+<!--                    &lt;!&ndash; <button class="layui-btn layui-btn-sm layuiadmin-btn-user layui-btn-primary " lay-submit lay-filter="export-file">导出</button> &ndash;&gt;-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--        </div>-->
+
+        <div class="layui-card-body">
+
+            <table id="user-lists" lay-filter="user-lists"></table>
+
+            <script type="text/html" id="user-avatar">
+                <img src="{{d.avatar}}" style="height:50px;width: 50px;margin-right: 10px;" class="image-show">
+            </script>
+
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['index','table','like','laydate'], function(){
+        var $ = layui.$
+            ,form = layui.form
+            ,table = layui.table
+            ,like = layui.like
+            , laydate = layui.laydate;
+
+        //监听搜索
+        form.on('submit(user-search)', function(data){
+            var field = data.field;
+            //执行重载
+            table.reload('user-lists', {
+                where: field,
+                page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+            });
+        });
+        //日期时间范围
+        laydate.render({
+            elem: '#start_time'
+            ,type: 'datetime'
+            ,trigger: 'click'
+        });
+
+        //日期时间范围
+        laydate.render({
+            elem: '#end_time'
+            ,type: 'datetime'
+            ,trigger: 'click'
+        });
+
+        //清空查询
+        form.on('submit(user-clear-search)', function(){
+            $('#name').val('');  //清空输入框
+            $('#type').val('');  //清空输入框
+            $('#status').val('');  //清空输入框
+            $('#start_time').val('');  //清空输入框
+            $('#end_time').val('');  //清空输入框
+            form.render('select');
+            //刷新列表
+            table.reload('user-lists', {
+                where: [],
+                page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+            });
+        });
+
+        // 导出
+        form.on('submit(export-file)', function(data){
+            var field = data.field;
+            like.ajax({
+                url: '{:url("export")}'
+                , data: field
+                , type: 'get'
+                , success: function (res) {
+                    if (res.code == 1) {
+                        window.location.href = res.data.url;
+                    }
+                }
+            });
+        });
+
+
+        //事件
+        var active = {
+
+        }
+        $('.layui-btn.layuiadmin-btn-user').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+        $(document).on('click', '.image-show', function () {
+            var src = $(this).attr('src');
+            like.showImg(src,300);
+        });
+    });
+
+
+
+    layui.define(['table', 'form'], function(exports){
+        var $ = layui.$
+            ,table = layui.table
+            ,form = layui.form;
+
+        //管理员管理
+        table.render({
+            id:'user-lists'
+            ,elem: '#user-lists'
+            ,url: '{:url("community/like_lists")}?id='+$('#id').val() //模拟接口
+            ,cols: [[
+                // {type: 'checkbox'}
+                {field: 'id', width: 80, title: 'ID', sort: true, align: 'center'}
+                ,{title: '头像', toolbar: '#user-avatar', align: "center", width: 90}
+                ,{title: '昵称',width: 180, field: 'nickname',align:"center"}
+                ,{field: 'create_time',align:"center", title: '点赞时间',width: 200}
+
+            ]]
+            ,page:true
+            ,text: {none: '暂无数据！'}
+            ,parseData: function(res){ //将原始数据解析成 table 组件所规定的数据
+                return {
+                    "code":res.code,
+                    "msg":res.msg,
+                    "count": res.data.count, //解析数据长度
+                    "data": res.data.lists, //解析数据列表
+                };
+            }
+            , done: function() {
+                // 解决操作栏因为内容过多换行问题
+                $(".layui-table-main tr").each(function (index, val) {
+                    $($(".layui-table-fixed-l .layui-table-body tbody tr")[index]).height($(val).height());
+                    $($(".layui-table-fixed-r .layui-table-body tbody tr")[index]).height($(val).height());
+                });
+            }
+        });
+
+        var moreShow = 0;
+        //监听工具条
+        table.on('tool(user-lists)', function(obj){
+
+
+        });
+    });
+</script>
