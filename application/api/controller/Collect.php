@@ -12,6 +12,15 @@ class Collect extends ApiBase{
         $collect = CollectLogic::getCollectGoods($this->user_id,$this->page_no,$this->page_size);
         $this->_success('获取成功',$collect);
     }
+
+    /**
+     * note 知识收藏
+     */
+    public function getCollectArticle(){
+        $collect = CollectLogic::getCollectArticle($this->user_id,$this->page_no,$this->page_size);
+        $this->_success('获取成功',$collect);
+    }
+
     /**
      * note 商品收藏操作
      * create_time 2020/10/29 10:17

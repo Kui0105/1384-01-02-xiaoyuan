@@ -14,7 +14,8 @@
                     <div class="layui-colla-content layui-show">
                         <p>*会员注册时的服务协议，在登录注册页面显示。</p>
                         <p>*会员隐私政策协议，在登录注册页面显示。</p>
-<!--                        <p>*售后保障协议，在退款申请页面显示。</p>-->
+                        <p>*售后保障协议，在退款申请页面显示。</p>
+                        <p>*关于我们，在个人中心设置页面显示。</p>
                     </div>
                 </div>
             </div>
@@ -24,7 +25,8 @@
                     <ul class="layui-tab-title">
                         <li class="layui-this">服务协议</li>
                         <li>隐私政策</li>
-<!--                        <li>售后保障</li>-->
+                        <li>售后保障</li>
+                        <li>关于我们</li>
                     </ul>
                     <div class="layui-tab-content">
                         <div class="layui-tab-item layui-show">
@@ -45,6 +47,13 @@
                             <label class="layui-form-label"style="white-space: nowrap;">内容：</label>
                             <div class="layui-input-block">
                                 <textarea  name="after_sale" id="after_sale" lay-verify="content" class="field-content">{$config.after_sale}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="layui-tab-item">
+                            <label class="layui-form-label"style="white-space: nowrap;">内容：</label>
+                            <div class="layui-input-block">
+                                <textarea  name="about_us" id="about_us" lay-verify="content" class="field-content">{$config.about_us}</textarea>
                             </div>
                         </div>
                     </div>
@@ -85,12 +94,14 @@
         var service = likeedit.build('service'); //建立编辑器
         var privacy = likeedit.build('privacy'); //建立编辑器
         var after_sale = likeedit.build('after_sale'); //建立编辑器
+        var about_us = likeedit.build('about_us'); //建立编辑器
         form.verify({
 
             content: function() {
                 likeedit.sync(service)
                 likeedit.sync(privacy)
                 likeedit.sync(after_sale)
+                likeedit.sync(about_us)
             }
         })
         form.verify({

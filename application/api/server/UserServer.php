@@ -7,6 +7,8 @@ namespace app\api\server;
 
 use app\api\logic\DistributionLogic;
 use app\api\logic\LoginLogic;
+use app\common\logic\AccountLogLogic;
+use app\common\model\AccountLog;
 use app\common\model\Client_;
 use app\common\model\NoticeSetting;
 use app\common\model\UserLevel;
@@ -28,7 +30,7 @@ class UserServer
      * @return array|\PDOStatement|string|\think\Model|null
      * @throws Exception
      */
-    public static function createUser($response, $client)
+    public static function createUser($response, $client, $invite_user_id = 0)
     {
         $user_info = [];
         try {
@@ -101,6 +103,10 @@ class UserServer
             //注册赠送优惠
             LoginLogic::registerAward($user_id);
 
+            //
+            if($invite_user_id){
+                AccountLogLogic::sendPoint($invite_user_id, 'invite');
+            }
             Db::commit();
 
             $user_info = Db::name('user')

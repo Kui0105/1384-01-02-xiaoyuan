@@ -100,6 +100,7 @@ class PayNotifyLogic
         //下单奖励积分(每天首单)
         IntegralLogic::rewardIntegral($user['id'], $order['id']);
 
+        AccountLogLogic::sendPoint($user['id'], 'order');
         //发送通知
         Hook::listen('notice', [
             'user_id' => $user['id'],

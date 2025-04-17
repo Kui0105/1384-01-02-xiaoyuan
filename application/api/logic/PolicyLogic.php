@@ -34,4 +34,14 @@ class PolicyLogic
         $res = preg_replace($preg, '<img src="' . $local_url . '${1}" />', $after_sale);
         return $res;
     }
+
+    public static function about_us()
+    {
+        $about_us = ConfigServer::get('policy', 'about_us', '');
+        $preg = '/<img.*?src="((?!(https|http)).*?)".*?\/?>/i';
+        $local_url = UrlServer::getFileUrl();
+        $res = preg_replace($preg, '<img src="' . $local_url . '${1}" />', $about_us);
+        return $res;
+    }
+
 }

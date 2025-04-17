@@ -69,7 +69,7 @@ class ShopSetting extends AdminBase
             'service' => ConfigServer::get('policy', 'service'),
             'privacy' => ConfigServer::get('policy', 'privacy'),
             'after_sale' => ConfigServer::get('policy', 'after_sale'),
-
+            'about_us' => ConfigServer::get('policy', 'about_us'),
         ];
         $this->assign('config', $config);
         return $this->fetch();
@@ -82,6 +82,8 @@ class ShopSetting extends AdminBase
             ConfigServer::set('policy', 'service', $post['service']);
             ConfigServer::set('policy', 'privacy', $post['privacy']);
             ConfigServer::set('policy', 'after_sale', $post['after_sale']);
+            ConfigServer::set('policy', 'about_us', $post['about_us']);
+
             $this->_success('修改成功');
         }
     }
@@ -150,5 +152,57 @@ class ShopSetting extends AdminBase
         $this->assign('must_bind_mobile', ConfigServer::get('register_setting', 'must_bind_mobile', 0));
         
         return $this->fetch('register');
+    }
+
+    /**
+     * 会员提现设置
+     */
+    public function point()
+    {
+        $config = [
+            'height'        => ConfigServer::get('point_way', 'height'),
+            'height_limit'  => ConfigServer::get('point_way', 'height_limit'),
+            'weight'        => ConfigServer::get('point_way', 'weight'),
+            'weight_limit'  => ConfigServer::get('point_way', 'weight_limit'),
+            'order'         => ConfigServer::get('point_way', 'order'),
+            'order_limit'   => ConfigServer::get('point_way', 'order_limit'),
+            'invite'        => ConfigServer::get('point_way', 'invite'),
+            'invite_limit'  => ConfigServer::get('point_way', 'invite_limit'),
+            'like'          => ConfigServer::get('point_way', 'like'),
+            'like_limit'    => ConfigServer::get('point_way', 'like_limit'),
+            'comment'       => ConfigServer::get('point_way', 'comment'),
+            'comment_limit' => ConfigServer::get('point_way', 'comment_limit'),
+            'share'         => ConfigServer::get('point_way', 'share'),
+            'share_limit'   => ConfigServer::get('point_way', 'share_limit'),
+            'video'         => ConfigServer::get('point_way', 'video'),
+            'video_limit'   => ConfigServer::get('point_way', 'video_limit'),
+        ];
+        $this->assign('config', $config);
+        return $this->fetch();
+    }
+
+
+    public function setPoint()
+    {
+        $post = $this->request->post();
+        if ($post) {
+            ConfigServer::set('point_way', 'height', abIntval($post['height']));//记身高
+            ConfigServer::set('point_way', 'height_limit', abIntval($post['height_limit']));//上限次数
+            ConfigServer::set('point_way', 'weight', abIntval($post['weight']));//记体重
+            ConfigServer::set('point_way', 'weight_limit', abIntval($post['weight_limit']));//上限次数
+            ConfigServer::set('point_way', 'order', abIntval($post['order']));//支付订单
+            ConfigServer::set('point_way', 'order_limit', abIntval($post['order_limit']));//上限次数
+            ConfigServer::set('point_way', 'invite', abIntval($post['invite']));//邀请好友
+            ConfigServer::set('point_way', 'invite_limit', abIntval($post['invite_limit']));//上限次数
+            ConfigServer::set('point_way', 'like', abIntval($post['like']));//点赞日志
+            ConfigServer::set('point_way', 'like_limit', abIntval($post['like_limit']));//上限次数
+            ConfigServer::set('point_way', 'comment', abIntval($post['comment']));//评论日志
+            ConfigServer::set('point_way', 'comment_limit', abIntval($post['comment_limit']));//上限次数
+            ConfigServer::set('point_way', 'share', abIntval($post['share']));//分享日志
+            ConfigServer::set('point_way', 'share_limit', abIntval($post['share_limit']));//上限次数
+            ConfigServer::set('point_way', 'video', abIntval($post['video']));//观看视频
+            ConfigServer::set('point_way', 'video_limit', abIntval($post['video_limit']));//上限次数
+            $this->_success('操作成功');
+        }
     }
 }

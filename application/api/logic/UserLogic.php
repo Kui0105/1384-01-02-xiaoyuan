@@ -8,10 +8,12 @@ use app\common\logic\NoticeLogic;
 use app\common\model\AccountLog;
 use app\common\model\AfterSale;
 use app\common\model\Client_;
+use app\common\model\DevRegion;
 use app\common\model\DistributionOrder;
 use app\common\model\Order;
 use app\common\model\TeamFollow;
 use app\common\model\UserAuth;
+use app\common\model\UserLevelApply;
 use app\common\server\ConfigServer;
 use app\common\server\storage\Driver as StorageDriver;
 use app\common\server\UrlServer;
@@ -525,4 +527,75 @@ class UserLogic extends LogicBase
         return $result;
     }
 
+    /********************************************************新推广**************************************************************************/
+
+    public static function check_apply($p_user_id,$user_id,$status = true)
+    {
+        if(!$p_user_id){
+            return '缺少推广人';
+        }
+        if($user_id == $p_user_id){
+            return '推广人不能是自己';
+        }
+        $p_user_data = User::where('id',$p_user_id)->field('new_level,new_level_province,new_level_city,new_level_area,id')->findOrEmpty()->toArray();
+        if(empty($p_user_data)){
+            return '推广人不存在';
+        }
+        if(!in_array($p_user_data['new_level'],[1,2,3])){
+            return '暂无推广权限';
+        }
+        $user_data = User::where('id',$p_user_id)->field('new_level,new_level_province,new_level_city,new_level_area,id')->findOrEmpty()->toArray();
+        $apply_level = UserLevelApply::where(['status'=>1,'user_id'=>$user_id])->value('level');
+        if($apply_level){
+            $can_level = intval($apply_level -1);
+            if($can_level != $p_user_data['new_level']){
+                return '不可申请该级别推广';
+            }
+        }
+        if($user_data['new_level_area']){
+            $can_level = intval($user_data['new_level'] -1);
+            if($can_level != $p_user_data['new_level']){
+                return '不可申请该级别推广';
+            }
+        }
+        if($status){
+            return true;
+        }
+        $r_status = true;
+        return compact('user_data','p_user_data','r_status');
+    }
+
+    public static function apply_info($p_user_id,$user_id)
+    {
+        $res = self::check_apply($p_user_id,$user_id,false);
+        if(!isset($res['r_status'])){
+            return false;
+        }
+        switch ($res['p_user_data']['new_level']){
+            case 1:
+                $level_name = '市';
+                $level = 2;
+                $level_p_id = $res['p_user_data']['new_level_province'];
+                break;
+            case 2:
+                $level_name = '区县';
+                $level = 3;
+                $level_p_id = $res['p_user_data']['new_level_city'];
+                break;
+            case 3:
+                $level_name = '诊所';
+                $level = 4;
+                $level_p_id = $res['p_user_data']['new_level_area'];
+                break;
+            default:
+                return false;
+        }
+        $select_list = DevRegion::getLevelArea($level_p_id);
+        return compact('select_list','level_name','level');
+    }
+
+    public static function level_apply($user_id,$data)
+    {
+        var_dump($data);die;
+    }
 }

@@ -3,8 +3,54 @@
 namespace app\common\logic;
 use app\common\model\User;
 use app\common\model\AccountLog;
+use app\common\server\ConfigServer;
+use think\Db;
 
 class AccountLogLogic{
+
+    //积分赠送
+    public static function sendPoint($user_id,$type)
+    {
+        $send_integral = ConfigServer::get('point_way',$type,0);
+        if($send_integral){
+            switch ($type){
+                case 'height':
+                    $source_type = AccountLog::check_height;
+                    break;
+                case 'weight':
+                    $source_type = AccountLog::check_weight;
+                    break;
+                case 'like':
+                    $source_type = AccountLog::community_like;
+                    break;
+                case 'comment':
+                    $source_type = AccountLog::community_comment;
+                    break;
+                case 'order':
+                    $source_type = AccountLog::order_send;
+                    break;
+                case 'invite':
+                    $source_type = AccountLog::invite_user;
+                    break;
+                case 'share':
+                    $source_type = AccountLog::share_article;
+                    break;
+                case 'video':
+                    $source_type = AccountLog::watch_video;
+                    break;
+            }
+            $send_limit = ConfigServer::get('point_way',$type.'_limit',0);
+            if($send_limit){
+                $now_num = AccountLog::where(['source_type'=>$source_type,'user_id'=>$user_id])->whereTime('create_time', 'today')->count();
+                if($send_limit <= $now_num){
+                    return true;
+                }
+            }
+            Db::name('user')->where(['id'=>$user_id])->lock(true)->value('user_integral');
+            Db::name('user')->where(['id'=>$user_id])->setInc('user_integral',$send_integral);
+            self::AccountRecord($user_id,$send_integral,1, $source_type);
+        }
+    }
     /**
      * Notes:记录会员账户流水，如果变动类型是成长值，且是增加的，则调用更新会员等级方法。该方法应在添加用户账户后调用
      * @author: cjh 2020/12/15 11:49

@@ -652,7 +652,8 @@ class LoginLogic extends LogicBase
         }
 
         if (empty($user_id)) {
-            $user_info = UserServer::createUser($response, Client_::mnp);
+            $invite_user_id = $post['user_id']??0;
+            $user_info = UserServer::createUser($response, Client_::mnp,$invite_user_id);
         } else {
             $user_info = UserServer::updateUser($response, Client_::mnp, $user_id);
         }

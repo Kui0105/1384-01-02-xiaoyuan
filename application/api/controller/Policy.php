@@ -8,7 +8,7 @@ use app\api\logic\PolicyLogic;
 class Policy extends ApiBase
 {
 
-    public $like_not_need_login = ['service', 'privacy', 'aftersale'];
+    public $like_not_need_login = ['service', 'privacy', 'aftersale', 'about_us'];
 
     /**
      * 服务协议
@@ -34,4 +34,11 @@ class Policy extends ApiBase
         $this->_success('获取成功', PolicyLogic::afterSale());
     }
 
+    /**
+     * 关于我们
+     */
+    public function about_us()
+    {
+        $this->_success('获取成功', PolicyLogic::about_us());
+    }
 }

@@ -1092,3 +1092,8 @@ function getCTime($str)
     return date('Y-m-d H:i:s',$str);
 }
 
+function abIntval($num)
+{
+    return abs(intval($num));
+}
+

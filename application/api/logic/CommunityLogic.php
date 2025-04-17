@@ -2,6 +2,7 @@
 
 namespace app\api\logic;
 
+use app\common\logic\AccountLogLogic;
 use app\common\logic\LogicBase;
 use app\common\model\{Community, User,CommunityComment};
 use think\Db;
@@ -120,6 +121,7 @@ class CommunityLogic extends LogicBase{
                 'create_time' => $time,
             ]);
             Community::where('id',$id)->setInc('like_num');
+            AccountLogLogic::sendPoint($user_id, 'like');
             $res = '已点赞';
         }
         return $res;
@@ -181,6 +183,7 @@ class CommunityLogic extends LogicBase{
         ];
         Db::name('community_comment')->insert($insert_data);
         Community::where('id',$id)->setInc('comment_num');
+        AccountLogLogic::sendPoint($user_id, 'comment');
         return true;
     }
 

@@ -3,10 +3,12 @@
 namespace app\api\controller;
 
 use app\api\logic\UserLogic;
+use app\common\logic\AccountLogLogic;
 use think\Db;
 use app\common\server\UrlServer;
 use app\api\logic\SmsLogic;
 use app\common\logic\SmsLogic as CommonSmsLogic;
+use think\facade\Cache;
 
 class User extends ApiBase
 {
@@ -342,6 +344,73 @@ class User extends ApiBase
         } else {
             return $this->_error('设置失败');
         }
+    }
+
+    /**
+     * 获得积分
+     */
+    public function point_get()
+    {
+        $type = $this->request->get('type');
+        if(!in_array($type,[1,2])){
+            return $this->_error('类型错误');
+        }
+        $type_txt = $type ==1?'share':'video';
+        $lockKey = 'point_get_' . $this->user_id.'_'.$type;
+        if (Cache::get($lockKey)) {
+            return $this->_error('操作频繁');
+        } else {
+            Cache::set($lockKey, 1, 1);
+        }
+        AccountLogLogic::sendPoint($this->user_id, $type_txt);
+        return $this->_success('成功');
+    }
+
+    /********************************************************新推广**************************************************************************/
+
+
+    /**
+     * 校验是否可提交申请
+     */
+    public function check_apply()
+    {
+        $user_id = $this->request->get('user_id');
+        $res = UserLogic::check_apply($user_id,$this->user_id);
+        if($res === true){
+            return $this->_success('成功',$res);
+        }
+        return $this->_success('成功',false);
+    }
+
+    /**
+     * 获取申请页面信息
+     */
+    public function apply_info()
+    {
+        $user_id = $this->request->get('user_id');
+        $res = UserLogic::apply_info($user_id,$this->user_id);
+        if($res === false){
+            $this->_error('错误');
+        }
+        return $this->_success('成功',$res);
+    }
+
+    /**
+     * 等级申请
+     */
+    public function level_apply()
+    {
+        $data = $this->request->post();
+        $data['user_id'] = $this->user_id;
+        $check = $this->validate($data, 'app\api\validate\LevelApply');
+        if (true !== $check) {
+            $this->_error($check);
+        }
+        $res = UserLogic::level_apply($this->user_id, $data);
+        if (true === $res) {
+            $this->_success('申请成功');
+        }
+        $this->_error($res);
     }
 
 }

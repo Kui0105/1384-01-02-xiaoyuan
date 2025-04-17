@@ -1,0 +1,187 @@
+{layout name="layout1" /}
+<style>
+    .layui-form-label{
+        width: 100px;
+    }
+</style>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-body" >
+            <div class="layui-collapse like-layui-collapse" lay-accordion="" style="border:1px dashed #c4c4c4">
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title like-layui-colla-title" style="background-color: #fff">操作提示</h2>
+                    <div class="layui-colla-content layui-show">
+                        <p>*积分配置及上限。</p>
+                        <p>*签到配置在营销-会员签到。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-card-body" >
+            <div class="layui-form" lay-filter="">
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label"style="white-space: nowrap; " >记身高：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="height"   lay-verType="tips" autocomplete="off" value="{$config.height}" class="layui-input">
+                        <div class=" layui-form-mid layui-word-aux" style="white-space: nowrap">身高测评一次赠送。</div>
+                    </div>
+                    <div  class="layui-form-mid" > 小元币</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >上限：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="height_limit"   lay-verType="tips" autocomplete="off" value="{$config.height_limit}" class="layui-input">
+                        <div class=" layui-form-mid layui-word-aux" style="white-space: nowrap">每日赠送次数。</div>
+                    </div>
+                    <div  class="layui-form-mid" > 次</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label"style="white-space: nowrap; " >记体重：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="weight"   lay-verType="tips" autocomplete="off" value="{$config.weight}" class="layui-input">
+                        <div class=" layui-form-mid layui-word-aux" style="white-space: nowrap">体重测评一次赠送。</div>
+                    </div>
+                    <div  class="layui-form-mid" > 小元币</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >上限：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="weight_limit"   lay-verType="tips" autocomplete="off" value="{$config.weight_limit}" class="layui-input">
+                        <div class=" layui-form-mid layui-word-aux" style="white-space: nowrap">每日赠送次数。</div>
+                    </div>
+                    <div  class="layui-form-mid" > 次</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label"style="white-space: nowrap; " >下单商品：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="order"   lay-verType="tips" autocomplete="off" value="{$config.order}" class="layui-input">
+                        <div class=" layui-form-mid layui-word-aux" style="white-space: nowrap">支付订单赠送。</div>
+                    </div>
+                    <div  class="layui-form-mid" > 小元币</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >上限：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="order_limit"   lay-verType="tips" autocomplete="off" value="{$config.order_limit}" class="layui-input">
+                        <div class=" layui-form-mid layui-word-aux" style="white-space: nowrap">每日赠送次数。</div>
+                    </div>
+                    <div  class="layui-form-mid" > 次</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label"style="white-space: nowrap; " >邀请好友：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="invite"   lay-verType="tips" autocomplete="off" value="{$config.invite}" class="layui-input">
+                        <div class=" layui-form-mid layui-word-aux" style="white-space: nowrap">邀请一位好友注册赠送。</div>
+                    </div>
+                    <div  class="layui-form-mid" > 小元币</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >上限：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="invite_limit"   lay-verType="tips" autocomplete="off" value="{$config.invite_limit}" class="layui-input">
+                        <div class=" layui-form-mid layui-word-aux" style="white-space: nowrap">每日赠送次数。</div>
+                    </div>
+                    <div  class="layui-form-mid" > 次</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label"style="white-space: nowrap; " >动态点赞：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="like"   lay-verType="tips" autocomplete="off" value="{$config.like}" class="layui-input">
+                        <div class=" layui-form-mid layui-word-aux" style="white-space: nowrap">动态点赞赠送。</div>
+                    </div>
+                    <div  class="layui-form-mid" > 小元币</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >上限：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="like_limit"   lay-verType="tips" autocomplete="off" value="{$config.like_limit}" class="layui-input">
+                        <div class=" layui-form-mid layui-word-aux" style="white-space: nowrap">每日赠送次数。</div>
+                    </div>
+                    <div  class="layui-form-mid" > 次</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label"style="white-space: nowrap; " >动态评论：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="comment"   lay-verType="tips" autocomplete="off" value="{$config.comment}" class="layui-input">
+                        <div class=" layui-form-mid layui-word-aux" style="white-space: nowrap">动态评论赠送。</div>
+                    </div>
+                    <div  class="layui-form-mid" > 小元币</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >上限：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="comment_limit"   lay-verType="tips" autocomplete="off" value="{$config.comment_limit}" class="layui-input">
+                        <div class=" layui-form-mid layui-word-aux" style="white-space: nowrap">每日赠送次数。</div>
+                    </div>
+                    <div  class="layui-form-mid" > 次</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label"style="white-space: nowrap; " >分享长高日志：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="share"   lay-verType="tips" autocomplete="off" value="{$config.share}" class="layui-input">
+                        <div class=" layui-form-mid layui-word-aux" style="white-space: nowrap">分享长高日志赠送。</div>
+                    </div>
+                    <div  class="layui-form-mid" > 小元币</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >上限：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="share_limit"   lay-verType="tips" autocomplete="off" value="{$config.share_limit}" class="layui-input">
+                        <div class=" layui-form-mid layui-word-aux" style="white-space: nowrap">每日赠送次数。</div>
+                    </div>
+                    <div  class="layui-form-mid" > 次</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label"style="white-space: nowrap; " >观看视频：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="video"   lay-verType="tips" autocomplete="off" value="{$config.video}" class="layui-input">
+                        <div class=" layui-form-mid layui-word-aux" style="white-space: nowrap">观看长高视频赠送。</div>
+                    </div>
+                    <div  class="layui-form-mid" > 小元币</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >上限：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="video_limit"   lay-verType="tips" autocomplete="off" value="{$config.video_limit}" class="layui-input">
+                        <div class=" layui-form-mid layui-word-aux" style="white-space: nowrap">每日赠送次数。</div>
+                    </div>
+                    <div  class="layui-form-mid" > 次</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn layui-btn-sm {$view_theme_color}" lay-submit lay-filter="setPoint">确认</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+
+    layui.config({
+        version:"{$front_version}",
+        base: '/static/plug/layui-admin/dist/layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index','table','like'], function(){
+        var $ = layui.$
+            ,form = layui.form
+            ,like = layui.like;
+
+        form.on('submit(setPoint)',function (data) {
+            like.ajax({
+                url: '{:url("shopSetting/setPoint")}'
+                ,data: data.field
+                ,type: 'post'
+                ,success: function(res){
+                    if(res.code == 1) {
+                        layer.msg(res.msg, {
+                            offset: '15px'
+                            ,icon: 1
+                            ,time: 1500
+                        });
+                    }
+                },
+            });
+        });
+
+    });
+
+</script>
