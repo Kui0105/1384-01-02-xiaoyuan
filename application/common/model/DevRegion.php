@@ -21,6 +21,20 @@ class DevRegion extends Model
         return $list;
     }
 
+    public static function getArea($id)
+    {
+        if(!$id){
+            return '';
+        }
+        $cache = Cache::get('area_id_'.$id);
+        if ($cache) {
+            return $cache;
+        }
+        $name =  self::where('id',$id)->value('name');
+        Cache::set('area_id_'.$id, $name);
+        return $name;
+    }
+
     public static function getMoreArea($ids)
     {
         if(!$ids){

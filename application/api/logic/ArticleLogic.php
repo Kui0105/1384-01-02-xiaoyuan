@@ -116,7 +116,11 @@ class ArticleLogic extends LogicBase{
         $res['create_time'] = date('Y-m-d H:i', $res['create_time']);
         $res['image'] = UrlServer::getFileUrl($res['image']);
         $res['is_collect'] = false;
+        if($res['small_type'] == 2){
+            $res['content'] = addImgDomain($res['content']);
+        }
         if($res['type'] == 2){
+
             if($user_id){
                 $res['is_collect'] = Db::name('article_collect')->where(['aid'=>$id,'user_id'=>$user_id])->count()?true:false;
             }

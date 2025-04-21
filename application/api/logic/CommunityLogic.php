@@ -192,10 +192,10 @@ class CommunityLogic extends LogicBase{
         $com = new CommunityComment();
         if($comment_id){
             $where = ['c.del'=>0,'c.com_id'=>$id,'c.com_c_id'=>$comment_id];
-            $order = 'id desc';
-        }else{
-            $where = ['c.del'=>0,'c.com_id'=>$id];
             $order = 'id asc';
+        }else{
+            $where = ['c.del'=>0,'c.com_id'=>$id,'c.com_c_id'=>0];
+            $order = 'id desc';
         }
 
         //一级评论列表
@@ -213,9 +213,9 @@ class CommunityLogic extends LogicBase{
 
         foreach ($com_list as &$v){
             $v['avatar'] = addImgDomain($v['avatar']);
-            $v['reply'] = $v['p_user_id']?User::where('id',$v['p_user_id'])->field('avatar,nickname')->findOrEmpty()->toArray():[];
+            $v['reply'] = $v['p_user_id']?User::where('id',$v['p_user_id'])->field('avatar,nickname')->findOrEmpty()->toArray():'';
             if(!$comment_id){
-                $son_data = $com->alias('c')->leftJoin('user u','u.id = c.user_id')->where(['c.del'=>0,'c.com_c_id'=>$v['id']])->field('c.id,c.content,c.create_time,u.avatar,u.nickname,c.p_user_id')->order('id asc')->limit(3)->select()->toArray();
+                $son_data = $com->alias('c')->leftJoin('user u','u.id = c.user_id')->where(['c.del'=>0,'c.com_c_id'=>$v['id']])->field('c.id,c.content,c.create_time,u.avatar,u.nickname,c.p_user_id,c.com_c_id')->order('id asc')->limit(3)->select()->toArray();
                 foreach ($son_data as &$user){
                     $user['avatar'] = addImgDomain($user['avatar']);
                     $user['reply'] = User::where('id',$user['p_user_id'])->field('avatar,nickname')->findOrEmpty()->toArray();

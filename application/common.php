@@ -1097,3 +1097,197 @@ function abIntval($num)
     return abs(intval($num));
 }
 
+//获取当前年龄
+function now_age($birthdayTimestamp,$currentTimestamp,$str = true){
+    // 创建生日的DateTime对象
+    $birthdayDate = new DateTime();
+    $birthdayDate->setTimestamp($birthdayTimestamp);
+    // 创建当前日期的DateTime对象
+    $currentDate = new DateTime();
+    $currentDate->setTimestamp($currentTimestamp);
+    // 计算年龄
+    $ageInterval = $currentDate->diff($birthdayDate);
+    $age = $ageInterval->y;
+    $months = $ageInterval->m;
+    $days = $ageInterval->d;
+    // 输出年龄
+    if($str){
+        return $age . "岁" . $months . "月" . $days . "天";
+    }
+    return ['year'=>$age,'month'=>$months,'day'=>$days];
+}
+
+//获取体重中文
+function bmi_str($bmi){
+    if($bmi<=18.4){
+        return '消瘦';
+    }else if($bmi>=28){
+        return '肥胖';
+    }else if($bmi>18.4 && $bmi <=23.9){
+        return '正常';
+    }else{
+        return '超重';
+    }
+}
+
+//获取身高中文
+function height_str($height,$arr){
+    $key = false;
+    foreach ($arr as $k => $v) {
+        if($height <= $v['height']){
+            $key = $k;
+            break;
+        }
+    }
+    if($key === false){
+        return '超高';
+    }
+    $new_arr = [
+        0 => '矮小',
+        1 => '偏矮',
+        2 => '正常',
+        3 => '正常',
+        4 => '正常',
+        5 => '偏高',
+        6 => '超高',
+    ];
+    return $new_arr[$key];
+}
+
+function level_to_num($level)
+{
+    $level_arr = [
+        1   => 3,
+        2   => 10,
+        3   => 25,
+        4   => 50,
+        5   => 75,
+        6   => 90,
+        7   => 97,
+    ];
+    return $level_arr[$level];
+}
+
+function spleen_ques()
+{
+    return [
+        [
+           'id'    => 1,
+           'ques'  => '不爱吃饭',
+        ], [
+            'id'    => 2,
+            'ques'  => '挑食',
+        ], [
+            'id'    => 3,
+            'ques'  => '积食',
+        ],[
+            'id'    => 4,
+            'ques'  => '要追着喂饭',
+        ],[
+            'id'    => 5,
+            'ques'  => '不喜运动',
+        ],[
+            'id'    => 6,
+            'ques'  => '小肚子鼓鼓易胀气',
+        ],[
+            'id'    => 7,
+            'ques'  => '便秘',
+        ],[
+            'id'    => 8,
+            'ques'  => '腹泻',
+        ], [
+            'id'    => 9,
+            'ques'  => '手指长倒刺',
+        ], [
+            'id'    => 10,
+            'ques'  => '指甲有白点',
+        ],[
+            'id'    => 11,
+            'ques'  => '易出现打嗝',
+        ],[
+            'id'    => 12,
+            'ques'  => '流口水',
+        ],[
+            'id'    => 13,
+            'ques'  => '舌有齿痕',
+        ],[
+            'id'    => 14,
+            'ques'  => '舌苔发黄',
+        ], [
+            'id'    => 15,
+            'ques'  => '舌苔发白',
+        ], [
+            'id'    => 16,
+            'ques'  => '嘴巴有口气',
+        ],[
+            'id'    => 17,
+            'ques'  => '睡觉露眼睛',
+        ],[
+            'id'    => 18,
+            'ques'  => '面色发黄',
+        ],[
+            'id'    => 19,
+            'ques'  => '四肢无力',
+        ],[
+            'id'    => 20,
+            'ques'  => '易长湿疹',
+        ],[
+            'id'    => 21,
+            'ques'  => '易感冒',
+        ], [
+            'id'    => 22,
+            'ques'  => '易鼻塞流鼻水',
+        ], [
+            'id'    => 23,
+            'ques'  => '咳嗽缠绵不愈',
+        ],[
+            'id'    => 24,
+            'ques'  => '易气喘或嗓子有痰',
+        ],[
+            'id'    => 25,
+            'ques'  => '盗汗',
+        ],[
+            'id'    => 26,
+            'ques'  => '长高慢',
+        ],[
+            'id'    => 27,
+            'ques'  => '"发育慢(五迟)---立、行、齿、发、语"',
+        ], [
+            'id'    => 28,
+            'ques'  => '注意力不集中',
+        ],[
+            'id'    => 29,
+            'ques'  => '喜欢趴睡',
+        ],[
+            'id'    => 30,
+            'ques'  => '精神不振',
+        ],[
+            'id'    => 31,
+            'ques'  => '手脚易冷',
+        ],[
+            'id'    => 32,
+            'ques'  => '体型偏瘦小',
+        ],[
+            'id'    => 33,
+            'ques'  => '易发高烧',
+        ], [
+            'id'    => 34,
+            'ques'  => '经常不停哭闹',
+        ], [
+            'id'    => 35,
+            'ques'  => '有抽筋或惊厥史',
+        ],[
+            'id'    => 36,
+            'ques'  => '易喜易怒',
+        ],[
+            'id'    => 37,
+            'ques'  => '易口舌生疮',
+        ],[
+            'id'    => 38,
+            'ques'  => '兴奋难入眠',
+        ],[
+            'id'    => 39,
+            'ques'  => '容易上火',
+        ],
+    ];
+}
