@@ -1,0 +1,112 @@
+{layout name="layout1" /}
+<style>
+    .layui-form-label{
+        width: 100px;
+    }
+</style>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-body" >
+            <div class="layui-collapse like-layui-collapse" lay-accordion="" style="border:1px dashed #c4c4c4">
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title like-layui-colla-title" style="background-color: #fff">操作提示</h2>
+                    <div class="layui-colla-content layui-show">
+                        <p>*身高测评结果建议。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-card-body" >
+            <div class="layui-form" lay-filter="">
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="margin-left: 20px;width: 100px">矮小建议:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="result_0" id="result_0" placeholder="请输入矮小建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.result_0| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="margin-left: 20px;width: 100px">偏矮建议:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="result_1" id="result_1" placeholder="请输入偏矮建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.result_1| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="margin-left: 20px;width: 100px">正常建议:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="result_2" id="result_2" placeholder="请输入正常建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.result_2| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="margin-left: 20px;width: 100px">偏高建议:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="result_3" id="result_3" placeholder="请输入偏高建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.result_3| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="margin-left: 20px;width: 100px">超高建议:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="result_4" id="result_4" placeholder="请输入超高建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.result_4| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn layui-btn-sm {$view_theme_color}" lay-submit lay-filter="setHeight">确认</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+
+    layui.config({
+        version:"{$front_version}",
+        base: '/static/plug/layui-admin/dist/layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index','table','like'], function(){
+        var $ = layui.$
+            ,form = layui.form
+            ,like = layui.like;
+
+        form.on('submit(setHeight)',function (data) {
+            like.ajax({
+                url: '{:url("BabySetting/setHeight")}'
+                ,data: data.field
+                ,type: 'post'
+                ,success: function(res){
+                    if(res.code == 1) {
+                        layer.msg(res.msg, {
+                            offset: '15px'
+                            ,icon: 1
+                            ,time: 1500
+                        });
+                    }
+                },
+            });
+        });
+
+    });
+
+</script>

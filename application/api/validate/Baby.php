@@ -9,6 +9,8 @@ use think\Validate;
 class Baby extends Validate
 {
     protected $rule = [
+        'id'        => 'require',
+        'date'      => 'require',
         'name'      => 'require',
         'head_img'  => 'require',
         'sex'       => 'require|in:1,2',
@@ -23,6 +25,8 @@ class Baby extends Validate
     ];
 
     protected $message = [
+        'id.require'  => '请选择宝宝',
+        'date.require'  => '请选择测评日期',
         'name.require'  => '请输入姓名',
         'head_img.require'  => '请上传头像',
         'sex.require'   => '请选择性别',
@@ -40,7 +44,11 @@ class Baby extends Validate
 
     public function sceneAdd()
     {
-
+        $this->only(['name', 'head_img','sex','birthday','father_height','mother_height','sup_height','height','weight','province_id','city_id']);
     }
 
+    public function sceneHeightCheck()
+    {
+        $this->only(['id','date','height','weight']);
+    }
 }

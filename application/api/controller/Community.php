@@ -75,10 +75,11 @@ class Community extends ApiBase
     {
         $post = $this->request->post();
         $res  = CommunityLogic::addComment($post, $this->user_id);
-        if ($res === true) {
-            $this->_success('成功');
+        if ($res === false) {
+            $this->_error(CommunityLogic::getError() ?? '失败');
         }
-        $this->_error($res);
+        $this->_success('成功',$res);
+
     }
 
     /**

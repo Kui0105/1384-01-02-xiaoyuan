@@ -1,0 +1,193 @@
+{layout name="layout1" /}
+<style>
+    .layui-form-label{
+        width: 100px;
+    }
+</style>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-body" >
+            <div class="layui-collapse like-layui-collapse" lay-accordion="" style="border:1px dashed #c4c4c4">
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title like-layui-colla-title" style="background-color: #fff">操作提示</h2>
+                    <div class="layui-colla-content layui-show">
+                        <p>*身高测评结果建议。</p>
+                        <p>*小于等于39分为否;大于39分为是。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-card-body" >
+            <div class="layui-form" lay-filter="">
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="margin-left: 20px;width: 200px">入睡困难和睡眠维持障碍（是）:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="result_0_up" id="result_0_up" placeholder="请输入入睡困难和睡眠维持障碍（是）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_0_up| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="margin-left: 20px;width: 200px">入睡困难和睡眠维持障碍（否）:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="result_0_down" id="result_0_down" placeholder="请输入入睡困难和睡眠维持障碍（否）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_0_down| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="margin-left: 20px;width: 200px">睡眠呼吸障碍（是）:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="result_1_up" id="result_1_up" placeholder="请输入睡眠呼吸障碍（是）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_1_up| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="margin-left: 20px;width: 200px">睡眠呼吸障碍（否）:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="result_1_down" id="result_1_down" placeholder="请输入睡眠呼吸障碍（否）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_1_down| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="margin-left: 20px;width: 200px">觉醒障碍（是）:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="result_2_up" id="result_2_up" placeholder="请输入觉醒障碍（是）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_2_up| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="margin-left: 20px;width: 200px">觉醒障碍（否）:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="result_2_down" id="result_2_down" placeholder="请输入觉醒障碍（否）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_2_down| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="margin-left: 20px;width: 200px">睡眠觉醒转换障碍（是）:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="result_3_up" id="result_3_up" placeholder="请输入睡眠觉醒转换障碍（是）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_3_up| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="margin-left: 20px;width: 200px">睡眠觉醒转换障碍（否）:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="result_3_down" id="result_3_down" placeholder="请输入睡眠觉醒转换障碍（否）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_3_down| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="margin-left: 20px;width: 200px">过度嗜睡（是）:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="result_4_up" id="result_4_up" placeholder="请输入过度嗜睡（是）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_4_up| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="margin-left: 20px;width: 200px">过度嗜睡（否）:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="result_4_down" id="result_4_down" placeholder="请输入过度嗜睡（否）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_4_down| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="margin-left: 20px;width: 200px">夜间多汗（是）:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="result_5_up" id="result_5_up" placeholder="请输入夜间多汗（是）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_5_up| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="margin-left: 20px;width: 200px">夜间多汗（否）:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="result_5_down" id="result_5_down" placeholder="请输入夜间多汗（否）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_5_down| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="margin-left: 20px;width: 200px">总分（是）:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="result_total_up" id="result_total_up" placeholder="请输入总分（是）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_total_up| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="margin-left: 20px;width: 200px">总分（否）:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="result_total_down" id="result_total_down" placeholder="请输入总分（否）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_total_down| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn layui-btn-sm {$view_theme_color}" lay-submit lay-filter="setSleep">确认</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+
+    layui.config({
+        version:"{$front_version}",
+        base: '/static/plug/layui-admin/dist/layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index','table','like'], function(){
+        var $ = layui.$
+            ,form = layui.form
+            ,like = layui.like;
+
+        form.on('submit(setSleep)',function (data) {
+            like.ajax({
+                url: '{:url("BabySetting/setSleep")}'
+                ,data: data.field
+                ,type: 'post'
+                ,success: function(res){
+                    if(res.code == 1) {
+                        layer.msg(res.msg, {
+                            offset: '15px'
+                            ,icon: 1
+                            ,time: 1500
+                        });
+                    }
+                },
+            });
+        });
+
+    });
+
+</script>

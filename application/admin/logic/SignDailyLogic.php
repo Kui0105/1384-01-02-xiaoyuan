@@ -192,9 +192,9 @@ class SignDailyLogic
             'type'             =>1,
             'days'             => 0,
             'integral'         =>$post['integral'],
-            'growth'           =>$post['growth'],
+            'growth'           =>'',//$post['growth'],
             'integral_status'  =>$post['integral_status'],
-            'growth_status'    =>$post['growth_status'],
+            'growth_status'    =>0,//$post['growth_status'],
             'create_time'      =>time(),
             'del'              =>0,
 
@@ -204,9 +204,9 @@ class SignDailyLogic
             'type'             =>1,
             'days'             => 0,
             'integral'         =>$post['integral'],
-            'growth'           =>$post['growth'],
+            'growth'           =>'',//$post['growth'],
             'integral_status'  =>$post['integral_status'],
-            'growth_status'    =>$post['growth_status'],
+            'growth_status'    =>0,//$post['growth_status'],
             'update_time'      =>time(),
             'del'              =>0,
 

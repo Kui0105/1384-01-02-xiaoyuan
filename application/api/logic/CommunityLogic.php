@@ -134,10 +134,12 @@ class CommunityLogic extends LogicBase{
         $pid = $post['pid']??0;
         $content = $post['content']??'';
         if(!$id){
-            return '帖子未知';
+            self::$error =  '帖子未知';
+            return false;
         }
         if(!$content){
-            return '请填写评论';
+            self::$error =  '请填写评论';
+            return false;
         }
         $lockKey = 'com_comment_' . $user_id.'_'.$id;
         if (Cache::get($lockKey)) {
@@ -148,23 +150,28 @@ class CommunityLogic extends LogicBase{
         }
         $detail = Community::where('id',$id)->findOrEmpty()->toArray();
         if(!$detail){
-            return '帖子不存在';
+            self::$error =  '帖子不存在';
+            return false;
         }
         if($detail['del'] || $detail['status']!=1){
-            return '帖子已删除';
+            self::$error =  '帖子已删除';
+            return false;
         }
         $p_user_id = $com_c_id = 0;
         if($pid){
             $p_data = Db::name('community_comment')->where('id',$pid)->field('user_id,del,com_c_id')->find();
             if(!$p_data || $p_data['del']){
-                return '该评论已删除';
+                self::$error =  '该评论已删除';
+                return false;
             }
             if(!$comment_id){
-                return '主评论id缺失';
+                self::$error =  '主评论id缺失';
+                return false;
             }
             if($p_data['com_c_id']){
                 if($comment_id != $p_data['com_c_id']){
-                    return '评论下级不匹配';
+                    self::$error =  '评论下级不匹配';
+                    return false;
                 }
             }
 
@@ -181,10 +188,24 @@ class CommunityLogic extends LogicBase{
             'content'   => $content,
             'create_time'   => $time,
         ];
-        Db::name('community_comment')->insert($insert_data);
+        $insert_id = Db::name('community_comment')->insertGetId($insert_data);
         Community::where('id',$id)->setInc('comment_num');
         AccountLogLogic::sendPoint($user_id, 'comment');
-        return true;
+
+        $user_data = User::where('id',$user_id)->field('avatar,nickname')->findOrEmpty()->toArray();
+        $return_data = [
+            'id'    => $insert_id,
+            'content'   => $content,
+            'create_time'   => getCTime($time),
+            'p_user_id' => $p_user_id,
+            'reply'     => '',
+            'avatar'    => $user_data['avatar'],
+            'nickname'  => $user_data['nickname'],
+        ];
+        if($p_user_id){
+            $return_data['reply'] = User::where('id',$p_user_id)->field('avatar,nickname')->findOrEmpty()->toArray();
+        }
+        return $return_data;
     }
 
     public static function CommentLists($user_id,$id,$comment_id,$page,$size)
@@ -242,14 +263,15 @@ class CommunityLogic extends LogicBase{
     {
         $lockKey = 'com_del_' . $user_id.'_'.$id;
         if (Cache::get($lockKey)) {
-            return '操作频繁';
+            self::$error =  '操作频繁';
             return false;
         } else {
             Cache::set($lockKey, 1, 1);
         }
         $if_count = Community::where(['id'=>$id,'user_id'=>$user_id,'del'=>0])->count();
         if(!$if_count){
-            return  '帖子不存在';
+            self::$error =  '帖子不存在';
+            return false;
         }
         $time = time();
         Community::where('id',$id)->update(['del'=>$time]);
