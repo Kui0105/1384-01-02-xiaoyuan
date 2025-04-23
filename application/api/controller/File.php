@@ -28,4 +28,10 @@ class File extends ApiBase
         $data = FileServer::userFormImage($this->user_id);
         $this->_success($data['msg'], $data['data'], $data['code']);
     }
+
+    public function formPdf()
+    {
+        $data = FileServer::userFormPdf($this->user_id);
+        $this->_success($data['msg'], $data['data'], $data['code']);
+    }
 }

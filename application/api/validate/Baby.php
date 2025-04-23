@@ -47,6 +47,11 @@ class Baby extends Validate
         $this->only(['name', 'head_img','sex','birthday','father_height','mother_height','sup_height','height','weight','province_id','city_id']);
     }
 
+    public function sceneEdit()
+    {
+        $this->only(['name', 'head_img','sex','birthday','father_height','mother_height','sup_height','province_id','city_id']);
+    }
+
     public function sceneHeightCheck()
     {
         $this->only(['id','date','height','weight']);

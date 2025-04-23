@@ -138,6 +138,65 @@ class FileServer extends ServerBase
     }
 
     /**
+     * Notes: 用户上传pdf
+     * @param $user_id (用户ID)
+     * @param string $save_dir (保存目录, 不建议修改, 不要超二级目录)
+     * @return array
+     * @author 张无忌(2021/2/20 9:53)
+     */
+    public static function userFormPdf($user_id = 0, $save_dir='uploads/user/pdf')
+    {
+        try {
+            $config = [
+                'default' => ConfigServer::get('storage', 'default', 'local'),
+                'engine'  => ConfigServer::get('storage_engine')
+            ];
+
+            if (empty($config['engine']['local'])) {
+                $config['engine']['local'] = [];
+            }
+
+
+            $StorageDriver = new StorageDriver($config);
+            $StorageDriver->setUploadFile('file');
+            $fileName = $StorageDriver->getFileName();
+            $fileInfo = $StorageDriver->getFileInfo();
+
+            // 校验上传文件后缀
+            $ext = pathinfo($fileInfo['name'], PATHINFO_EXTENSION);
+            if (!in_array(strtolower($ext), ['pdf'])) {
+                throw new Exception("上传图片不允许上传{$ext}文件");
+            }
+
+            // 上传文件
+            $save_dir = $save_dir . '/' .  date('Ymd');
+            if (!$StorageDriver->upload($save_dir)) {
+                throw new Exception($StorageDriver->getError());
+            }
+
+            // 记录图片信息
+            $data = [
+                'user_id'     => $user_id ? $user_id : 0,
+                'name'        => $fileInfo['name'],
+                'type'        => File::type_image,
+                'uri'         => $save_dir . '/' . str_replace("\\","/", $fileName),
+                'create_time' => time(),
+            ];
+            Db::name('user_file')->insert($data);
+
+            $result['url'] = UrlServer::getFileUrl($data['uri']);
+            $result['base_url'] = $data['uri'];
+            $result['name'] = $data['name'];
+
+            return self::dataSuccess('上传文件成功', $result);
+
+        } catch (\Exception $e) {
+            $message = lang($e->getMessage()) ?? $e->getMessage();
+            return self::dataError('上传文件失败:' . $message);
+        }
+    }
+
+    /**
      * Notes: 上传视频
      * @param string $save_dir (保存目录, 不建议修改, 不要超二级目录)
      * @return array

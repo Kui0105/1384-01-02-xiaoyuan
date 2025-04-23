@@ -5,6 +5,8 @@ namespace app\api\logic;
 
 use app\common\logic\LogicBase;
 use app\common\model\Baby;
+use app\common\model\BabyCheck;
+use app\common\model\DevRegion;
 use app\common\server\ConfigServer;
 use think\Db;
 
@@ -215,7 +217,7 @@ class BabyLogic extends LogicBase{
                 $height_pot = 50 - $height_pot;
             }
             //百分位预测身高
-            $bf_predicting_height = Db::name('height_moban')->where('sex',$baby_data['sex'])->where('level',$near_moban[0]['level'])->value('height');
+            $bf_predicting_height = Db::name('height_moban')->where('month',216)->where('sex',$baby_data['sex'])->where('level',$near_moban[0]['level'])->value('height');
         }
 
         //AI预测身高
@@ -368,6 +370,35 @@ class BabyLogic extends LogicBase{
         ];
     }
 
+    public static function bone_check($user_id,$pdf)
+    {
+        $baby_data = Db::name('baby')->where(['user_id'=>$user_id,'del'=>0,'is_default'=>1])->find();
+        if(!$baby_data){
+            self::$error =  '宝贝错误';
+            return  false;
+        }
+        $post_time = strtotime(date('Y-m-d'));
+        $pdf = clearDomain($pdf);
+        $time = time();
+        $baby_id = $baby_data['id'];
+        $baby_data = json_encode($baby_data);
+        $check_data  = json_encode(['url'=>$pdf]);
+        $insert_id = Db::name('baby_check')->insertGetId([
+            'user_id'       => $user_id,
+            'baby_id'       => $baby_id,
+            'type'          => 4,
+            'check_data'    => $check_data,
+            'check_date'    => $post_time,
+            'create_time'   => $time,
+            'check_result'  => '',
+            'baby_data'     => $baby_data,
+        ]);
+        return [
+            'id'    => $insert_id,
+            'type'  => 4
+        ];
+    }
+
     public static function index_baby($user_id)
     {
         $baby_data = Db::name('baby')->field('id,name,head_img,sex,birthday')->where(['user_id'=>$user_id,'del'=>0,'is_default'=>1])->find();
@@ -394,7 +425,7 @@ class BabyLogic extends LogicBase{
         $baby_data['check_spleen_status'] = false;
         $baby_data['check_bone_status'] = false;
         $baby_data['check_sport_status'] = false;
-        $baby_check_type_arr = Db::name('baby_check')->where('user_id',$user_id)->group('type')->column('type');
+        $baby_check_type_arr = Db::name('baby_check')->where('id',$baby_data['id'])->group('type')->column('type');
         if(in_array(2,$baby_check_type_arr)){
             $baby_data['check_spleen_status'] = true;
         }
@@ -455,7 +486,10 @@ class BabyLogic extends LogicBase{
         Db::startTrans();
         try {
             $model = new Baby();
-            $model->where('id',$id)->where(['user_id'=>$user_id,'del'=>0])->update(['is_default'=>1]);
+            $res = $model->where('id',$id)->where(['user_id'=>$user_id,'del'=>0])->update(['is_default'=>1]);
+            if(!$res){
+                return '失败';
+            }
             $model->where('user_id',$user_id)->where('id','<>',$id)->update(['is_default'=>0]);
             Db::commit();
             return true;
@@ -463,5 +497,220 @@ class BabyLogic extends LogicBase{
             Db::rollback();
             return  $e->getMessage();
         }
+    }
+
+    public static function baby_info($user_id)
+    {
+        $baby_data = Db::name('baby')->field('id,name,head_img,sex,birthday,father_height,mother_height,sup_height,province_id,city_id')->where(['user_id'=>$user_id,'del'=>0,'is_default'=>1])->find();
+        if(empty($baby_data)){
+            return '';
+        }
+        $baby_data['head_img'] = addImgDomain($baby_data['head_img']);
+        $baby_data['birthday'] = date('Y-m-d',$baby_data['birthday']);
+        $baby_data['city'] = DevRegion::getArea($baby_data['city_id']);
+        return $baby_data;
+    }
+
+    public static function edit_baby($user_id,$data)
+    {
+        $model = new Baby();
+        $baby = $model->where(['id'=>$data['id'],'user_id'=>$user_id,'del'=>0])->find();
+        if(!$baby){
+            self::$error = '宝宝不存在或已被删除';
+            return false;
+        }
+        $cache = cache('baby_edit_'.$user_id);
+        if($cache){
+            self::$error = '操作频繁';
+            return  false;
+        }
+        cache('baby_edit_'.$user_id,1,10);
+        $time = time();
+        $baby_data = [
+            'user_id'   => $user_id,
+            'name'      => $data['name'],
+            'head_img'  => clearDomain($data['head_img']),
+            'sex'       => $data['sex'],
+            'birthday'  => strtotime($data['birthday']),
+            'father_height' => round(abs(floatval($data['father_height'])),2),
+            'mother_height' => round(abs(floatval($data['mother_height'])),2),
+            'sup_height'    => round(abs(floatval($data['sup_height'])),2),
+            'province_id'   => $data['province_id'],
+            'city_id'       => $data['city_id'],
+        ];
+        $baby->name     = $data['name'];
+        $baby->head_img = clearDomain($data['head_img']);
+        $baby->sex      = $data['sex'];
+        $baby->birthday = strtotime($data['birthday']);
+        $baby->father_height = round(abs(floatval($data['father_height'])),2);
+        $baby->mother_height = round(abs(floatval($data['mother_height'])),2);
+        $baby->sup_height   = round(abs(floatval($data['sup_height'])),2);
+        $baby->province_id  = $data['province_id'];
+        $baby->city_id      = $data['city_id'];
+        //遗传身高
+        $baby->genetic_height = $data['sex'] == 1? bcdiv($baby_data['father_height']+$baby_data['mother_height']+13,2,2):bcdiv($baby_data['father_height']+$baby_data['mother_height']-13,2,2);
+        //预测身高
+        $baby->predicting_height = $data['sex'] == 1? bcmul(($baby_data['father_height']+$baby_data['mother_height'])/2,0.78,2) + 45.99:bcmul(($baby_data['father_height']+$baby_data['mother_height'])/2,0.75,2) + 37.85;
+        return $baby->save();
+    }
+
+    public static function history_check_list($user_id,$get,$page,$size)
+    {
+        $baby_model = new Baby();
+        $baby_id = $baby_model->where(['user_id'=>$user_id,'del'=>0,'is_default'=>1])->value('id');
+        if(!$baby_id){
+            self::$error = '暂无默认宝宝';
+            return  false;
+        }
+        $model = new BabyCheck();
+
+        $where = [
+            ['baby_id','=',$baby_id]
+        ];
+
+        $list = $model->where($where)
+            ->field("id,check_date,create_time,type,baby_data")
+            ->order('check_date desc,id desc')
+            ->page($page,$size)
+            ->select()->toArray();
+
+        $count = $model->where($where)
+            ->order('check_date desc,id desc')
+            ->count();
+
+        $grouped_logs = [];
+        foreach ($list as $log) {
+            $log['time_str'] = date('H:i',$log['create_time']);
+            $log['name']     = json_decode($log['baby_data'],true)['name'];
+            $log['type_str']   = Baby::get_type_str($log['type']);
+            unset($log['baby_data']);
+            unset($log['create_time']);
+            $date = date('Y-m-d', $log['check_date']);
+            unset($log['check_date']);
+            if (!isset($grouped_logs[$date])) {
+                $grouped_logs[$date] = [];
+            }
+            $grouped_logs[$date][] = $log;
+        }
+
+        // $date_list = $model->where($where)
+        //     ->field("FROM_UNIXTIME(check_date, '%Y-%m-%d') as date")
+        //     ->group('date')
+        //     ->order('date desc')
+        //     ->page($page,$size)
+        //     ->select()->toArray();
+        //
+        // $count = $model->where($where)
+        //     ->field("FROM_UNIXTIME(check_date, '%Y-%m-%d') as date")
+        //     ->group('date')
+        //     ->order('date desc')
+        //     ->count();
+        //
+        // foreach ($date_list as &$date) {
+        //     $where[] = ['check_date','=',strtotime($date['date'])];
+        //     $log = $model->where($where)->field('id,create_time')->order('id desc')->select()->toArray();
+        //     foreach ($log as &$son) {
+        //         $son['create_time'] = date('H:i:s',strtotime($son['create_time']));
+        //     }
+        //     $date['log'] = $log;
+        // }
+
+        $data = [
+            'lists' => $grouped_logs,
+            'page'  => $page,
+            'size'  => $size,
+            'count' => $count,
+            'more'  => is_more($count, $page, $size)
+        ];
+        return $data;
+    }
+
+    public static function check_result($user_id,$id)
+    {
+        $model = new BabyCheck();
+        $check_result = $model->where(['id'=>$id,'user_id'=>$user_id])->findOrEmpty()->toArray();
+        if(empty($check_result)){
+            self::$error = '测评不存在';
+            return false;
+        }
+        $return_data = $model::get_check_baby($check_result);
+        switch ($check_result['type']){
+            case 1://身高
+                $result_data = json_decode($check_result['check_data'],true);
+                switch ($result_data['grow_level']['grow_level']){
+                    case 0:
+                        $return_data['height_str'] = '身高矮小（身高百分位低于3%）';
+                        break;
+                    case 1:
+                        $return_data['height_str'] = '身高偏矮（身高百分位低于25%）';
+                        break;
+                    case 2:
+                        $return_data['height_str'] = '身高正常';
+                        break;
+                    case 3:
+                        $return_data['height_str'] = '身高偏高（身高百分位高于75%）';
+                        break;
+                    case 4:
+                        $return_data['height_str'] = '身高超高（身高百分位高于97%）';
+                        break;
+                }
+                $return_data['height'] = floatval($result_data['height']);//身高
+                $return_data['weight'] = $result_data['weight'];//体重
+                $return_data['bone'] = $result_data['bone']??'';//骨龄
+                $return_data['arg_height'] = floatval($result_data['arg_height']);//全国平均身高
+                $return_data['arg_height_str'] = (($result_data['arg_height'] > $result_data['height'])?'矮':'高').abs(floatval($result_data['arg_height'] - $result_data['height'])).'cm';//全国平均身高字符串
+                $return_data['height_pot'] = $result_data['height_pot'];//身高百分位
+                $return_data['cha_height'] = $result_data['cha_height'];//标准差
+                $return_data['ai_predicting_height'] = $result_data['ai_predicting_height'];//AI测评身高
+                $return_data['ai_predicting_height_str'] = (($result_data['ai_predicting_height'] > $return_data['sup_height'])?'矮':'高').abs(floatval($result_data['ai_predicting_height'] - $return_data['sup_height'])).'cm';//AI测评身高字符串
+                $return_data['bf_predicting_height'] = $result_data['bf_predicting_height'];//百分位测评身高
+                $return_data['bf_predicting_height_str'] = (($result_data['bf_predicting_height'] > $return_data['sup_height'])?'矮':'高').abs(floatval($result_data['bf_predicting_height'] - $return_data['sup_height'])).'cm';//百分位测评身高字符串
+                $return_data['arg_18_height'] = $return_data['sex']==1?'172.7':'160.6';//平均成年身高
+                $return_data['bmi'] = $result_data['bmi'];//BMI
+                $return_data['weight_key'] = $result_data['weight_key'];//体重区间
+                $return_data['weight_arr'] = weight_arr($return_data['sex']);//体重数组
+
+                $return_data['check_msg'] = $check_result['check_result'];//测评建议
+                //1-18岁图
+                $int_month_arr = [0,12,24,36,48,60,72,84,96,108,120,132,144,156,168,180,192,204,216];
+                $full_data = Db::name('height_moban')->where('sex',$return_data['sex'])->where('month','in',$int_month_arr)->field('height,level,month')->order('id asc')->select();
+                $full_height_by_level = [];
+                foreach ($full_data as $item) {
+                    $key = $item['level'];
+                    if (!isset($full_height_by_level[$key])) {
+                        $full_height_by_level[$key] = [];
+                    }
+                    $full_height_by_level[$key][] = $item['height'];
+                }
+                $return_data['full_height_by_level'] = $full_height_by_level;
+                $return_data['full_height_x'] = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18];
+
+                $now_age_arr = now_age($return_data['birthday'],$check_result['check_date'],false);
+
+
+                //2年区间图
+
+                break;
+            case 2://脾胃
+                $check_data = json_decode($check_result['check_data'],true);
+                $return_data['check_num'] = $check_data['total_num'];
+                $return_data['check_msg'] = $check_result['check_result'];
+                $return_data['check_key'] = spleen_key($check_data['total_num']);
+                break;
+            case 3://睡眠
+                $result_data = json_decode($check_result['check_result'],true);
+                foreach ($result_data as &$r){
+                    $r['status'] = false;
+                    if($r['num'] > 39){
+                        $r['status'] = true;
+                    }
+                }
+                $return_data['result_data'] = $result_data;
+                break;
+            case 4://骨龄
+                $return_data = addImgDomain($check_result['check_result']);
+                break;
+        }
+        return $return_data;
     }
 }
