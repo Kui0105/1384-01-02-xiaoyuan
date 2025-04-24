@@ -1154,6 +1154,7 @@ function height_str($height,$arr){
     return $new_arr[$key];
 }
 
+//身高键取值
 function level_to_num($level)
 {
     $level_arr = [
@@ -1168,6 +1169,7 @@ function level_to_num($level)
     return $level_arr[$level];
 }
 
+//脾胃问题
 function spleen_ques()
 {
     return [
@@ -1331,6 +1333,7 @@ function spleen_ques()
     ];
 }
 
+//体重区间
 function weight_arr($type){
     if($type == 1){
         return [
@@ -1391,6 +1394,7 @@ function weight_arr($type){
     }
 }
 
+//睡眠区间
 function spleen_key($num)
 {
     if($num<4){
@@ -1407,6 +1411,7 @@ function spleen_key($num)
     return $key;
 }
 
+//睡眠问题
 function sleep_ques()
 {
     return [
@@ -2041,3 +2046,220 @@ function sleep_check_com($arr){
     }
     return $res;
 }
+
+//年级范围
+/**
+
+ */
+function sport_grade_arr()
+{
+    return [
+        [
+            'id'    => 1,
+            'name'  => '一年级',
+        ],
+        [
+            'id'    => 2,
+            'name'  => '二年级',
+        ],
+        [
+            'id'    => 3,
+            'name'  => '三年级',
+        ],
+        [
+            'id'    => 4,
+            'name'  => '四年级',
+        ],
+        [
+            'id'    => 5,
+            'name'  => '五年级',
+        ],
+        [
+            'id'    => 6,
+            'name'  => '六年级',
+        ],
+        [
+            'id'    => 7,
+            'name'  => '初一',
+        ],
+        [
+            'id'    => 8,
+            'name'  => '初二',
+        ],
+        [
+            'id'    => 9,
+            'name'  => '初三',
+        ],
+        [
+            'id'    => 10,
+            'name'  => '高一',
+        ],
+        [
+            'id'    => 11,
+            'name'  => '高二',
+        ],
+        [
+            'id'    => 12,
+            'name'  => '高三',
+        ],
+        [
+            'id'    => 13,
+            'name'  => '大一',
+        ],
+        [
+            'id'    => 14,
+            'name'  => '大二',
+        ],
+        [
+            'id'    => 15,
+            'name'  => '大三',
+        ],
+        [
+            'id'    => 16,
+            'name'  => '大四',
+        ],
+    ];
+}
+
+function sport_grade_to_select($id,$sex = 1)
+{
+    $arr = [
+        [
+            'key'   => 'bmi',
+            'name'  => '体重指数(BMI)',
+            'value' => 15
+        ],
+        [
+            'key'   => 'vital_capacity',
+            'name'  => '肺活量',
+            'value' => 15
+        ]
+    ];
+    switch ($id){
+        case 1:
+        case 2:
+            $new_arr = [
+                [
+                    'key'   => 'run_50',
+                    'name'  => '50米跑',
+                    'value' => 20
+                ],
+                [
+                    'key'   => 'sit_and_reach',
+                    'name'  => '坐位体前屈',
+                    'value' => 30
+                ],
+                [
+                    'key'   => 'skip',
+                    'name'  => '1分钟跳绳',
+                    'value' => 20
+                ]
+            ];
+            break;
+        case 3:
+        case 4:
+            $new_arr = [
+                [
+                    'key'   => 'run_50',
+                    'name'  => '50米跑',
+                    'value' => 20
+                ],
+                [
+                    'key'   => 'sit_and_reach',
+                    'name'  => '坐位体前屈',
+                    'value' => 20
+                ],
+                [
+                    'key'   => 'skip',
+                    'name'  => '1分钟跳绳',
+                    'value' => 20
+                ],
+                [
+                    'key'   => 'sit_up',
+                    'name'  => '1分钟仰卧起坐',
+                    'value' => 10
+                ]
+            ];
+            break;
+        case 5:
+        case 6:
+            $new_arr = [
+                [
+                    'key'   => 'run_50',
+                    'name'  => '50米跑',
+                    'value' => 20
+                ],
+                [
+                    'key'   => 'sit_and_reach',
+                    'name'  => '坐位体前屈',
+                    'value' => 10
+                ],
+                [
+                    'key'   => 'skip',
+                    'name'  => '1分钟跳绳',
+                    'value' => 10
+                ],
+                [
+                    'key'   => 'sit_up',
+                    'name'  => '1分钟仰卧起坐',
+                    'value' => 20
+                ],
+                [
+                    'key'   => 'run_400',
+                    'name'  => '50米×8往返跑',
+                    'value' => 10
+                ]
+            ];
+            break;
+        default:
+            $new_arr = [
+                [
+                    'key'   => 'run_50',
+                    'name'  => '50米跑',
+                    'value' => 20
+                ],
+                [
+                    'key'   => 'sit_and_reach',
+                    'name'  => '坐位体前屈',
+                    'value' => 10
+                ],
+                [
+                    'key'   => 'jump',
+                    'name'  => '立定跳远',
+                    'value' => 10
+                ]
+            ];
+            $arr = $arr + $new_arr;
+            if($sex == 1){
+                $new_arr = [
+                    [
+                        'key'   => 'chinning',
+                        'name'  => '引体向上',
+                        'value' => 10
+                    ],
+                    [
+                        'key'   => 'run_1000',
+                        'name'  => '1000米跑',
+                        'value' => 20
+                    ]
+                ];
+            }else{
+                $new_arr = [
+                    [
+                        'key'   => 'sit_up',
+                        'name'  => '1分钟仰卧起坐',
+                        'value' => 10
+                    ],
+                    [
+                        'key'   => 'run_800',
+                        'name'  => '800米跑',
+                        'value' => 20
+                    ]
+                ];
+            }
+            break;
+    }
+    return array_merge($arr,$new_arr);
+}
+
+

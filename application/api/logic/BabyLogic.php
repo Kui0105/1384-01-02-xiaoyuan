@@ -587,6 +587,26 @@ class BabyLogic extends LogicBase{
             unset($log['create_time']);
             $date = date('Y-m-d', $log['check_date']);
             unset($log['check_date']);
+            switch ($log['type']){
+                case 1:
+                    $log['img'] = addImgDomain('api_img/sleep.png');
+                    break;
+                case 2:
+                    $log['img'] = addImgDomain('api_img/sleep.png');
+                    break;
+                case 3:
+                    $log['img'] = addImgDomain('api_img/sleep.png');
+                    break;
+                case 4:
+                    $log['img'] = addImgDomain('api_img/sleep.png');
+                    break;
+                case 5:
+                    $log['img'] = addImgDomain('api_img/sleep.png');
+                    break;
+                default:
+                    $log['img'] = addImgDomain('api_img/sleep.png');
+                    break;
+            }
             if (!isset($grouped_logs[$date])) {
                 $grouped_logs[$date] = [];
             }
@@ -686,10 +706,48 @@ class BabyLogic extends LogicBase{
                 $return_data['full_height_x'] = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18];
 
                 $now_age_arr = now_age($return_data['birthday'],$check_result['check_date'],false);
-
-
+                $now_full_height_x = array_fill(0, count($return_data['full_height_x']), null);
+                if (isset($now_age_arr['year']) && isset($return_data['height'])) {
+                    $now_full_height_x[$now_age_arr['year']] = $return_data['height'];
+                }
+                $return_data['now_full_height_x'] = $now_full_height_x;
+                $now_year = $now_age_arr['year'];
                 //2年区间图
+                if($now_year<=0){
+                    $start_year = 0;
+                    $end_year = 1;
+                }else if($now_year < 18){
+                    $start_year = $now_year;
+                    $end_year = $now_year+1;
+                }else{
+                    $start_year = 17;
+                    $end_year = 18;
+                }
+                $area_height_str = $start_year.'~'.$end_year;
+                $return_data['area_height_str'] = $area_height_str;
 
+                $area_int_month_arr = [$start_year*12,$end_year*12];
+                $area_full_data = Db::name('height_moban')->where('sex',$return_data['sex'])->where('month','in',$area_int_month_arr)->field('height,level,month')->order('id asc')->select();
+                $area_full_height_by_level = [];
+                foreach ($area_full_data as $item) {
+                    $key = $item['level'];
+                    if (!isset($area_full_height_by_level[$key])) {
+                        $area_full_height_by_level[$key] = [];
+                    }
+                    $area_full_height_by_level[$key][] = $item['height'];
+                }
+                $insertArr = [null,null,null,null,null,null,null,null,null,null,null];
+                foreach ($area_full_height_by_level as &$al){
+                    array_splice($al, 1, 0, $insertArr);
+                }
+                $return_data['area_full_height_by_level'] = $area_full_height_by_level;
+                $return_data['area_full_height_x'] = [0,1,2,3,4,5,6,7,8,9,10,11,12];
+
+                $area_now_full_height_x = array_fill(0, count($return_data['area_full_height_x']), null);
+                if (isset($now_age_arr['month']) && isset($return_data['height'])) {
+                    $area_now_full_height_x[$now_age_arr['month']] = $return_data['height'];
+                }
+                $return_data['area_now_full_height_x'] = $area_now_full_height_x;
                 break;
             case 2://脾胃
                 $check_data = json_decode($check_result['check_data'],true);
@@ -699,12 +757,37 @@ class BabyLogic extends LogicBase{
                 break;
             case 3://睡眠
                 $result_data = json_decode($check_result['check_result'],true);
-                foreach ($result_data as &$r){
+                foreach ($result_data as $k => &$r){
                     $r['status'] = false;
                     if($r['num'] > 39){
                         $r['status'] = true;
                     }
+                    switch ($k){
+                        case 0:
+                            $r['total_num'] = 35;
+                            break;
+                        case 1:
+                            $r['total_num'] = 15;
+                            break;
+                        case 2:
+                            $r['total_num'] = 15;
+                            break;
+                        case 3:
+                            $r['total_num'] = 30;
+                            break;
+                        case 4:
+                            $r['total_num'] = 25;
+                            break;
+                        case 5:
+                            $r['total_num'] = 10;
+                            break;
+                        case 6:
+                            $r['total_num'] = 130;
+                            break;
+                    }
                 }
+                $return_data['total_num'] = $result_data[6]['num'];
+                $return_data['total_total_num'] = $result_data[6]['total_num'];
                 $return_data['result_data'] = $result_data;
                 break;
             case 4://骨龄
@@ -712,5 +795,70 @@ class BabyLogic extends LogicBase{
                 break;
         }
         return $return_data;
+    }
+
+    public static function height_log_list($user_id,$get,$page,$size)
+    {
+        $baby_model = new Baby();
+        $baby_id = $baby_model->where(['user_id'=>$user_id,'del'=>0,'is_default'=>1])->value('id');
+        if(!$baby_id){
+            self::$error = '暂无默认宝宝';
+            return  false;
+        }
+        $model = new BabyCheck();
+
+        $where = [
+            ['baby_id','=',$baby_id],
+            ['type','=',1]
+        ];
+
+        $list = $model->where($where)
+            ->field("id,check_date,create_time,baby_data,check_data,check_result")
+            ->order('check_date asc,id asc')
+            ->page($page,$size)
+            ->select()->toArray();
+
+        $count = $model->where($where)
+            ->order('check_date asc,id asc')
+            ->count();
+
+        $grouped_logs = [];
+        foreach ($list as $log) {
+            $baby_data     = json_decode($log['baby_data'],true);
+            $check_data     = json_decode($log['check_data'],true);
+            $birthday = $baby_data['birthday'];
+            $age = now_age($birthday,$log['check_date'],true);
+            $log['height'] = $check_data['height'];
+            $log['weight'] = $check_data['weight'];
+            unset($log['baby_data']);
+            unset($log['check_data']);
+            unset($log['create_time']);
+
+            unset($log['check_date']);
+            if (!isset($grouped_logs[$age])) {
+                $grouped_logs[$age] = [];
+            }
+            $grouped_logs[$age][] = $log;
+        }
+
+        $data = [
+            'lists' => $grouped_logs,
+            'page'  => $page,
+            'size'  => $size,
+            'count' => $count,
+            'more'  => is_more($count, $page, $size)
+        ];
+        return $data;
+    }
+
+    public static function sport_check_select($user_id,$grade_id)
+    {
+        $baby_model = new Baby();
+        $sex = $baby_model->where(['user_id'=>$user_id,'del'=>0,'is_default'=>1])->value('sex');
+        if(!$sex){
+            self::$error = '暂无默认宝宝';
+            return  false;
+        }
+        return sport_grade_to_select($grade_id,$sex);
     }
 }

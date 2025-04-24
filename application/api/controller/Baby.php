@@ -209,5 +209,39 @@ class Baby extends ApiBase
         $this->_success('成功',$re);
     }
 
+    /**
+     * note 身高档案-记录列表
+     */
+    public function height_log_list()
+    {
+        $get      = $this->request->get();
+        $baby_list = BabyLogic::height_log_list($this->user_id, $get, $this->page_no, $this->page_size);
+        if($baby_list === false){
+            $this->_error(BabyLogic::getError() ?? '失败');
+        }
+        $this->_success('获取成功', $baby_list);
+    }
+
+    //运动测评-年级下拉框
+    public function sport_grade()
+    {
+        $this->_success('获取成功', sport_grade_arr());
+    }
+
+    //运动测评-年级-测评下拉框
+    public function sport_check_select()
+    {
+        $id = $this->request->get('id');
+        if(!$id){
+            $this->_error('缺少必要参数');
+        }
+        $data['user_id'] = $this->user_id;
+        $re = BabyLogic::sport_check_select($this->user_id, $id);
+        if($re === false){
+            $this->_error(BabyLogic::getError() ?? '失败');
+        }
+        $this->_success('成功',$re);
+    }
+
 
 }

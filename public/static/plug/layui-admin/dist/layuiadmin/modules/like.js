@@ -223,6 +223,24 @@ layui.define(["jquery", "form", "upload"], function (exports) {
                 }
             });
         },
+        pdfUpload:function (element, url, domain) {
+        upload.render({
+            elem: element
+            ,url: url
+            ,accept:'file'
+            ,exts:'pdf'
+            ,done: function(res, index, upload) {
+                var html = '<div class="pay-li">\n' +
+                    '<img class="pay-img" ' +
+                    'src="/static/common/image/default/upload.png">' +
+                    '<a class="pay-img-del-x" style="display: none">x</a>' +
+                    '</div>';
+                $(element).prev().val(res.data.uri.replace(domain, ''));
+                $(element).after(html);
+                $(element).css('display','none');
+            }
+        });
+    },
         videoCallback: function(uris) {
             var html = '<ul id="video-container">';
             for(let uri of uris) {

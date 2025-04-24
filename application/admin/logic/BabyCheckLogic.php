@@ -32,7 +32,7 @@ class BabyCheckLogic
         }
 
 
-        $field = 'u.avatar,u.nickname,u.mobile,b.name,b.sex,b.head_img,c.baby_data,c.check_data,c.create_time,c.check_result,c.check_date';
+        $field = 'u.avatar,u.nickname,u.mobile,b.name,b.sex,b.head_img,c.baby_data,c.check_data,c.create_time,c.check_result,c.check_date,c.id';
         $count = $model->alias('c')->leftJoin('user u','u.id = c.user_id')->leftJoin('baby b','b.id = c.baby_id')->where($where)->count();
         $list = $model->alias('c')->leftJoin('user u','u.id = c.user_id')->leftJoin('baby b','b.id = c.baby_id')
             ->field($field)
@@ -59,5 +59,20 @@ class BabyCheckLogic
         return ['count' => $count, 'lists' => $list];
     }
 
-
+    public static function upload_pdf($data)
+    {
+        if(empty($data['pdf'])){
+            return '请上传PDF';
+        }
+        $model = new BabyCheck();
+        $check = $model->find($data['id']);
+        if(!$check){
+            return '测评不存在';
+        }
+        $check_data = json_decode($check->check_data,true);
+        $check_data['time'] = time();
+        $check->check_data = json_encode($check_data);
+        $check->check_result = clearDomain($data['pdf']);
+        return $check->save();
+    }
 }

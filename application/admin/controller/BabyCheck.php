@@ -21,5 +21,17 @@ class BabyCheck extends AdminBase
         return $this->fetch();
     }
 
-
+    public function upload_pdf($id)
+    {
+        if($this->request->isAjax()){
+            $post = $this->request->post();
+            $result = BabyCheckLogic::upload_pdf($post);
+            if($result === true){
+                $this->_success('保存成功');
+            }
+            return $this->_error($result);
+        }
+        $this->assign('id',$id);
+        return $this->fetch();
+    }
 }
