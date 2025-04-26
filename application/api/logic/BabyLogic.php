@@ -507,6 +507,7 @@ class BabyLogic extends LogicBase{
         }
         $baby_data['head_img'] = addImgDomain($baby_data['head_img']);
         $baby_data['birthday'] = date('Y-m-d',$baby_data['birthday']);
+        $baby_data['province'] = DevRegion::getArea($baby_data['province_id']);
         $baby_data['city'] = DevRegion::getArea($baby_data['city_id']);
         return $baby_data;
     }
