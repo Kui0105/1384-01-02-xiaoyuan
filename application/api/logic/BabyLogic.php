@@ -3,6 +3,7 @@
 
 namespace app\api\logic;
 
+use app\common\logic\AccountLogLogic;
 use app\common\logic\LogicBase;
 use app\common\model\Baby;
 use app\common\model\BabyCheck;
@@ -282,6 +283,7 @@ class BabyLogic extends LogicBase{
             'baby_data'     => $baby_data,
         ]);
         Db::name('baby')->where('id',$data['id'])->update(['height'=>$data_height,'weight'=>$data_weight,'grow_level'=>$json_grow_level,'height_pot'=>$height_pot,'bone'=>$bone]);
+        AccountLogLogic::sendPoint($user_id, 'height');
         $res['status'] = true;
         $res['data'] = $insert_id;
         $res['msg'] = '成功';
@@ -420,12 +422,15 @@ class BabyLogic extends LogicBase{
         $baby_data['birthday_str'] = now_age($baby_data['birthday'],time(),true);
         $baby_data['grow_level'] = json_decode($baby_data['grow_level'],true);
         $baby_data['count'] = Db::name('baby')->where(['user_id'=>$user_id,'del'=>0])->count();
-        $baby_data['check_height_status'] = true;
+        $baby_data['check_height_status'] = false;
         $baby_data['check_sleep_status'] = false;
         $baby_data['check_spleen_status'] = false;
         $baby_data['check_bone_status'] = false;
         $baby_data['check_sport_status'] = false;
         $baby_check_type_arr = Db::name('baby_check')->where('id',$baby_data['id'])->group('type')->column('type');
+        if(in_array(1,$baby_check_type_arr)){
+            $baby_data['check_height_status'] = true;
+        }
         if(in_array(2,$baby_check_type_arr)){
             $baby_data['check_spleen_status'] = true;
         }
@@ -692,7 +697,7 @@ class BabyLogic extends LogicBase{
                 $return_data['weight_arr'] = weight_arr($return_data['sex']);//体重数组
 
                 $return_data['check_msg'] = $check_result['check_result'];//测评建议
-                //1-18岁图
+                //1-18岁 身高图
                 $int_month_arr = [0,12,24,36,48,60,72,84,96,108,120,132,144,156,168,180,192,204,216];
                 $full_data = Db::name('height_moban')->where('sex',$return_data['sex'])->where('month','in',$int_month_arr)->field('height,level,month')->order('id asc')->select();
                 $full_height_by_level = [];
@@ -713,6 +718,24 @@ class BabyLogic extends LogicBase{
                 }
                 $return_data['now_full_height_x'] = $now_full_height_x;
                 $now_year = $now_age_arr['year'];
+                //1-18岁 体重图
+                $weight_full_data = Db::name('height_moban')->where('sex',$return_data['sex'])->where('month','in',$int_month_arr)->field('weight,level,month')->order('id asc')->select();
+                $full_weight_by_level = [];
+                foreach ($weight_full_data as $item) {
+                    $key = $item['level'];
+                    if (!isset($full_weight_by_level[$key])) {
+                        $full_weight_by_level[$key] = [];
+                    }
+                    $full_weight_by_level[$key][] = $item['weight'];
+                }
+                $return_data['full_weight_by_level'] = $full_weight_by_level;
+                $return_data['full_weight_x'] = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18];
+
+                $now_full_weight_x = array_fill(0, count($return_data['full_weight_x']), null);
+                if (isset($now_age_arr['year']) && isset($return_data['weight'])) {
+                    $now_full_weight_x[$now_age_arr['year']] = $return_data['weight'];
+                }
+                $return_data['now_full_weight_x'] = $now_full_weight_x;
                 //2年区间图
                 if($now_year<=0){
                     $start_year = 0;
@@ -794,8 +817,28 @@ class BabyLogic extends LogicBase{
             case 4://骨龄
                 $return_data = addImgDomain($check_result['check_result']);
                 break;
+            case 5://运动
+                $return_data['check_result'] = json_decode($check_result['check_result'],true);
+                break;
         }
         return $return_data;
+    }
+
+    public static function height_log_near($user_id,$get)
+    {
+        $baby_model = new Baby();
+        $baby_id = $baby_model->where(['user_id'=>$user_id,'del'=>0,'is_default'=>1])->value('id');
+        if(!$baby_id){
+            self::$error = '暂无默认宝宝';
+            return  false;
+        }
+        $model = new BabyCheck();
+        $id = $model->where(['user_id'=>$user_id,'type'=>1])->max('id');
+        if(!$id){
+            self::$error = '无身高测评记录';
+            return  false;
+        }
+        return self::check_result($user_id, $id);
     }
 
     public static function height_log_list($user_id,$get,$page,$size)
@@ -862,4 +905,145 @@ class BabyLogic extends LogicBase{
         }
         return sport_grade_to_select($grade_id,$sex);
     }
+
+    public static function sport_check($user_id,$data)
+    {
+        $baby_data = Db::name('baby')->where(['user_id'=>$user_id,'del'=>0,'is_default'=>1])->find();
+        if(!$baby_data){
+            self::$error =  '宝贝错误';
+            return  false;
+        }
+        $post_time = strtotime(date('Y-m-d'));
+
+        $grade = $data['grade']??'';
+        $grade_arr = sport_grade_arr();
+        $grade_id_arr = array_column($grade_arr,'id');
+        if(!in_array($grade,$grade_id_arr)){
+            self::$error =  '年级错误';
+            return  false;
+        }
+        $check_result = [];
+        $ques_arr = sport_grade_to_select($grade,$baby_data['sex']);
+        $ques_k_arr = array_column($ques_arr,'name','key');
+        foreach ($ques_k_arr as $k => $v){
+            if(empty($data[$k])){
+                self::$error =  $v.'错误';
+                return  false;
+            }
+            $functionName = "sport_".$k."_result";
+            if (function_exists($functionName)) {
+                $result = $functionName($grade, $data[$k], $baby_data['sex']);
+            } else {
+                self::$error = '系统错误';
+                return false;
+            }
+            $sug_key = '';
+            switch ($k){
+                case 'bmi':
+                    switch ($result['name']){
+                        case '正常':
+                            $sug_key = 'bmi_0';
+                            break;
+                        case '低体重':
+                            $sug_key = 'bmi_1';
+                            break;
+                        case '超重':
+                            $sug_key = 'bmi_2';
+                            break;
+                        case '肥胖':
+                            $sug_key = 'bmi_3';
+                            break;
+                    }
+                    break;
+                case 'vital_capacity':
+                case 'run_50':
+                case 'sit_and_reach':
+                case 'skip':
+                case 'jump':
+                case 'sit_up':
+                    switch ($result['name']){
+                        case '优秀':
+                            $sug_key = $k.'1';
+                            break;
+                        case '良好':
+                            $sug_key = $k.'2';
+                            break;
+                        case '及格':
+                            $sug_key = $k.'3';
+                            break;
+                        case '不及格':
+                            $sug_key = $k.'4';
+                            break;
+                    }
+                    break;
+                case 'chinning':
+                    switch ($result['name']){
+                        case '优秀':
+                            $sug_key = 'sit_up1';
+                            break;
+                        case '良好':
+                            $sug_key = 'sit_up2';
+                            break;
+                        case '及格':
+                            $sug_key = 'sit_up3';
+                            break;
+                        case '不及格':
+                            $sug_key = 'sit_up4';
+                            break;
+                    }
+                    break;
+                case 'run_400'://
+                case 'run_800':
+                case 'run_1000':
+                    switch ($result['name']){
+                        case '优秀':
+                            $sug_key = 'run_else1';
+                            break;
+                        case '良好':
+                            $sug_key = 'run_else2';
+                            break;
+                        case '及格':
+                            $sug_key = 'run_else3';
+                            break;
+                        case '不及格':
+                            $sug_key = 'run_else4';
+                            break;
+                    }
+                    break;
+            }
+            if(!$sug_key){
+                $result['sug'] =  '未知';
+            }else{
+                $result['sug'] =  ConfigServer::get('baby_sport',$sug_key);
+            }
+
+            $check_result[] = [
+                'key'       => $k,
+                'name'      => $v,
+                'post'      => $data[$k],
+                'result'     => $result,
+            ];
+        }
+
+        $time = time();
+        $check_data = json_encode($data);
+        $check_result = json_encode($check_result);
+        $baby_id = $baby_data['id'];
+        $baby_data = json_encode($baby_data);
+        $insert_id = Db::name('baby_check')->insertGetId([
+            'user_id'       => $user_id,
+            'baby_id'       => $baby_id,
+            'type'          => 5,
+            'check_data'    => $check_data,
+            'check_date'    => $post_time,
+            'create_time'   => $time,
+            'check_result'  => $check_result,
+            'baby_data'     => $baby_data,
+        ]);
+        return [
+            'id'    => $insert_id,
+            'type'  => 5
+        ];
+    }
+
 }
