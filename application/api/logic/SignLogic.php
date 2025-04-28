@@ -105,6 +105,111 @@ class SignLogic
             'integral'  => $today_sign_integral,
             'type'      => 1,//类型，主要用前端显示图标
         ];
+        $height_status = true;
+        $height_p = ConfigServer::get('point_way','height_limit',0);
+        $height_int = ConfigServer::get('point_way','height',0);
+        if($height_p){
+            $now_num = AccountLog::where(['source_type'=>'height','user_id'=>$user_id])->whereTime('create_time', 'today')->count();
+            if($height_p > $now_num){
+                $height_status = false;
+            }
+        }
+        $make_inegral[] = [
+            'name'      => '记身高',
+            'status'    => $height_status,
+            'integral'  => $height_int,
+            'type'      => 2,//类型，主要用前端显示图标
+        ];
+        $order_status = true;
+        $order_p = ConfigServer::get('point_way','order_limit',0);
+        $order_int = ConfigServer::get('point_way','order',0);
+        if($order_p){
+            $now_num = AccountLog::where(['source_type'=>'order','user_id'=>$user_id])->whereTime('create_time', 'today')->count();
+            if($order_p > $now_num){
+                $order_status = false;
+            }
+        }
+        $make_inegral[] = [
+            'name'      => '下单任意商品',
+            'status'    => $order_status,
+            'integral'  => $order_int,
+            'type'      => 4,//类型，主要用前端显示图标
+        ];
+        $invite_status = true;
+        $invite_p = ConfigServer::get('point_way','invite_limit',0);
+        $invite_int = ConfigServer::get('point_way','invite',0);
+        if($invite_p){
+            $now_num = AccountLog::where(['source_type'=>'invite','user_id'=>$user_id])->whereTime('create_time', 'today')->count();
+            if($invite_p > $now_num){
+                $invite_status = false;
+            }
+        }
+        $make_inegral[] = [
+            'name'      => '成功邀请好友',
+            'status'    => $invite_status,
+            'integral'  => $invite_int,
+            'type'      => 5,//类型，主要用前端显示图标
+        ];
+        $like_status = true;
+        $like_p = ConfigServer::get('point_way','like_limit',0);
+        $like_int = ConfigServer::get('point_way','like',0);
+        if($like_p){
+            $now_num = AccountLog::where(['source_type'=>'like','user_id'=>$user_id])->whereTime('create_time', 'today')->count();
+            if($like_p > $now_num){
+                $like_status = false;
+            }
+        }
+        $make_inegral[] = [
+            'name'      => '给朋友动态点赞',
+            'status'    => $like_status,
+            'integral'  => $like_int,
+            'type'      => 6,//类型，主要用前端显示图标
+        ];
+        $comment_status = true;
+        $comment_p = ConfigServer::get('point_way','comment_limit',0);
+        $comment_int = ConfigServer::get('point_way','comment',0);
+        if($comment_p){
+            $now_num = AccountLog::where(['source_type'=>'comment','user_id'=>$user_id])->whereTime('create_time', 'today')->count();
+            if($comment_p > $now_num){
+                $comment_status = false;
+            }
+        }
+        $make_inegral[] = [
+            'name'      => '给朋友动态评论',
+            'status'    => $comment_status,
+            'integral'  => $comment_int,
+            'type'      => 7,//类型，主要用前端显示图标
+        ];
+        $share_status = true;
+        $share_p = ConfigServer::get('point_way','share_limit',0);
+        $share_int = ConfigServer::get('point_way','share',0);
+        if($share_p){
+            $now_num = AccountLog::where(['source_type'=>'share','user_id'=>$user_id])->whereTime('create_time', 'today')->count();
+            if($share_p > $now_num){
+                $share_status = false;
+            }
+        }
+        $make_inegral[] = [
+            'name'      => '分享长高日志',
+            'status'    => $share_status,
+            'integral'  => $share_int,
+            'type'      => 8,//类型，主要用前端显示图标
+        ];
+        $video_status = true;
+        $video_p = ConfigServer::get('point_way','video_limit',0);
+        $video_int = ConfigServer::get('point_way','video',0);
+        if($video_p){
+            $now_num = AccountLog::where(['source_type'=>'video','user_id'=>$user_id])->whereTime('create_time', 'today')->count();
+            if($video_p > $now_num){
+                $video_status = false;
+            }
+        }
+        $make_inegral[] = [
+            'name'      => '观看长高视频',
+            'status'    => $video_status,
+            'integral'  => $video_int,
+            'type'      => 9,//类型，主要用前端显示图标
+        ];
 
 
         $order_award_integral = ConfigServer::get('marketing','order_award_integral',0);

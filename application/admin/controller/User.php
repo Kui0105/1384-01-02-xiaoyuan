@@ -22,7 +22,7 @@ class User extends AdminBase
             $this->_success('', UserLogic::lists($get));
 
         }
-        $this->assign('level_list',UserLogic::getLevelList());
+        // $this->assign('level_list',UserLogic::getLevelList());
         $this->assign('group_list',UserLogic::getGroupList());
         return $this->fetch();
     }

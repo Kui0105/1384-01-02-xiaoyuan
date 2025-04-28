@@ -51,10 +51,10 @@
         <div class="layui-input-inline">
             <label class="layui-form-mid">{$detail.user_group}</label>
         </div>
-        <label class="layui-form-label">成长值：</label>
-        <div class="layui-input-inline">
-            <label class="layui-form-mid">{$detail.user_growth}</label>
-        </div>
+<!--        <label class="layui-form-label">成长值：</label>-->
+<!--        <div class="layui-input-inline">-->
+<!--            <label class="layui-form-mid">{$detail.user_growth}</label>-->
+<!--        </div>-->
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">性别：</label>
@@ -91,17 +91,17 @@
         <div class="layui-input-inline">
             <label class="layui-form-mid">¥ {$detail.assets}</label>
         </div>
-        <label class="layui-form-label">不可提现余额：</label>
-        <div class="layui-input-inline">
-            <label class="layui-form-mid">¥ {$detail.user_money}</label>
-        </div>
+<!--        <label class="layui-form-label">不可提现余额：</label>-->
+<!--        <div class="layui-input-inline">-->
+<!--            <label class="layui-form-mid">¥ {$detail.user_money}</label>-->
+<!--        </div>-->
     </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">可提现余额：</label>
-        <div class="layui-input-inline">
-            <label class="layui-form-mid">¥ {$detail.earnings}</label>
-        </div>
-    </div>
+<!--    <div class="layui-form-item">-->
+<!--        <label class="layui-form-label">可提现余额：</label>-->
+<!--        <div class="layui-input-inline">-->
+<!--            <label class="layui-form-mid">¥ {$detail.earnings}</label>-->
+<!--        </div>-->
+<!--    </div>-->
     <div class="layui-form-item div-flex">
         <fieldset class="layui-elem-field layui-field-title">
             <legend>消费能力</legend>
@@ -123,30 +123,30 @@
             <label class="layui-form-mid">¥ {$detail.avg_amount}</label>
         </div>
     </div>
-    <div class="layui-form-item div-flex">
-        <fieldset class="layui-elem-field layui-field-title">
-            <legend>推荐信息</legend>
-        </fieldset>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">上级推荐人：</label>
-        <div class="layui-input-inline" style="width: 100px;">
-            {if $detail.first_leader_info != '系统'}
-            <label class="layui-form-mid" style="width:300px">{$detail.first_leader_info.nickname}({$detail.first_leader_info.sn})</label>
-            {else}
-            <label class="layui-form-mid">{$detail.first_leader_info}</label>
-            {/if}
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">推荐下级人数：</label>
-        <div class="layui-input-inline">
-            <label class="layui-form-mid">{$detail.fans}人</label>
-        </div>
-        <div class="layui-input-inline">
-            <button class="layui-btn layui-btn-sm layui-bg-blue" id="showFans" data-id="{$detail.id}">查看推荐下级</button>
-        </div>
-    </div>
+<!--    <div class="layui-form-item div-flex">-->
+<!--        <fieldset class="layui-elem-field layui-field-title">-->
+<!--            <legend>推荐信息</legend>-->
+<!--        </fieldset>-->
+<!--    </div>-->
+<!--    <div class="layui-form-item">-->
+<!--        <label class="layui-form-label">上级推荐人：</label>-->
+<!--        <div class="layui-input-inline" style="width: 100px;">-->
+<!--            {if $detail.first_leader_info != '系统'}-->
+<!--            <label class="layui-form-mid" style="width:300px">{$detail.first_leader_info.nickname}({$detail.first_leader_info.sn})</label>-->
+<!--            {else}-->
+<!--            <label class="layui-form-mid">{$detail.first_leader_info}</label>-->
+<!--            {/if}-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="layui-form-item">-->
+<!--        <label class="layui-form-label">推荐下级人数：</label>-->
+<!--        <div class="layui-input-inline">-->
+<!--            <label class="layui-form-mid">{$detail.fans}人</label>-->
+<!--        </div>-->
+<!--        <div class="layui-input-inline">-->
+<!--            <button class="layui-btn layui-btn-sm layui-bg-blue" id="showFans" data-id="{$detail.id}">查看推荐下级</button>-->
+<!--        </div>-->
+<!--    </div>-->
 </div>
 
 <script>

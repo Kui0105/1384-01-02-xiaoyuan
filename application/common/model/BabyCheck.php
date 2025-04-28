@@ -19,7 +19,9 @@ class BabyCheck extends Model
             'head_img'      => addImgDomain($user_data['head_img']),
             'genetic_height'=> $user_data['genetic_height'],
             'sup_height'    => $user_data['sup_height'],
-            'birthday'  => $user_data['birthday']
+            'birthday'  => $user_data['birthday'],
+            'height'  => $user_data['height'],
+            'weight'  => $user_data['weight']
         ];
         return $return_data;
     }

@@ -1,0 +1,355 @@
+{layout name="layout1" /}
+<style>
+    .layui-form-label{
+
+        width: 220px;
+    }
+</style>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-body" >
+            <div class="layui-collapse like-layui-collapse" lay-accordion="" style="border:1px dashed #c4c4c4">
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title like-layui-colla-title" style="background-color: #fff">操作提示</h2>
+                    <div class="layui-colla-content layui-show">
+                        <p>*运动测评结果建议。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-card-body" >
+            <div class="layui-form" lay-filter="">
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="">BMI正常:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="bmi_0" id="bmi_0" placeholder="请输入BMI正常建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.bmi_0| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="">BMI低体重:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="bmi_1" id="bmi_1" placeholder="请输入BMI低体重建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.bmi_1| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="">BMI超重:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="bmi_2" id="bmi_2" placeholder="请输入BMI超重建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.bmi_2| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="">BMI肥胖:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="bmi_3" id="bmi_3" placeholder="请输入BMI肥胖建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.bmi_3| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="">肺活量优秀:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="vital_capacity1" id="vital_capacity1" placeholder="请输入肺活量优秀建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.vital_capacity1| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="">肺活量良好:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="vital_capacity2" id="vital_capacity2" placeholder="请输入肺活量良好建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.vital_capacity2| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="">肺活量及格:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="vital_capacity3" id="vital_capacity3" placeholder="请输入肺活量及格建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.vital_capacity3| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="">肺活量不及格:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="vital_capacity4" id="vital_capacity4" placeholder="请输入肺活量不及格建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.vital_capacity4| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="">50米跑优秀:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="run_501" id="run_501" placeholder="请输入50米跑优秀建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.run_501| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="">50米跑良好:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="run_502" id="run_502" placeholder="请输入50米跑良好建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.run_502| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="">50米跑及格:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="run_503" id="run_503" placeholder="请输入50米跑及格建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.run_503| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="">50米跑不及格:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="run_504" id="run_504" placeholder="请输入50米跑不及格建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.run_504| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="">坐位体前屈优秀:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="sit_and_reach1" id="sit_and_reach1" placeholder="请输入坐位体前屈优秀建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.sit_and_reach1| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="">坐位体前屈良好:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="sit_and_reach2" id="sit_and_reach2" placeholder="请输入坐位体前屈良好建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.sit_and_reach2| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="">坐位体前屈及格:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="sit_and_reach3" id="sit_and_reach3" placeholder="请输入坐位体前屈及格建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.sit_and_reach3| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="">坐位体前屈不及格:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="sit_and_reach4" id="sit_and_reach4" placeholder="请输入坐位体前屈不及格建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.sit_and_reach4| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="">一分钟跳绳优秀:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="skip1" id="skip1" placeholder="请输入一分钟跳绳优秀建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.skip1| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="">一分钟跳绳良好:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="skip2" id="skip2" placeholder="请输入一分钟跳绳良好建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.skip2| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="">一分钟跳绳及格:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="skip3" id="skip3" placeholder="请输入一分钟跳绳及格建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.skip3| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="">一分钟跳绳不及格:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="skip4" id="skip4" placeholder="请输入一分钟跳绳不及格建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.skip4| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="">立定跳远优秀:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="jump1" id="jump1" placeholder="请输入立定跳远优秀建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.jump1| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="">立定跳远良好:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="jump2" id="jump2" placeholder="请输入立定跳远良好建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.jump2| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="">立定跳远及格:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="jump3" id="jump3" placeholder="请输入立定跳远及格建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.jump3| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="">立定跳远不及格:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="jump4" id="jump4" placeholder="请输入立定跳远不及格建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.jump4| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="">一分钟仰卧起坐/引体向上优秀:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="sit_up1" id="sit_up1" placeholder="请输入一分钟仰卧起坐/引体向上优秀建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.sit_up1| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="">一分钟仰卧起坐/引体向上良好:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="sit_up2" id="sit_up2" placeholder="请输入一分钟仰卧起坐/引体向上良好建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.sit_up2| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="">一分钟仰卧起坐/引体向上及格:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="sit_up3" id="sit_up3" placeholder="请输入一分钟仰卧起坐/引体向上及格建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.sit_up3| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="">一分钟仰卧起坐/引体向上不及格:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="sit_up4" id="sit_up4" placeholder="请输入一分钟仰卧起坐/引体向上不及格建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.sit_up4| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="">耐力跑优秀:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="run_else1" id="run_else1" placeholder="请输入耐力跑优秀建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.run_else1| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="">耐力跑良好:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="run_else2" id="run_else2" placeholder="请输入耐力跑良好建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.run_else2| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="">耐力跑及格:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="run_else3" id="run_else3" placeholder="请输入耐力跑及格建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.run_else3| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="">耐力跑不及格:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="run_else4" id="run_else4" placeholder="请输入耐力跑不及格建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.run_else4| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn layui-btn-sm {$view_theme_color}" lay-submit lay-filter="setSport">确认</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+
+    layui.config({
+        version:"{$front_version}",
+        base: '/static/plug/layui-admin/dist/layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index','table','like'], function(){
+        var $ = layui.$
+            ,form = layui.form
+            ,like = layui.like;
+
+        form.on('submit(setSport)',function (data) {
+            like.ajax({
+                url: '{:url("BabySetting/setSport")}'
+                ,data: data.field
+                ,type: 'post'
+                ,success: function(res){
+                    if(res.code == 1) {
+                        layer.msg(res.msg, {
+                            offset: '15px'
+                            ,icon: 1
+                            ,time: 1500
+                        });
+                    }
+                },
+            });
+        });
+
+    });
+
+</script>

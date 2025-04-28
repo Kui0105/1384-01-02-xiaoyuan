@@ -235,13 +235,17 @@ class Baby extends ApiBase
         $this->_success('获取成功', $baby_list);
     }
 
-    //运动测评-年级下拉框
+    /**
+     * note 运动测评-年级下拉框
+     */
     public function sport_grade()
     {
         $this->_success('获取成功', sport_grade_arr());
     }
 
-    //运动测评-年级-测评下拉框
+    /**
+     * note 运动测评-年级-测评下拉框
+     */
     public function sport_check_select()
     {
         $id = $this->request->get('id');
@@ -256,11 +260,28 @@ class Baby extends ApiBase
         $this->_success('成功',$re);
     }
 
+    /**
+     * note 运动测评
+     */
     public function sport_check()
     {
         $data = $this->request->post();
         $data['user_id'] = $this->user_id;
         $re = BabyLogic::sport_check($this->user_id, $data);
+        if($re === false){
+            $this->_error(BabyLogic::getError() ?? '失败');
+        }
+        $this->_success('成功',$re);
+    }
+
+    /**
+     * note 综合测评结果
+     */
+    public function all_check_result()
+    {
+        $data = $this->request->post();
+        $data['user_id'] = $this->user_id;
+        $re = BabyLogic::all_check_result($this->user_id, $data);
         if($re === false){
             $this->_error(BabyLogic::getError() ?? '失败');
         }

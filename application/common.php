@@ -2133,12 +2133,16 @@ function sport_grade_to_select($id,$sex = 1)
         [
             'key'   => 'bmi',
             'name'  => '体重指数(BMI)',
-            'value' => 15
+            'value' => 15,
+            'dw'    => 'kg/m²',
+            'pla'   => '请输入'
         ],
         [
             'key'   => 'vital_capacity',
             'name'  => '肺活量',
-            'value' => 15
+            'value' => 15,
+            'dw'    => 'ml',
+            'pla'   => '请输入'
         ]
     ];
     switch ($id){
@@ -2148,17 +2152,23 @@ function sport_grade_to_select($id,$sex = 1)
                 [
                     'key'   => 'run_50',
                     'name'  => '50米跑',
-                    'value' => 20
+                    'value' => 20,
+                    'dw'    => 's',
+                    'pla'   => '请输入'
                 ],
                 [
                     'key'   => 'sit_and_reach',
                     'name'  => '坐位体前屈',
-                    'value' => 30
+                    'value' => 30,
+                    'dw'    => 'cm',
+                    'pla'   => '请输入'
                 ],
                 [
                     'key'   => 'skip',
                     'name'  => '1分钟跳绳',
-                    'value' => 20
+                    'value' => 20,
+                    'dw'    => '次',
+                    'pla'   => '请输入'
                 ]
             ];
             break;
@@ -2168,22 +2178,30 @@ function sport_grade_to_select($id,$sex = 1)
                 [
                     'key'   => 'run_50',
                     'name'  => '50米跑',
-                    'value' => 20
+                    'value' => 20,
+                    'dw'    => 's',
+                    'pla'   => '请输入'
                 ],
                 [
                     'key'   => 'sit_and_reach',
                     'name'  => '坐位体前屈',
-                    'value' => 20
+                    'value' => 20,
+                    'dw'    => 'cm',
+                    'pla'   => '请输入'
                 ],
                 [
                     'key'   => 'skip',
                     'name'  => '1分钟跳绳',
-                    'value' => 20
+                    'value' => 20,
+                    'dw'    => '次',
+                    'pla'   => '请输入'
                 ],
                 [
                     'key'   => 'sit_up',
                     'name'  => '1分钟仰卧起坐',
-                    'value' => 10
+                    'value' => 10,
+                    'dw'    => '次',
+                    'pla'   => '请输入'
                 ]
             ];
             break;
@@ -2193,27 +2211,37 @@ function sport_grade_to_select($id,$sex = 1)
                 [
                     'key'   => 'run_50',
                     'name'  => '50米跑',
-                    'value' => 20
+                    'value' => 20,
+                    'dw'    => 's',
+                    'pla'   => '请输入'
                 ],
                 [
                     'key'   => 'sit_and_reach',
                     'name'  => '坐位体前屈',
-                    'value' => 10
+                    'value' => 10,
+                    'dw'    => 'cm',
+                    'pla'   => '请输入'
                 ],
                 [
                     'key'   => 'skip',
                     'name'  => '1分钟跳绳',
-                    'value' => 10
+                    'value' => 10,
+                    'dw'    => '次',
+                    'pla'   => '请输入'
                 ],
                 [
                     'key'   => 'sit_up',
                     'name'  => '1分钟仰卧起坐',
-                    'value' => 20
+                    'value' => 20,
+                    'dw'    => '次',
+                    'pla'   => '请输入'
                 ],
                 [
                     'key'   => 'run_400',
                     'name'  => '50米×8往返跑',
-                    'value' => 10
+                    'value' => 10,
+                    'dw'    => 's',
+                    'pla'   => '请输入'
                 ]
             ];
             break;
@@ -2222,17 +2250,23 @@ function sport_grade_to_select($id,$sex = 1)
                 [
                     'key'   => 'run_50',
                     'name'  => '50米跑',
-                    'value' => 20
+                    'value' => 20,
+                    'dw'    => 's',
+                    'pla'   => '请输入'
                 ],
                 [
                     'key'   => 'sit_and_reach',
                     'name'  => '坐位体前屈',
-                    'value' => 10
+                    'value' => 10,
+                    'dw'    => 'cm',
+                    'pla'   => '请输入'
                 ],
                 [
                     'key'   => 'jump',
                     'name'  => '立定跳远',
-                    'value' => 10
+                    'value' => 10,
+                    'dw'    => 'cm',
+                    'pla'   => '请输入'
                 ]
             ];
             $arr = $arr + $new_arr;
@@ -2241,12 +2275,16 @@ function sport_grade_to_select($id,$sex = 1)
                     [
                         'key'   => 'chinning',
                         'name'  => '引体向上',
-                        'value' => 10
+                        'value' => 10,
+                        'dw'    => '次',
+                        'pla'   => '请输入'
                     ],
                     [
                         'key'   => 'run_1000',
                         'name'  => '1000米跑',
-                        'value' => 20
+                        'value' => 20,
+                        'dw'    => 's',
+                        'pla'   => '请输入'
                     ]
                 ];
             }else{
@@ -2254,12 +2292,16 @@ function sport_grade_to_select($id,$sex = 1)
                     [
                         'key'   => 'sit_up',
                         'name'  => '1分钟仰卧起坐',
-                        'value' => 10
+                        'value' => 10,
+                        'dw'    => '次',
+                        'pla'   => '请输入'
                     ],
                     [
                         'key'   => 'run_800',
                         'name'  => '800米跑',
-                        'value' => 20
+                        'value' => 20,
+                        'dw'    => 's',
+                        'pla'   => '请输入'
                     ]
                 ];
             }

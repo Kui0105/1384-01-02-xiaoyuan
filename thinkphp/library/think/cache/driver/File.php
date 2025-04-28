@@ -301,7 +301,7 @@ class File extends Driver
      */
     private function unlink($path)
     {
-        return is_file($path) && unlink($path);
+        return is_file($path) && @unlink($path);
     }
 
 }

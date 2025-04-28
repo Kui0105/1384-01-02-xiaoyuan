@@ -12,9 +12,9 @@
             <div class="layui-tab layui-tab-card" lay-filter="adjust">
                 <ul class="layui-tab-title">
                     <li data-type="money" class="layui-this">余额调整</li>
-                    <li data-type="integral" >积分调整</li>
-                    <li data-type="growth" >成长值调整</li>
-                    <li data-type="earnings" >佣金调整</li>
+                    <li data-type="integral" >小元币调整</li>
+<!--                    <li data-type="growth" >成长值调整</li>-->
+<!--                    <li data-type="earnings" >佣金调整</li>-->
                 </ul>
                 <div class="layui-tab-content" >
                     <div class="layui-tab-item  layui-show " >
@@ -49,24 +49,24 @@
                     </div>
                     <div class="layui-tab-item">
                         <div class="layui-form-item">
-                            <label class="layui-form-label">当前积分：</label>
+                            <label class="layui-form-label">当前小元币：</label>
                             <div class="layui-input-inline">
                                 <label class="layui-form-mid">{$info.user_integral}</label>
                                 <input type="hidden" value="{$info.user_integral}" name="now_integral">
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <label class="layui-form-label">积分增减：</label>
+                            <label class="layui-form-label">小元币增减：</label>
                             <div class="layui-input-block">
-                                <input type="radio" name="integral_handle" value="1" title="增加积分">
-                                <input type="radio" name="integral_handle" value="0" title="扣减积分">
+                                <input type="radio" name="integral_handle" value="1" title="增加小元币">
+                                <input type="radio" name="integral_handle" value="0" title="扣减小元币">
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <label class="layui-form-label">调整积分：</label>
+                            <label class="layui-form-label">调整小元币：</label>
                             <div class="layui-input-inline">
                                 <input type="text" name="integral" value="" lay-verify="" lay-vertype="tips" placeholder="" autocomplete="off" class="layui-input">
-                                <label class="layui-form-mid layui-word-aux">请输入调整的积分数量</label>
+                                <label class="layui-form-mid layui-word-aux">请输入调整的小元币数量</label>
                             </div>
                             <label class="layui-form-mid">分</label>
                         </div>

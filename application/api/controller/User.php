@@ -401,7 +401,7 @@ class User extends ApiBase
     public function level_apply()
     {
         $data = $this->request->post();
-        $data['user_id'] = $this->user_id;
+        $data['self_user_id'] = $this->user_id;
         $check = $this->validate($data, 'app\api\validate\LevelApply');
         if (true !== $check) {
             $this->_error($check);
@@ -413,4 +413,8 @@ class User extends ApiBase
         $this->_error($res);
     }
 
+    public function test()
+    {
+
+    }
 }

@@ -1046,4 +1046,32 @@ class BabyLogic extends LogicBase{
         ];
     }
 
+    public static function all_check_result($user_id,$data){
+        $baby_model = new Baby();
+        $baby_id = $baby_model->where(['user_id'=>$user_id,'del'=>0,'is_default'=>1])->value('id');
+        if(!$baby_id){
+            self::$error = '暂无默认宝宝';
+            return  false;
+        }
+        $model = new BabyCheck();
+        $return = [];
+        $height_id = $model->where(['user_id'=>$user_id,'type'=>1])->max('id');
+        if($height_id){
+            $return['height_check'] = self::check_result($user_id, $height_id);
+        }
+        $sleep_id = $model->where(['user_id'=>$user_id,'type'=>3])->max('id');
+        if($sleep_id){
+            $return['sleep_check'] = self::check_result($user_id, $sleep_id);
+        }
+        $spleen_id = $model->where(['user_id'=>$user_id,'type'=>2])->max('id');
+        if($spleen_id){
+            $return['spleen_check'] = self::check_result($user_id, $spleen_id);
+        }
+        $sport_id = $model->where(['user_id'=>$user_id,'type'=>5])->max('id');
+        if($sport_id){
+            $return['sport_check'] = self::check_result($user_id, $sport_id);
+        }
+        $return['baby_info'] = self::baby_info($user_id);
+        return $return;
+    }
 }
