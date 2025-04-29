@@ -121,6 +121,32 @@
         </div>
     </div>
 
+    <div class="layui-form-item">
+        <label class="layui-form-label">底部插图</label>
+        <div class="layui-input-inline">
+            <div style="height:80px;line-height:80px">
+                <input name="foot_img" type="hidden" value="{$article.foot_image}">
+
+                {if !empty($article.foot_img)}
+                <div class="goods-img-add" style="display: none" ></div>
+                <div class="goods-li">
+                    <img class="goods-img" src="{$article.foot_image}">
+                    <a class="goods-img-del-x" style="display: none">x</a>
+                </div>
+                {else}
+                <div class="goods-img-add" ></div>
+                {/if}
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">插图链接</label>
+        <div class="layui-input-block">
+            <input type="text" name="foot_url" value="{$article.foot_url}" lay-verify="required"   lay-verType="tips"  placeholder="请输入插图链接" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
     <div class="layui-form-item layui-hide">
         <input type="button" lay-submit lay-filter="edit-article-submit" id="edit-article-submit" value="确认">
     </div>

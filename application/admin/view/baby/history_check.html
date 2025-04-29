@@ -130,7 +130,7 @@
 
         table.render({
             elem: '#article-lists'
-            ,url: '{:url("baby/history_check")}?baby_id='+$('#baby_id').val()
+            ,url: '{:url("baby/history_check")}?type=1&baby_id='+$('#baby_id').val()
             ,cols: [[
                 // {type: 'checkbox',title: '当页全选'}
                 {field: 'id', title: 'ID',width:70,align: 'center'}

@@ -4,10 +4,12 @@
 namespace app\admin\logic;
 
 
+use app\common\model\Live;
 use app\common\server\UrlServer;
 use app\common\server\WeChatServer;
 use EasyWeChat\Factory;
 use Exception;
+use think\Db;
 
 class LiveRoomLogic
 {
@@ -33,40 +35,68 @@ class LiveRoomLogic
      * @notes 获取直播间列表
      * @param $get
      * @return array|string
-     * @author 张无忌
-     * @date 2021/9/13 15:54
      */
     public static function lists($get)
     {
-        try {
-            $config = WeChatServer::getMnpConfig();
-            $app = Factory::miniProgram($config);
-            $result = $app->live->getRooms($get['page'] - 1, $get['limit']);
+        $live = Db::name('live');
 
-            if ($result['errcode'] != 0) {
-                return $result['errcode'] . '：' . $result['errmsg'];
+        $where = [];
+        // $where[] = ['del', '=', '0'];
+        // if (isset($get['is_notice']) && $get['is_notice'] != '') {
+        //     $where[] = ['is_notice', '=', $get['is_notice']];
+        // }
+
+        // if (isset($get['title']) && $get['title']) {
+        //     $where[] = ['title', 'like', '%' . $get['title'] . '%'];
+        // }
+
+        // if (isset($get['cid']) && $get['cid']) {
+        //     $where[] = ['cid', '=', $get['cid']];
+        // }
+
+        $count = $live->where($where)->count();
+        $list = $live->where($where)->page($get['page'], $get['limit'])->order('id desc')->select();
+        foreach ($list as &$item) {
+            $item['image'] = addImgDomain($item['image']);
+            $item['update_time'] = date('Y-m-d H:i:s', $item['update_time']);
+            if ($item['status'] == 2) {
+                $item['status_text'] = '直播中';
+            } else {
+                $item['status_text'] = '已关闭';
             }
-
-            $liveStatus = [101 => '直播中', 102 => '未开始', 103 => '已结束', 104 => '禁播', 105 => '暂停', 106 => '异常', 107 => '已过期'];
-
-            $data = [];
-            foreach ($result['room_info'] as $item) {
-                $data[] = [
-                    'name' => $item['name'],
-                    'roomid' => $item['roomid'],
-                    'cover_img' => $item['cover_img'],
-                    'anchor_name' => $item['anchor_name'],
-                    'live_status' => $liveStatus[$item['live_status']],
-                    'goods' => count($item['goods']),
-                    'start_time' => date('Y-m-d H:i:s', $item['start_time']),
-                    'end_time' => date('Y-m-d H:i:s', $item['end_time'])
-                ];
-            }
-
-            return ['count' => $result['total'], 'lists' => $data];
-        } catch (Exception $e) {
-            return $e->getMessage();
         }
+
+        return ['count' => $count, 'lists' => $list];
+
+        // try {
+        //     $config = WeChatServer::getMnpConfig();
+        //     $app = Factory::miniProgram($config);
+        //     $result = $app->live->getRooms($get['page'] - 1, $get['limit']);
+
+        //     if ($result['errcode'] != 0) {
+        //         return $result['errcode'] . '：' . $result['errmsg'];
+        //     }
+
+        //     $liveStatus = [101 => '直播中', 102 => '未开始', 103 => '已结束', 104 => '禁播', 105 => '暂停', 106 => '异常', 107 => '已过期'];
+
+        //     $data = [];
+        //     foreach ($result['room_info'] as $item) {
+        //         $data[] = [
+        //             'name' => $item['name'],
+        //             'roomid' => $item['roomid'],
+        //             'cover_img' => $item['cover_img'],
+        //             'anchor_name' => $item['anchor_name'],
+        //             'live_status' => $liveStatus[$item['live_status']],
+        //             'goods' => count($item['goods']),
+        //             'start_time' => date('Y-m-d H:i:s', $item['start_time']),
+        //             'end_time' => date('Y-m-d H:i:s', $item['end_time'])
+        //         ];
+        //     }
+
+        //     return ['count' => $result['total'], 'lists' => $data];
+        // } catch (Exception $e) {
+        //     return $e->getMessage();
+        // }
     }
 
     /**
@@ -189,5 +219,25 @@ class LiveRoomLogic
         }catch (Exception $e) {
             return $e->getMessage();
         }
+    }
+
+    public static function editLive($post)
+    {
+        $live = new Live();
+        $data = [
+            'name' => $post['name'],
+            'user_name' => $post['user_name'],
+            'image' => clearDomain($post['image']),
+            'update_time' => time(),
+        ];
+        return $live->save($data, ['id' => $post['id']]);
+    }
+
+    public static function getLive($id)
+    {
+        $live = new Live();
+        $detail = $live::get(['id' => $id]);
+        $detail['image'] = addImgDomain($detail['image']);
+        return $detail;
     }
 }

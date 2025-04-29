@@ -90,6 +90,9 @@ class BabyLogic
             $where[] = ['c.baby_id', '=', $get['baby_id']];
         }
 
+        if (isset($get['type']) && $get['type']) {
+            $where[] = ['c.type', '=', $get['type']];
+        }
         // if (isset($get['name']) && $get['name']) {
         //           $where[] = ['b.name', 'like', '%' . $get['name'] . '%'];
         //       }
@@ -127,12 +130,12 @@ class BabyLogic
 
             $item['create_time'] = date('Y-m-d H:i:s',$item['create_time']);
             $check_data = json_decode($item['check_data'],true);
-            $item['height'] = $check_data['height'];
-            $item['weight'] = $check_data['weight'];
+            $item['height'] = $check_data['height']??'';
+            $item['weight'] = $check_data['weight']??'';
             $item['bone'] = $check_data['bone']??'';
             $item['last_date'] = $check_data['last_date']??'';
             $item['last_height'] = $check_data['last_height']??'';
-            $now_age_str = $check_data['now_age_str'];
+            // $now_age_str = $check_data['now_age_str'];
             $baby_data = json_decode($item['baby_data'],true);
             $item['age'] = now_age($baby_data['birthday'],$item['check_date']);
             // $item['age_str'] =
@@ -142,6 +145,7 @@ class BabyLogic
             // $item['create_time'] = date('Y-m-d H:i:s',$item['create_time']);
             // $item['sex_str'] = $item['sex'] ==1?'男':'女';
             // $item['birthday_str'] = date('Y-m-d',$item['birthday']);
+            $item['type_str'] = Baby::get_type_str($item['type']);
         }
         return ['count' => $baby_count, 'list' => $baby_list];
     }

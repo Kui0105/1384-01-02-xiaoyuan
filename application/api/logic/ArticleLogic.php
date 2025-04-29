@@ -103,7 +103,7 @@ class ArticleLogic extends LogicBase{
 
         $res = DB::name('article')
             ->where(['del' => 0, 'id' => $id])
-            ->field('id,title,image,visit,create_time,content,small_type,type,collect_num')
+            ->field('id,title,image,visit,create_time,content,small_type,type,collect_num,foot_img,foot_url')
             ->find();
 
         if(!$res){
@@ -115,6 +115,7 @@ class ArticleLogic extends LogicBase{
         $res['content'] = preg_replace($preg, '<img src="' . $local_url . '${1}" />', $res['content']);
         $res['create_time'] = date('Y-m-d H:i', $res['create_time']);
         $res['image'] = UrlServer::getFileUrl($res['image']);
+        $res['foot_img'] = UrlServer::getFileUrl($res['foot_img']);
         $res['is_collect'] = false;
         if($res['small_type'] == 2){
             $res['content'] = addImgDomain($res['content']);

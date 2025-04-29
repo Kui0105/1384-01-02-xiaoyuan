@@ -21,12 +21,12 @@
         <div class="layui-card-body" >
             <div class="layui-form" lay-filter="">
 
-                <div class="layui-form-item">
+                <div class="layui-form-item layui-hide">
                     <fieldset class="layui-elem-field layui-field-title">
                         <legend>成长值设置</legend>
                     </fieldset>
                 </div>
-                <div class="layui-form-item ">
+                <div class="layui-form-item layui-hide">
                     <label class="layui-form-label"style="white-space: nowrap;">成长值赠送比例：</label>
                     <div class="layui-input-inline">
                         <input type="text"name="growth_ratio"   lay-verType="tips" autocomplete="off" value="{$config.growth_ratio}" class="layui-input">
@@ -62,7 +62,7 @@
                     </div>
                     <div class=" layui-form-mid layui-word-aux" style="white-space: nowrap">下单赠送积分的时机，默认选择订单支付，积分发放则不退回，请谨慎选择发放时机</div>
                 </div>
-                <div class="layui-form-item ">
+                <div class="layui-form-item layui-hide">
                     <label class="layui-form-label" style="white-space: nowrap;">下单赠送成长值时机：</label>
                     <div class="layui-input-block ">
                         <input type="radio" name="give_growth_scene" value="1" title="订单支付" {if condition="$config.give_growth_scene eq 1"}checked{/if}>

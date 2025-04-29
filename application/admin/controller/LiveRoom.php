@@ -21,9 +21,9 @@ class LiveRoom extends AdminBase
         if ($this->request->isAjax()) {
             $get = $this->request->get();
             $lists = LiveRoomLogic::lists($get);
-            if (is_string($lists)) {
-                return $this->_error($lists);
-            }
+            // if (is_string($lists)) {
+            //     return $this->_error($lists);
+            // }
             $this->_success('获取成功', $lists);
         }
 
@@ -47,6 +47,21 @@ class LiveRoom extends AdminBase
             $this->_success('创建成功');
         }
 
+        return $this->fetch();
+    }
+
+    /**
+     * 编辑
+     */
+    public function edit($id)
+    {
+        if ($this->request->isAjax()) {
+            $post = $this->request->post();
+            LiveRoomLogic::editLive($post);
+            $this->_success('编辑成功！');
+        }
+        $live = LiveRoomLogic::getLive($id);
+        $this->assign('live', $live);
         return $this->fetch();
     }
 

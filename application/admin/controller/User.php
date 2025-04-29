@@ -221,4 +221,14 @@ class User extends AdminBase
         return $this->fetch();
 
     }
+
+    /**
+     * 修改状态
+     */
+    public function switchStatus()
+    {
+        $post = $this->request->post();
+        UserLogic::switchStatus($post);
+        $this->_success('修改成功');
+    }
 }

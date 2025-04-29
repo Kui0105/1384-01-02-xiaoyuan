@@ -239,6 +239,22 @@
                     }
                 })
             }
+            if(obj.event === 'history_log'){
+                var id = obj.data.id;
+                var name = obj.data.name;
+                layer.open({
+                    type: 2
+                    ,title: '<span style="color:red;font-weight:bold">'+name+'</span>:测评日志'
+                    ,content: '{:url("baby/history_log")}?id='+id
+                    ,area: ['90%','90%']
+                    ,btn: ['返回']
+                    ,yes:function(index){
+                        layer.close(index); //关闭弹层
+                        table.reload('article-lists'); //数据刷新
+                    }
+                })
+            }
+
         });
     });
 

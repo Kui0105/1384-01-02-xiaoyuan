@@ -72,6 +72,8 @@ class ArticleLogic
             'small_type'    => $post['small_type'],
             'create_time'   => time(),
             'sort'          => $post['sort'],
+            'foot_img'      => $post['foot_img']??'',
+            'foot_url'      => $post['foot_url']??'',
             // 'is_notice' => $post['is_notice'],
             // 'synopsis' => $post['synopsis']
         ];
@@ -94,6 +96,8 @@ class ArticleLogic
             'is_show'   => $post['is_show'],
             'update_time'   => time(),
             'sort'      => $post['sort'],
+            'foot_img'      => $post['foot_img']??'',
+            'foot_url'      => $post['foot_url']??'',
             // 'is_notice' => $post['is_notice'],
             // 'synopsis' => $post['synopsis']
 
@@ -106,6 +110,7 @@ class ArticleLogic
         $article = new Article();
         $detail = $article::get(['id' => $id, 'del' => 0]);
         $detail['abs_image'] = UrlServer::getFileUrl($detail['image']);
+        $detail['foot_image'] = UrlServer::getFileUrl($detail['foot_img']);
         if($detail['small_type'] == 2){
             $detail['content'] = UrlServer::getFileUrl($detail['content']);
         }

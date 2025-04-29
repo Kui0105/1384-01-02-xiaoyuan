@@ -12,8 +12,7 @@
                 <div class="layui-colla-item">
                     <h2 class="layui-colla-title like-layui-colla-title">操作提示</h2>
                     <div class="layui-colla-content layui-show">
-                        <p>*同步直播间每天最多可同步100000次，请合理分配获取频次。</p>
-                        <p>*获取直播间列表及直播间信息每天最多可同步100000次。</p>
+                        <p>*仅可更改标题、封面、创建人（前端展示效果）</p>
                         <p>*扫此二维码开播：<img class="image-show" src="/static/admin/images/zhibo.png" alt="zb" style="width:50px;height:50px;"> </p>
                     </div>
                 </div>
@@ -21,13 +20,18 @@
         </div>
 
         <div class="layui-card-body">
-            <div style="padding-bottom: 10px;">
-                <button class="layui-btn layui-btn-sm layuiadmin-btn {$view_theme_color}" data-type="add">创建直播间</button>
-                <button class="layui-btn layui-btn-sm layuiadmin-btn {$view_theme_color}" data-type="sync">同步直播间</button>
-            </div>
+
             <table id="like-table-lists" lay-filter="like-table-lists"></table>
+
+            <script type="text/html" id="image">
+                <img src="{{d.image}}" style="height:auto;width: auto" class="image-show">
+            </script>
+
+            <script type="text/html" id="headUrl">
+                <img src="{{d.headUrl}}" style="height:auto;width: auto" class="image-show">
+            </script>
             <script type="text/html" id="operation">
-                <a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del">删除</a>
+                <a class="layui-btn layui-btn-normal layui-btn-sm" lay-event="edit">编辑</a>
             </script>
         </div>
     </div>
@@ -55,13 +59,16 @@
             ,url: '{:url("LiveRoom/lists")}'
             ,cols: [[
                 {field:'id', width: 80, title: 'ID', sort: true, hide:true}
-                ,{field:'name', title:'直播间名称',width:200}
-                ,{field:'roomid', title:'直播间ID',width:100, align:'center'}
-                ,{field:'anchor_name', title:'主播昵称', width:100, align:'center'}
-                ,{field:'start_time', title:'开播时间', width:200, align:'center'}
-                ,{field:'end_time', title:'结束时间', width:200, align:'center'}
-                ,{field:'goods', title:'商品数量', width:100, align:'center'}
-                ,{field:'live_status', title:'状态', width:100, align:'center'}
+                ,{field:'name', title:'标题',width:200}
+                ,{field:'user_name', title:'主播昵称', width:100, align:'center'}
+                ,{field: 'image', title: '封面',toolbar: '#image',width:150}
+                ,{field:'description', title:'简介', width:200, align:'center'}
+                ,{field:'feedId', title:'feedId', width:100, align:'center'}
+                ,{field:'nonceId', title:'nonceId', width:100, align:'center'}
+                ,{field:'nickname', title:'视频号昵称', width:100, align:'center'}
+                ,{field: 'headUrl', title: '视频号头像',toolbar: '#headUrl',width:150}
+                ,{field:'update_time', title:'更新时间', width:200, align:'center'}
+                ,{field:'status_text', title:'状态', width:100, align:'center'}
                 ,{fixed:'right', title:'操作', width:150, align:'center', toolbar:'#operation'}
 
             ]]
@@ -145,6 +152,45 @@
                         }
                     });
                     layer.close(index);
+                })
+            },
+            edit: function(obj){
+                var id = obj.data.id;
+                layer.open({
+                    type: 2
+                    ,title: '编辑直播'
+                    ,content: '{:url("LiveRoom/edit")}?id='+id
+                    ,area: ['60%','90%']
+                    ,btn: ['确定', '取消']
+                    ,yes: function(index, layero){
+                        var iframeWindow = window['layui-layer-iframe'+ index]
+                            ,submitID = 'edit-live-submit'
+                            ,submit = layero.find('iframe').contents().find('#'+ submitID);
+
+                        //监听提交
+                        iframeWindow.layui.form.on('submit('+ submitID +')', function(data){
+                            var field = data.field;
+                            like.ajax({
+                                url:'{:url("LiveRoom/edit")}',
+                                data:field,
+                                type:"post",
+                                success:function(res)
+                                {
+                                    if(res.code == 1)
+                                    {
+                                        layui.layer.msg(res.msg, {
+                                            offset: '15px'
+                                            , icon: 1
+                                            , time: 1000
+                                        });
+                                        layer.close(index);
+                                        table.reload('like-table-lists');
+                                    }
+                                }
+                            });
+                        });
+                        submit.trigger('click');
+                    }
                 })
             }
         };

@@ -37,8 +37,8 @@ class UserLogic extends LogicBase
             $where[] = [$get['keyword_type'],'like','%'.$get['keyword'].'%'];
         }
         //等级查询
-        if(isset($get['level']) && $get['level'] != ''){
-            $where[] = ['level','=',$get['level']];
+        if(isset($get['new_level']) && $get['new_level'] != ''){
+            $where[] = ['new_level','=',$get['new_level']];
         }
 
         //分组查询
@@ -74,7 +74,7 @@ class UserLogic extends LogicBase
         //会员分组
         $user_group = Db::name('user_group')->where(['del'=>0])->column('name','id');
         //会员等级
-        $user_level = Db::name('user_level')->where(['del'=>0])->column('name','id');
+        // $user_level = Db::name('user_level')->where(['del'=>0])->column('name','id');
 
         $all_user_list = $user->where(['del'=>0])->column('sn,nickname,avatar,mobile,level','id');
         $group_list = db::name('user_group')->where(['del'=>0])->column('name','id');
@@ -88,9 +88,26 @@ class UserLogic extends LogicBase
                 $item['group_name'] = $user_group[$item['group_id']];
             }
 
-            if(isset($user_level[$item['level']])){
-                $item['level_name'] = $user_level[$item['level']];
+            switch ($item['new_level']){
+                case 0:
+                    $item['new_level_name'] = '用户';
+                    break;
+                case 1:
+                    $item['new_level_name'] = '省代';
+                    break;
+                case 2:
+                    $item['new_level_name'] = '市代';
+                    break;
+                case 3:
+                    $item['new_level_name'] = '区代';
+                    break;
+                case 4:
+                    $item['new_level_name'] = '诊所';
+                    break;
             }
+            // if(isset($user_level[$item['level']])){
+            //     $item['level_name'] = $user_level[$item['level']];
+            // }
 
 
             if ($item['avatar'] != '/static/common/image/default/user.png') {
@@ -862,6 +879,15 @@ class UserLogic extends LogicBase
             Db::rollback();
             return $e->getMessage();
         }
+    }
+
+    public static function switchStatus($post)
+    {
+        $data = [
+            'is_live' => $post['is_show'],
+            'update_time' => time(),
+        ];
+        return Db::name('user')->where(['del' => 0, 'id' => $post['id']])->update($data);
     }
 
 }

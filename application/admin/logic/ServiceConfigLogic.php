@@ -13,30 +13,30 @@ class ServiceConfigLogic
         $titles = [
             'config'    => [
                 'mnp'       => [
-                    'ways'  => [ 1, 2, 4, 5 ],
+                    'ways'  => [ 1, 2,  5 ],//4,
                     'title' => '微信小程序',
                     'enterprise_set_url' => 'https://work.weixin.qq.com/nl/act/p/a733314375294bdd',
                 ],
-                'oa'        => [
-                    'ways'  => [ 1, 2, 4 ],
-                    'title' => '微信公众号',
-                    'enterprise_set_url' => 'https://work.weixin.qq.com/nl/act/p/3f8820e724cb44c5',
-                ],
-                'h5'        => [
-                    'ways'  => [ 1, 2, 4 ],
-                    'title' => 'H5商城',
-                    'enterprise_set_url' => 'https://work.weixin.qq.com/nl/act/p/4030a5b69149404d',
-                ],
-                'pc'        => [
-                    'ways'  => [ 1, 4 ],
-                    'title' => 'PC商城',
-                    'enterprise_set_url' => 'https://work.weixin.qq.com/nl/act/p/4030a5b69149404d',
-                ],
-                'app'       => [
-                    'ways'  => [ 1, 2, 4 ],
-                    'title' => 'APP商城',
-                    'enterprise_set_url' => 'https://www.ehaiba.com',
-                ],
+                // 'oa'        => [
+                //     'ways'  => [ 1, 2, 4 ],
+                //     'title' => '微信公众号',
+                //     'enterprise_set_url' => 'https://work.weixin.qq.com/nl/act/p/3f8820e724cb44c5',
+                // ],
+                // 'h5'        => [
+                //     'ways'  => [ 1, 2, 4 ],
+                //     'title' => 'H5商城',
+                //     'enterprise_set_url' => 'https://work.weixin.qq.com/nl/act/p/4030a5b69149404d',
+                // ],
+                // 'pc'        => [
+                //     'ways'  => [ 1, 4 ],
+                //     'title' => 'PC商城',
+                //     'enterprise_set_url' => 'https://work.weixin.qq.com/nl/act/p/4030a5b69149404d',
+                // ],
+                // 'app'       => [
+                //     'ways'  => [ 1, 2, 4 ],
+                //     'title' => 'APP商城',
+                //     'enterprise_set_url' => 'https://www.ehaiba.com',
+                // ],
             ],
             'ways'      => [
                 1   => [

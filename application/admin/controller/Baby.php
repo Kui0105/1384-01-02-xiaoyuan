@@ -33,4 +33,18 @@ class Baby extends AdminBase
         }
         return $this->fetch();
     }
+
+    /**
+     * 宝宝测评日志
+     * @return mixed
+     */
+    public function history_log()
+    {
+        if ($this->request->isAjax()) {
+            $get = $this->request->get();
+            $this->_success('获取成功', BabyLogic::history_check($get));
+        }
+        return $this->fetch();
+    }
+
 }
