@@ -12,8 +12,8 @@ class PayConfigLogic
     public static function lists()
     {
         $payModel = new Pay();
-        $count = $payModel->count();
-        $lists = $payModel->order('sort')->select();
+        $count = $payModel->where('id','in',[1,2])->count();
+        $lists = $payModel->where('id','in',[1,2])->order('sort')->select();
         $lists->append(['status_text']);
         return ['list' => $lists, 'count' => $count];
     }

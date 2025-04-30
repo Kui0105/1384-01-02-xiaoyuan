@@ -14,6 +14,8 @@ use app\common\model\Order;
 use app\common\model\TeamFollow;
 use app\common\model\UserAuth;
 use app\common\model\UserLevelApply;
+use app\common\model\UserNewLevel;
+
 use app\common\server\ConfigServer;
 use app\common\server\storage\Driver as StorageDriver;
 use app\common\server\UrlServer;
@@ -544,7 +546,7 @@ class UserLogic extends LogicBase
         if(!in_array($p_user_data['new_level'],[1,2,3])){
             return '暂无推广权限';
         }
-        $user_data = User::where('id',$p_user_id)->field('new_level,new_level_province,new_level_city,new_level_area,id')->findOrEmpty()->toArray();
+        $user_data = User::where('id',$user_id)->field('new_level,new_level_province,new_level_city,new_level_area,id')->findOrEmpty()->toArray();
         $apply_level = UserLevelApply::where(['status'=>1,'user_id'=>$user_id])->value('level');
         if($apply_level){
             $can_level = intval($apply_level -1);
@@ -552,10 +554,13 @@ class UserLogic extends LogicBase
                 return '不可申请该级别推广';
             }
         }
-        if($user_data['new_level_area']){
-            $can_level = intval($user_data['new_level'] -1);
-            if($can_level != $p_user_data['new_level']){
-                return '不可申请该级别推广';
+        if($user_data['new_level']){
+            $can_level = intval($user_data['new_level']);
+            if($can_level == 4){
+                return '不可申请多个诊所';
+            }
+            if($can_level != $apply_level){
+                return '不可申请其他级别推广';
             }
         }
         if($status){
@@ -596,6 +601,62 @@ class UserLogic extends LogicBase
 
     public static function level_apply($user_id,$data)
     {
-        var_dump($data);die;
+        $res = self::check_apply($data['user_id'],$user_id,false);
+        if(!isset($res['r_status'])){
+            return $res;
+        }
+        $p_user_data = $res['p_user_data'];
+        $level = $p_user_data['new_level'] + 1;
+        if($level != $data['level']){
+            return '级别错误';
+        }
+
+        $self_id = 0;
+        if($level != 4){
+            $key_name = $level == 2?'new_level_province':'new_level_city';
+            $son_area_id = DevRegion::getLevelArea($p_user_data[$key_name]);
+            $son_area_id = array_column($son_area_id,'id');
+            if(!in_array($data['area_id'],$son_area_id)){
+                return '区域错误';
+            }
+            $self_id = $data['area_id'];
+            $area_if = UserNewLevel::where('self_id',$self_id)->count();
+            if($area_if){
+                return '当前区域已有代理';
+            }
+        }else{
+
+        }
+        $apply_count = UserLevelApply::where(['status'=>1,'self_id'=>$self_id])->count();
+        if($apply_count){
+            return '请勿重复申请';
+        }
+        switch ($p_user_data['new_level']){
+            case 1:
+                $pid = $p_user_data['new_level_province'];
+                break;
+            case 2:
+                $pid = $p_user_data['new_level_city'];
+                break;
+            case 3:
+                $pid = $p_user_data['new_level_area'];
+                break;
+        }
+        $apply_data = [
+            'user_id'   => $user_id,
+            'name'      => $data['name'],
+            'mobile'    => $data['mobile'],
+            'level'     => $level,
+            'pid'       => $pid,
+            'self_id'   => $self_id,
+            'latitude'  => $data['latitude'],
+            'longtude'  => $data['longtude'],
+            'address'   => $data['address'],
+            'remark'    => $data['remark']??'',
+            'create_time'   => time()
+        ];
+        UserLevelApply::insert($apply_data);
+        return true;
     }
+
 }

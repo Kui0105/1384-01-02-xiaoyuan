@@ -149,7 +149,13 @@
 <!--                <a class="layui-btn layui-btn-normal layui-btn-sm"  id="adjust_level" lay-event="adjust_level">等级调整</a>-->
                 <a class="layui-btn layui-btn-normal layui-btn-sm"  id="adjust_province" lay-event="adjust_province">省代调整</a>
                 <a class="layui-btn layui-btn-normal layui-btn-sm"  id="baby" lay-event="baby">档案管理</a>
-
+<!--                <a class="layui-btn layui-btn-danger layui-btn-sm xx" lay-event="live_switch">-->
+<!--                    {{#  if(d.is_live == 1){ }}-->
+<!--                    直播忽略-->
+<!--                    {{#  } else { }}-->
+<!--                    直播同步-->
+<!--                    {{#  } }}-->
+<!--                </a>-->
 <!--                <a class="layui-btn layui-btn-normal layui-btn-sm"  id="adjust_first_leader" lay-event="adjust_first_leader">推荐人调整</a>-->
 
             </script>
@@ -648,6 +654,42 @@
                         table.reload('user-lists'); //数据刷新
                     }
                 })
+            }
+            if(obj.event === 'live_switch'){
+                var id = obj.data.id;
+                var live = obj.data.is_live;
+                var title = obj.data.nickname;
+                var confirm_text = '';
+                if (live == 1){
+                    confirm_text = '确定关闭同步直播权限：';
+                    live = 0;
+                } else {
+                    live = 1;
+                    confirm_text = '确定开启同步直播权限：';
+                }
+
+                layer.confirm(confirm_text+'<span style="color: red">'+title+'</span>', function(index){
+                    $.ajax({
+                        url:'{:url("user/switchStatus")}',
+                        data:{id:id,is_show:live},
+                        type:"post",
+                        success:function(res)
+                        {
+                            if(res.code == 1)
+                            {
+                                layui.layer.msg(res.msg, {
+                                    offset: '15px'
+                                    , icon: 1
+                                    , time: 1000
+                                });
+                                layer.close(index); //关闭弹层
+                                table.reload('user-lists');
+                            }
+                        }
+                    });
+                    layer.close(index);
+                });
+
             }
         });
     });
