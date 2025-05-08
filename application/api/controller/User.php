@@ -390,7 +390,7 @@ class User extends ApiBase
         $user_id = $this->request->get('user_id');
         $res = UserLogic::apply_info($user_id,$this->user_id);
         if($res === false){
-            $this->_error('错误');
+            $this->_error(UserLogic::getError() ?? '错误');
         }
         return $this->_success('成功',$res);
     }

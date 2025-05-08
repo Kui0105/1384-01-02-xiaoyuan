@@ -6,6 +6,7 @@ namespace app\admin\logic;
 
 use app\common\model\DevRegion;
 use app\common\model\SelffetchShop;
+use think\facade\Cache;
 
 class SelffetchShopLogic
 {
@@ -84,7 +85,13 @@ class SelffetchShopLogic
      */
     public static function getAreaLists()
     {
-        return DevRegion::field(['name', 'id', 'parent_id as pid', 'level'])->where('level', '>', 0)->select();
+        $cache = Cache::get('area_all');
+        if ($cache) {
+            return $cache;
+        }
+        $all = DevRegion::field(['name', 'id', 'parent_id as pid', 'level'])->where('level', '>', 0)->select();
+        Cache::set('area_all', $all);
+        return $all;
     }
 
     /**

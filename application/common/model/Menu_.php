@@ -50,20 +50,20 @@ class Menu_{
     public static function getMenuContent($scene = true,$from = true){
         //首页菜单
         $config1 = [
-            self::index_seckill            => [
-                'name'          => '限时秒杀',
-                'link'          => '/bundle/pages/goods_seckill/goods_seckill',
-                'is_tab'        => 0,
-                'link_type'     => 1,
-                'menu_type'     => 1,
-            ],
-            self::index_team_activity      => [
-                'name'          => '拼团活动',
-                'link'          => '/bundle/pages/goods_combination/goods_combination',
-                'is_tab'        => 0,
-                'link_type'     => 1,
-                'menu_type'     => 1,
-            ],
+            // self::index_seckill            => [
+            //     'name'          => '限时秒杀',
+            //     'link'          => '/bundle/pages/goods_seckill/goods_seckill',
+            //     'is_tab'        => 0,
+            //     'link_type'     => 1,
+            //     'menu_type'     => 1,
+            // ],
+            // self::index_team_activity      => [
+            //     'name'          => '拼团活动',
+            //     'link'          => '/bundle/pages/goods_combination/goods_combination',
+            //     'is_tab'        => 0,
+            //     'link_type'     => 1,
+            //     'menu_type'     => 1,
+            // ],
             self::index_hot_sell           => [
                 'name'          => '热销榜单',
                 'link'          => '/bundle/pages/hot_list/hot_list',
@@ -126,27 +126,27 @@ class Menu_{
                 'link_type'     => 1,
                 'menu_type'     => 1,
             ],
-            self::index_luckdraw           => [
-                'name'          => '积分抽奖',
-                'link'          => '/bundle/pages/luckly_wheel/luckly_wheel',
-                'is_tab'        => 0,
-                'link_type'     => 1,
-                'menu_type'     => 1,
-            ],
-            self::index_bargain            => [
-                'name'          => '砍价活动',
-                'link'          => '/bundle/pages/bargain/bargain',
-                'is_tab'        => 0,
-                'link_type'     => 1,
-                'menu_type'     => 1,
-            ],
-            self::index_live_room           => [
-                'name'          => '商城直播',
-                'link'          => '/bundle/pages/live_broadcast/live_broadcast',
-                'is_tab'        => 0,
-                'link_type'     => 1,
-                'menu_type'     => 1,
-            ],
+            // self::index_luckdraw           => [
+            //     'name'          => '积分抽奖',
+            //     'link'          => '/bundle/pages/luckly_wheel/luckly_wheel',
+            //     'is_tab'        => 0,
+            //     'link_type'     => 1,
+            //     'menu_type'     => 1,
+            // ],
+            // self::index_bargain            => [
+            //     'name'          => '砍价活动',
+            //     'link'          => '/bundle/pages/bargain/bargain',
+            //     'is_tab'        => 0,
+            //     'link_type'     => 1,
+            //     'menu_type'     => 1,
+            // ],
+            // self::index_live_room           => [
+            //     'name'          => '商城直播',
+            //     'link'          => '/bundle/pages/live_broadcast/live_broadcast',
+            //     'is_tab'        => 0,
+            //     'link_type'     => 1,
+            //     'menu_type'     => 1,
+            // ],
         ];
         //个人中心菜单
         $config2 = [
@@ -171,13 +171,13 @@ class Menu_{
                 'link_type'     => 1,
                 'menu_type'     => 1,
             ],
-            self::centre_level_serve        => [
-                'name'          => '等级服务',
-                'link'          => '/pages/user_vip/user_vip',
-                'is_tab'        => 0,
-                'link_type'     => 1,
-                'menu_type'     => 1,
-            ],
+            // self::centre_level_serve        => [
+            //     'name'          => '等级服务',
+            //     'link'          => '/pages/user_vip/user_vip',
+            //     'is_tab'        => 0,
+            //     'link_type'     => 1,
+            //     'menu_type'     => 1,
+            // ],
             self::centre_store_help         => [
                 'name'          => '帮助中心',
                 'link'          => '/pages/news_list/news_list?type=1',
@@ -206,20 +206,20 @@ class Menu_{
                 'link_type'     => 1,
                 'menu_type'     => 1,
             ],
-            self::centre_team_activity      => [
-                'name'          => '我的拼团',
-                'link'          => '/bundle/pages/user_group/user_group',
-                'is_tab'        => 0,
-                'link_type'     => 1,
-                'menu_type'     => 1,
-            ],
-            self::centre_bargain            => [
-                'name'          => '砍价记录',
-                'link'          => '/bundle/pages/bargain_code/bargain_code',
-                'is_tab'        => 0,
-                'link_type'     => 1,
-                'menu_type'     => 1,
-            ],
+            // self::centre_team_activity      => [
+            //     'name'          => '我的拼团',
+            //     'link'          => '/bundle/pages/user_group/user_group',
+            //     'is_tab'        => 0,
+            //     'link_type'     => 1,
+            //     'menu_type'     => 1,
+            // ],
+            // self::centre_bargain            => [
+            //     'name'          => '砍价记录',
+            //     'link'          => '/bundle/pages/bargain_code/bargain_code',
+            //     'is_tab'        => 0,
+            //     'link_type'     => 1,
+            //     'menu_type'     => 1,
+            // ],
             self::centre_writeoff_order     => [
                 'name'          => '核销订单',
                 'link'          => '/bundle/pages/writeoff_order/writeoff_order',

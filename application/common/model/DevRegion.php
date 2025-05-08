@@ -21,6 +21,23 @@ class DevRegion extends Model
         return $list;
     }
 
+    public static function getLevelSon($pid=100000,$level)
+    {
+        $cache = Cache::get('area_son_'.$pid);
+        if ($cache) {
+            return $cache;
+        }
+        $list =  self::field(['name', 'id', 'parent_id as pid', 'level'])->where('parent_id',$pid)->select()->toArray();
+        if($level == 2){
+            foreach ($list as &$item){
+                $item['child'] = self::getLevelArea($item['id']);
+            }
+        }
+
+        Cache::set('area_son_'.$pid, $list);
+        return $list;
+    }
+
     public static function getArea($id)
     {
         if(!$id){
