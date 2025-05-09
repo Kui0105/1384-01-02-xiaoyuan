@@ -5,7 +5,9 @@ use app\admin\logic\DistributionLevelLogic;
 use app\admin\logic\DistributionMemberLogic;
 use app\admin\logic\UserNewLevelRadioLogic;
 use app\admin\logic\SelffetchShopLogic;
+use app\admin\logic\HosInfoLogic;
 use app\common\model\DevRegion;
+use app\common\server\ConfigServer;
 
 /**
  * 分销会员
@@ -157,9 +159,139 @@ class DistributionMember extends AdminBase
         return view('', ['area_lists' => json_encode(SelffetchShopLogic::getAreaLists(), JSON_UNESCAPED_UNICODE)]);
     }
 
+    /**
+     * @notes 添加区代
+     */
+    public function add_area(){
+        if ($this->request->isAjax()) {
+            $post = $this->request->post();
+            $result = UserNewLevelRadioLogic::adjustArea($post); //逻辑层处理信息
+            if($result === true){
+                $this->_success('操作成功');
+            }
+            $this->_error($result);
+        }
+        $this->assign('area_list',DevRegion::getLevelAll());
+        return $this->fetch('');
+    }
 
+    /**
+     * @notes 修改区代
+     */
+    public function edit_area()
+    {
+        if($this->request->isPost()) {
+            $params = $this->request->post();
+            $result = UserNewLevelRadioLogic::edit_area($params);
+            if($result === true) {
+                return $this->_success('调整成功');
+            }
+            return $this->_error($result);
+        }
+        $params = $this->request->get();
+        $info = UserNewLevelRadioLogic::getInfo($params);
+        return view('', [
+            'info' => $info,
+            'area_list' => DevRegion::getLevelAll()
+        ]);
+    }
 
+    /**
+     * @notes 移除区代
+     */
+    public function del_area()
+    {
+        $params = $this->request->post();
+        $result = UserNewLevelRadioLogic::del_area($params);
+        if($result) {
+            return $this->_success('操作成功');
+        }
+        return $this->_error(UserNewLevelRadioLogic::getError());
+    }
 
+    /**
+     * 诊所列表
+     */
+    public function hospital()
+    {
+        if ($this->request->isPost()) {
+            $params = $this->request->post();
+            $params['level'] = 4;
+            $result = UserNewLevelRadioLogic::lists($params);
+            return $this->_success('', $result);
+        }
+        return view('', ['area_lists' => json_encode(SelffetchShopLogic::getAreaLists(), JSON_UNESCAPED_UNICODE)]);
+    }
+
+    /**
+     * @notes 添加诊所
+     */
+    public function add_hos(){
+        if ($this->request->isAjax()) {
+            $post = $this->request->post();
+            $result = UserNewLevelRadioLogic::adjustHos($post); //逻辑层处理信息
+            if($result === true){
+                $this->_success('操作成功');
+            }
+            $this->_error($result);
+        }
+
+        $this->assign('tx_map_key',ConfigServer::get('map','tx_map_key',''));
+        $this->assign('area_lists', json_encode(SelffetchShopLogic::getAreaLists(), JSON_UNESCAPED_UNICODE));
+        return $this->fetch('');
+    }
+
+    /**
+     * @notes 修改诊所
+     */
+    public function edit_hos()
+    {
+        if($this->request->isPost()) {
+            $params = $this->request->post();
+            $result = UserNewLevelRadioLogic::edit_hos($params);
+            if($result === true) {
+                return $this->_success('调整成功');
+            }
+            return $this->_error($result);
+        }
+        $params = $this->request->get();
+        $info = UserNewLevelRadioLogic::getInfo($params);
+        return view('', [
+            'info'          => $info,
+            'tx_map_key'    => ConfigServer::get('map','tx_map_key',''),
+            'area_lists'     => json_encode(SelffetchShopLogic::getAreaLists(), JSON_UNESCAPED_UNICODE)
+        ]);
+    }
+
+    /**
+     * 门店信息
+     */
+    public function hos_info($id){
+        if($this->request->isAjax()){
+            $post = $this->request->post();
+            $res = HosInfoLogic::edit($post);
+            if($res === true){
+                $this->_success('保存成功');
+            }
+            return $this->_error($res);
+        }
+        $detail = HosInfoLogic::getInfo($id);
+        $this->assign('info',$detail);
+        return $this->fetch();
+    }
+
+    /**
+     * @notes 移除诊所
+     */
+    public function del_hos()
+    {
+        $params = $this->request->post();
+        $result = UserNewLevelRadioLogic::del_hos($params);
+        if($result) {
+            return $this->_success('操作成功');
+        }
+        return $this->_error(UserNewLevelRadioLogic::getError());
+    }
 
     /**
      * @notes 分销会员列表

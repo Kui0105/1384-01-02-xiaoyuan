@@ -1,0 +1,309 @@
+{layout name="layout1" /}
+<style>
+    .search {
+        margin-top: 15px;
+    }
+    .search .layui-form-label {
+        width: 100px;
+        text-align: right;
+    }
+    .btns {
+        margin-top: 15px;
+    }
+    .layui-table-cell {
+        height:auto;
+    }
+    .user-info {
+        width: 60px !important;
+    }
+</style>
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <!--操作提示-->
+            <div class="layui-collapse like-layui-collapse" lay-accordion="" style="border:1px dashed #c4c4c4">
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title like-layui-colla-title" style="background-color: #fff">操作提示</h2>
+                    <div class="layui-colla-content layui-show">
+                        <p>*区代；</p>
+                        <p>*地区筛选仅能筛选最后一个下拉选项</p>
+                    </div>
+                </div>
+            </div>
+            <!--搜索区域-->
+            <div class="search layui-form">
+                <div class="layui-inline">
+                    <div class="layui-form-label user-info">用户信息</div>
+                    <div class="layui-input-inline">
+                        <input type="text" id="keyword" name="keyword" class="layui-input" />
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <div class="layui-form-label">地区</div>
+                    <div class="layui-input-inline">
+                        <select  id="province"  placeholder="请选择" lay-filter="province" lay-search>
+                        </select>
+                    </div>
+                    <div class="layui-input-inline">
+                        <select  id="city" lay-filter="city" lay-verify="required" lay-search>
+                        </select>
+                    </div>
+                    <div class="layui-input-inline">
+                        <select name="district" id="district" lay-filter="district" lay-verify="required" lay-search>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <button class="layui-btn layui-btn-primary layui-bg-blue" lay-submit lay-filter="search">搜索</button>
+                    <button class="layui-btn layui-btn-primary" lay-submit lay-filter="reset">重置</button>
+                </div>
+            </div>
+            <!--功能按钮-->
+            <div class="btns">
+                <buttion class="layui-btn layui-btn-sm layui-bg-blue" id="open" style="margin-bottom: 10px;">添加区代</buttion>
+            </div>
+            <!--数据表格-->
+            <table id="lists" lay-filter="lists"></table>
+            <!--工具条模板-->
+            <script type="text/html" id="operate">
+                <a class="layui-btn layui-btn-sm layui-bg-blue" lay-event="adjust">修改</a>
+                <a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="freeze">移除</a>
+            </script>
+            <!--自定义模板-->
+            <script type="text/html" id="user-info">
+                <img src="{{d.avatar}}" style="height:60px;width: 60px" class="image-show">
+                <div class="layui-input-inline"  style="text-align: left;">
+                    <p>用户电话:{{d.user_mobile}}</p>
+                    <p>用户昵称:{{d.nickname}}</p>
+                </div>
+            </script>
+
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    layui.config({
+        version:"{$front_version}",
+        base: '/static/plug/layui-admin/dist/layuiadmin/modules/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['table', 'form', 'like'], function () {
+        let $ = layui.$
+            , form = layui.form
+            , like = layui.like
+            , table = layui.table;
+
+        //监听搜索
+        form.on('submit(search)', function(data){
+            var field = data.field;
+            //执行重载
+            table.reload('lists', {
+                where: field,
+                page: {curr: 1}
+            });
+        });
+
+        //清空查询
+        form.on('submit(reset)', function(){
+            $('#keyword').val('');
+            $('#province').val('');
+            $('#city').val('');
+            $('#district').val('');
+            $('#is_freeze').val('all');
+            form.render('select');
+            //刷新列表
+            table.reload('lists', {
+                where: [], page: {curr: 1}
+            });
+        });
+
+        // 数据表格渲染
+        table.render({
+            elem: '#lists'
+            ,url: '{:url("distribution_member/area")}' //数据接口
+            ,method: 'post'
+            ,page: true //开启分页
+            ,cols: [[ //表头
+                {templet: '#user-info', title: '用户信息', width:380}
+                ,{field: 'area_name', title: '地区',width: 200}
+                ,{field: 'radio', title: '抽成（%）',width: 200}
+                ,{field: 'create_time', title: '成为时间'}
+                ,{title: '操作', width: 200, align: 'center', toolbar: '#operate'}
+            ]]
+            , text: {none: '暂无数据！'}
+            , parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+                return {
+                    "code": res.code,
+                    "msg": res.msg,
+                    "count": res.data.count, //解析数据长度
+                    "data": res.data.lists, //解析数据列表
+                };
+            },
+            response: {
+                statusCode: 1
+            }
+            ,done: function(res, curr, count){
+                // 解决操作栏因为内容过多换行问题
+                $(".layui-table-main tr").each(function (index, val) {
+                    $($(".layui-table-fixed-l .layui-table-body tbody tr")[index]).height($(val).height());
+                    $($(".layui-table-fixed-r .layui-table-body tbody tr")[index]).height($(val).height());
+                });
+            }
+        });
+
+        // 工具条事件
+        table.on('tool(lists)', function(obj){
+            var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+            if(layEvent === 'freeze'){ // 移除区代
+                layer.confirm('确定要移除区代吗?', function(index){
+                    layer.close(index);
+                    like.ajax({
+                        url: "{:url('distribution_member/del_area')}",
+                        data: {id: obj.data.id},
+                        type: "post",
+                        success:function(res) {
+                            if(res.code === 1) {
+                                layui.layer.msg(res.msg);
+                                layer.close(index);
+                                table.reload("lists");
+                            }
+                        }
+                    });
+                });
+            }else if(layEvent === 'adjust'){ // 分销等级调整
+                id = obj.data.id;
+                layer.open({
+                    type: 2
+                    ,title: "区代调整"
+                    ,content: "{:url('distribution_member/edit_area')}?id=" + id
+                    ,area: ["90%", "90%"]
+                    ,btn: ["确定", "取消"]
+                    ,yes: function(index, layero){
+                        var iframeWindow = window["layui-layer-iframe" + index];
+                        var submit = layero.find("iframe").contents().find("#edit_area-submit");
+                        iframeWindow.layui.form.on("submit(edit_area-submit)", function(data){
+                            like.ajax({
+                                url: "{:url('distribution_member/edit_area')}",
+                                data: data.field,
+                                type: "post",
+                                success:function(res) {
+                                    if(res.code === 1) {
+                                        layui.layer.msg(res.msg);
+                                        layer.close(index);
+                                        table.reload("lists");
+                                    }
+                                }
+                            });
+                            return false;
+                        });
+                        submit.trigger("click");
+                    }
+                });
+            }
+        });
+
+        // 功能按钮
+        $('#open').click(function() { // 开通分销会员
+            layer.open({
+                type: 2
+                ,title: "添加区代"
+                ,content: "{:url('distribution_member/add_area')}"
+                ,area: ["90%", "90%"]
+                ,btn: ["确定", "取消"]
+                ,yes: function(index, layero){
+                    var iframeWindow = window['layui-layer-iframe'+ index]
+                        ,submit = layero.find('iframe').contents().find('#adjust_area-submit');
+                    //监听提交
+                    iframeWindow.layui.form.on('submit(adjust_area-submit)', function(data){
+                        var field = data.field;
+                        $.ajax({
+                            url:'{:url("distribution_member/add_area")}',
+                            data:field,
+                            type:"post",
+                            success:function(res)
+                            {
+                                if(res.code == 1)
+                                {
+                                    layui.layer.msg(res.msg, {
+                                        offset: '15px'
+                                        , icon: 1
+                                        , time: 1000
+                                    });
+                                    layer.close(index); //关闭弹层
+                                    table.reload('lists'); //数据刷新
+                                }else{
+                                    layer.msg(res.msg, {
+                                        offset: '15px'
+                                        , icon: 2
+                                        , time: 1000
+                                    });
+                                }
+                            }
+                        });
+                    });
+                    submit.trigger('click');
+                }
+            });
+        });
+
+        var area = {$area_lists | raw};
+
+        setSelectFirst();
+
+        function setSelectFirst(default_id) {
+            var category_select_html = '';
+            for (var i in area) {
+                if (area[i]['level'] == 1) {
+                    category_select_html += '<option value="' + area[i]['id'] + '">' + area[i]['name'] + '</option>';
+                }
+            }
+            $('select[id="province"]').html(category_select_html);
+            $('select[id="province"]').val(default_id);
+            form.render('select');
+        }
+        function setSelectSecond(default_id, pid) {
+            pid = pid === undefined ? $('select[id="province"]').val() : pid;
+            $('select[id="city"]').html('');
+            $('select[name="district"]').html('');
+            var category_select_html = '';
+            for (var i in area) {
+                if (area[i]['pid'] == pid) {
+                    category_select_html += '<option value="' + area[i]['id'] + '">' + area[i]['name'] + '</option>';
+                }
+            }
+            $('select[id="city"]').html(category_select_html);
+            $('select[id="city"]').val(default_id);
+            form.render('select');
+        }
+        function setSelectThird(default_id, pid) {
+            pid = pid === undefined ? $('select[id="city"]').val() : pid;
+            $('select[name="district"]').html('');
+            var province = $('select[name="province"]').val();
+            var category_select_html = '';
+            for (var i in area) {
+                if (area[i]['pid'] == pid) {
+                    category_select_html += '<option value="' + area[i]['id'] + '">' + area[i]['name'] + '</option>';
+                }
+            }
+            $('select[name="district"]').html(category_select_html);
+            $('select[name="district"]').val(default_id);
+            form.render('select');
+        }
+        form.on('select(province)', function (data) {
+            setSelectSecond('', data.value);
+        });
+        form.on('select(city)', function (data) {
+            setSelectThird('', data.value);
+        });
+    });
+
+
+
+
+</script>

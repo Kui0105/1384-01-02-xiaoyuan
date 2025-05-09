@@ -68,5 +68,23 @@ class DevRegion extends Model
         return $str;
     }
 
+    public static function getLevelAll()
+    {
+        $cache = Cache::get('area_level_all');
+        if ($cache) {
+            return $cache;
+        }
+        $list =  self::getLevelArea();
+        foreach ($list as &$item){
+            $son = self::getLevelArea($item['id']);
+
+            foreach ($son as &$v){
+                $v['child'] = self::getLevelArea($v['id']);
+            }
+            $item['child'] = $son;
+        }
+        Cache::set('area_level_all', $list);
+        return $list;
+    }
 
 }

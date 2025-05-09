@@ -23,6 +23,14 @@ class UserNewLevelRadioLogic extends LogicBase
             $where[] = ['l.self_id', '=', $get['city']];
         }
 
+        if (isset($get['district']) && $get['district']) {
+            $where[] = ['l.self_id', '=', $get['district']];
+        }
+
+        if (isset($get['districts']) && $get['districts']) {
+            $where[] = ['l.pid', '=', $get['districts']];
+        }
+
         if (isset($get['keyword']) && $get['keyword']) {
             $where[] = ['u.nickname|u.mobile', 'like', '%' . $get['keyword'] . '%'];
         }
@@ -43,7 +51,25 @@ class UserNewLevelRadioLogic extends LogicBase
             ->select();
 
         foreach ($list as &$item){
-            $item['area_name'] = DevRegion::getArea($item['self_id']);
+            switch ($item['level']){
+                case 1:
+                    $item['area_name'] = DevRegion::getArea($item['self_id']);
+                    break;
+                case 2:
+                    $item['area_name'] = DevRegion::getArea($item['pid']).'-'.DevRegion::getArea($item['self_id']);
+                    break;
+                case 3:
+                    $province_id = DevRegion::where('id',$item['pid'])->value('parent_id');
+                    $item['area_name'] = DevRegion::getArea($province_id).'-'.DevRegion::getArea($item['pid']).'-'.DevRegion::getArea($item['self_id']);
+                    break;
+                case 4:
+                    $city_id = DevRegion::where('id',$item['pid'])->value('parent_id');
+                    $province_id = DevRegion::where('id',$city_id)->value('parent_id');
+                    $item['area_name'] = DevRegion::getArea($province_id).'-'.DevRegion::getArea($city_id).'-'.DevRegion::getArea($item['pid']);
+                    $item['address'] = Db::name('user_new_level')->where('id',$item['self_id'])->value('address');
+                    break;
+            }
+
             $item['avatar'] = addImgDomain($item['avatar']);
             $item['create_time'] = date('Y-m-d H:i:s',$item['create_time']);
         }
@@ -203,6 +229,15 @@ class UserNewLevelRadioLogic extends LogicBase
             return [];
         }
         $radio_data['avatar'] = addImgDomain($radio_data['avatar']);
+        if($radio_data['level'] == 4){
+            $radio_data['city'] = DevRegion::where('id',$radio_data['pid'])->value('parent_id');
+            $radio_data['province'] = DevRegion::where('id',$radio_data['city'])->value('parent_id');
+            $radio_data['district']  = $radio_data['pid'];
+            $level_data = Db::name('user_new_level')->where('id',$radio_data['self_id'])->find();
+            $radio_data['latitude'] = $level_data['latitude'];
+            $radio_data['longitude'] = $level_data['longitude'];
+            $radio_data['address'] = $level_data['address'];
+        }
         // $radio_data['self_name'] = DevRegion::getArea($radio_data['self_id']);
         return $radio_data;
     }
@@ -359,6 +394,7 @@ class UserNewLevelRadioLogic extends LogicBase
             $time = time();
 
             Db::name('user_new_level_radio')->where('id',$id)->update([
+                'pid'       => $pid,
                 'self_id'   => $level,
                 'radio'     => $money,
             ]);
@@ -372,7 +408,7 @@ class UserNewLevelRadioLogic extends LogicBase
 
             if(empty($user_city_arr)){
                 Db::name('user_new_level')->where(['user_id'=>$user_id,'level'=>2])->update(['pid'=>$pid,'self_id'=>$level]);
-                Db::name('user')->where('id',$user_id)->update(['new_level'=>2,'new_level_province'=>$level]);
+                Db::name('user')->where('id',$user_id)->update(['new_level'=>2,'new_level_city'=>$level]);
             }else{
                 if($radio_data['pid'] != $pid){
                     return '非原归属省份';
@@ -387,6 +423,369 @@ class UserNewLevelRadioLogic extends LogicBase
         } catch (Exception $e) {
             Db::rollback();
             return $e->getMessage();
+        }
+    }
+
+    public static function adjustArea($post_data)
+    {
+        $user_id    = $post_data['user_id']??0;
+        $level      = $post_data['level']??0;
+        $remark     = $post_data['remark']??'';
+        $money      = $post_data['money']??0;
+        if(!$user_id || !$level || !$money || !$remark){
+            return '请填写完整';
+        }
+        if($money < 0){
+            return '抽成比例错误';
+        }
+        $user =  User::field('id,new_level,new_level_province,new_level_city,new_level_area')
+            ->findOrEmpty($user_id);
+        if($user->isEmpty()) {
+            return '用户不存在';
+        }
+        if($user['new_level']){
+            if($user['new_level'] !=3){
+                return '用户已有其他等级';
+            }
+        }
+        $now_city_arr = Db::name('user_new_level_radio')->where('level',3)->column('self_id');//->where('level','in',[1,2,3])
+        if(in_array($level,$now_city_arr)){
+            return '该区域已有代理';
+        }
+        $area_data = DevRegion::where('id',$level)->field('parent_id,level')->findOrEmpty();
+        if(empty($area_data) || $area_data['level'] !=3){
+            return '区域错误';
+        }
+        $pid = $area_data['parent_id'];
+        Db::startTrans();
+        try {
+            $time = time();
+            if($user['new_level']){
+                $level_data = Db::name('user_new_level')->where(['user_id'=>$user_id,'level'=>3])->find();
+                if($level_data['pid'] != $pid){
+                    return '非原归属城市';
+                }
+                $user_update = [
+                    'new_level_area' => $user['new_level_area'].','.$level
+                ];
+                $level_update = [
+                    'self_id'   => $level_data['self_id'].','.$level
+                ];
+                Db::name('user_new_level')->where('id',$level_data['id'])->update($level_update);
+            }else{
+                $user_update = [
+                    'new_level'             => 3,
+                    'new_level_area'        => $level
+                ];
+                Db::name('user_new_level')->insert([
+                    'user_id'   => $user_id,
+                    'pid'       => $pid,
+                    'self_id'   => $level,
+                    'level'     => 3,
+                    'create_time'   => $time,
+                ]);
+            }
+            Db::name('user')->where('id',$user_id)->update($user_update);
+
+            Db::name('user_new_level_log')->insert([
+                'user_id'   => $user_id,
+                'remark'    => '后台添加区代:'.$remark,
+                'content'   => json_encode($post_data),
+                'create_time'   => $time
+            ]);
+            Db::name('user_new_level_radio')->insert([
+                'user_id'   => $user_id,
+                'pid'       => $pid,
+                'self_id'   => $level,
+                'level'     => 3,
+                'radio'     => $money,
+                'create_time'   => $time,
+            ]);
+            Db::commit();
+            return true;
+        } catch (Exception $e) {
+            Db::rollback();
+            return $e->getMessage();
+        }
+    }
+
+    public static function edit_area($post_data)
+    {
+        $id         = $post_data['id']??0;
+        $level      = $post_data['level']??0;
+        $remark     = $post_data['remark']??'';
+        $money      = $post_data['money']??0;
+        if(!$id || !$level || !$money || !$remark){
+            return '请填写完整';
+        }
+        if($money < 0){
+            return '抽成比例错误';
+        }
+        $radio_data = Db::name('user_new_level_radio')->where('id',$id)->find();
+        if(!$radio_data){
+            self::$error = '区代不存在';
+            return false;
+        }
+
+        $now_city_arr = Db::name('user_new_level_radio')->where('level',3)->where('id','<>',$id)->column('self_id');//->where('level','in',[1,2,3])
+        if(in_array($level,$now_city_arr)){
+            return '该区域已有代理';
+        }
+        $area_data = DevRegion::where('id',$level)->field('parent_id,level')->findOrEmpty();
+        if(empty($area_data) || $area_data['level'] !=3){
+            return '区域错误';
+        }
+        $pid = $area_data['parent_id'];
+        Db::startTrans();
+        try {
+            $user_id = $radio_data['user_id'];
+            $time = time();
+
+            Db::name('user_new_level_radio')->where('id',$id)->update([
+                'pid'       => $pid,
+                'self_id'   => $level,
+                'radio'     => $money,
+            ]);
+            Db::name('user_new_level_log')->insert([
+                'user_id'   => $user_id,
+                'remark'    => '后台编辑区代:'.$remark,
+                'content'   => json_encode($radio_data),
+                'create_time'   => $time
+            ]);
+            $user_area_arr = Db::name('user_new_level_radio')->where('user_id',$radio_data['user_id'])->where('id','<>',$id)->column('self_id');
+
+            if(empty($user_area_arr)){
+                Db::name('user_new_level')->where(['user_id'=>$user_id,'level'=>3])->update(['pid'=>$pid,'self_id'=>$level]);
+                Db::name('user')->where('id',$user_id)->update(['new_level'=>3,'new_level_area'=>$level]);
+            }else{
+                if($radio_data['pid'] != $pid){
+                    return '非原归属城市';
+                }
+                $self_str  = implode(',',$user_area_arr).','.$level;
+                Db::name('user_new_level')->where(['user_id'=>$radio_data['user_id'],'level'=>3])->update(['self_id'=>$self_str]);
+                Db::name('user')->where('id',$radio_data['user_id'])->update(['new_level_area'=>$self_str]);
+            }
+
+            Db::commit();
+            return true;
+        } catch (Exception $e) {
+            Db::rollback();
+            return $e->getMessage();
+        }
+    }
+
+    public static function del_area($params)
+    {
+        $id = $params['id']??0;
+        $radio_data = Db::name('user_new_level_radio')->where('id',$id)->find();
+        if(!$radio_data){
+            self::$error = '区代不存在';
+            return false;
+        }
+        Db::startTrans();
+        try {
+            $time = time();
+            $user_city_arr = Db::name('user_new_level_radio')->where('user_id',$radio_data['user_id'])->where('id','<>',$id)->column('self_id');
+            Db::name('user_new_level_radio')->where('id',$id)->delete();
+            Db::name('user_new_level_log')->insert([
+                'user_id'   => $radio_data['user_id'],
+                'remark'    => '后台移除区代',
+                'content'   => json_encode($radio_data),
+                'create_time'   => $time
+            ]);
+            if(empty($user_city_arr)){
+                Db::name('user_new_level')->where(['user_id'=>$radio_data['user_id'],'level'=>3])->delete();
+                Db::name('user')->where('id',$radio_data['user_id'])->update(['new_level'=>0,'new_level_area'=>'']);
+            }else{
+                $self_str  = implode(',',$user_city_arr);
+                Db::name('user_new_level')->where(['user_id'=>$radio_data['user_id'],'level'=>3])->update(['self_id'=>$self_str]);
+                Db::name('user')->where('id',$radio_data['user_id'])->update(['new_level_area'=>$self_str]);
+            }
+            Db::commit();
+            return true;
+        } catch(\Exception $e) {
+            Db::rollback();
+            self::$error = $e->getMessage();
+            return false;
+        }
+    }
+
+    public static function adjustHos($post_data)
+    {
+        $user_id    = $post_data['user_id']??0;
+        $province   = $post_data['province']??0;
+        $city       = $post_data['city']??0;
+        $district   = $post_data['district']??0;
+        $address    = $post_data['address']??0;
+        $longitude  = $post_data['longitude']??'';
+        $latitude   = $post_data['latitude']??'';
+        $remark     = $post_data['remark']??'';
+        $money      = $post_data['money']??0;
+        if(!$user_id ){
+            return '请选择用户';
+        }
+        if(!$province || !$city || !$district){
+            return '请选择地区';
+        }
+        if(!$address || !$longitude || !$latitude){
+            return '请选择位置';
+        }
+        if(!$money){
+            return '请输入抽成比例';
+        }
+        if($money < 0){
+            return '抽成比例错误';
+        }
+        if(!$remark){
+            return '请输入备注';
+        }
+        $user =  User::field('id,new_level,new_level_province,new_level_city,new_level_area,new_level_hos')
+            ->findOrEmpty($user_id);
+        if($user->isEmpty()) {
+            return '用户不存在';
+        }
+        if($user['new_level']){
+            if($user['new_level'] == 4){
+                return '用户已是诊所';
+            }
+            return '用户已有其他等级';
+        }
+        $area_data = DevRegion::where('id',$district)->field('parent_id,level')->findOrEmpty();
+        if(empty($area_data) || $area_data['level'] !=3){
+            return '区域错误';
+        }
+        Db::startTrans();
+        try {
+            $time = time();
+            $hos_id = Db::name('user_new_level')->insertGetId([
+                'user_id'   => $user_id,
+                'pid'       => $district,
+                'longitude' => $longitude,
+                'latitude'  => $latitude,
+                'address'   => $address,
+                'self_id'   => 0,
+                'level'     => 4,
+                'create_time'   => $time,
+            ]);
+            $user_update = [
+                'new_level'             => 4,
+                'new_level_hos'         => $hos_id
+            ];
+            Db::name('user')->where('id',$user_id)->update($user_update);
+            Db::name('user_new_level_log')->insert([
+                'user_id'   => $user_id,
+                'remark'    => '后台添加诊所:'.$remark,
+                'content'   => json_encode($post_data),
+                'create_time'   => $time
+            ]);
+            Db::name('user_new_level_radio')->insert([
+                'user_id'   => $user_id,
+                'pid'       => $district,
+                'self_id'   => $hos_id,
+                'level'     => 4,
+                'radio'     => $money,
+                'create_time'   => $time,
+            ]);
+            Db::commit();
+            return true;
+        } catch (Exception $e) {
+            Db::rollback();
+            return $e->getMessage();
+        }
+    }
+
+    public static function edit_hos($post_data)
+    {
+        $id         = $post_data['id']??0;
+        $province   = $post_data['province']??0;
+        $city       = $post_data['city']??0;
+        $district   = $post_data['district']??0;
+        $address    = $post_data['address']??0;
+        $longitude  = $post_data['longitude']??'';
+        $latitude   = $post_data['latitude']??'';
+        $remark     = $post_data['remark']??'';
+        $money      = $post_data['money']??0;
+        if(!$province || !$city || !$district){
+            return '请选择地区';
+        }
+        if(!$address || !$longitude || !$latitude){
+            return '请选择位置';
+        }
+        if(!$money){
+            return '请输入抽成比例';
+        }
+        if($money < 0){
+            return '抽成比例错误';
+        }
+        if(!$remark){
+            return '请输入备注';
+        }
+
+        $radio_data = Db::name('user_new_level_radio')->where('id',$id)->find();
+        if(!$radio_data){
+            self::$error = '诊所不存在';
+            return false;
+        }
+
+        $area_data = DevRegion::where('id',$district)->field('parent_id,level')->findOrEmpty();
+        if(empty($area_data) || $area_data['level'] !=3){
+            return '区域错误';
+        }
+        Db::startTrans();
+        try {
+            $user_id = $radio_data['user_id'];
+            $time = time();
+
+            Db::name('user_new_level_radio')->where('id',$id)->update([
+                'pid'       => $district,
+                'radio'     => $money,
+            ]);
+            Db::name('user_new_level_log')->insert([
+                'user_id'   => $user_id,
+                'remark'    => '后台编辑诊所:'.$remark,
+                'content'   => json_encode($radio_data),
+                'create_time'   => $time
+            ]);
+
+            Db::name('user_new_level')->where('id',$radio_data['self_id'])->update(['pid'=>$district,'longitude'=>$longitude,'latitude'=>$latitude,'address'=>$address]);
+
+            Db::commit();
+            return true;
+        } catch (Exception $e) {
+            Db::rollback();
+            return $e->getMessage();
+        }
+    }
+
+    public static function del_hos($params)
+    {
+        $id = $params['id']??0;
+        $radio_data = Db::name('user_new_level_radio')->where('id',$id)->find();
+        if(!$radio_data){
+            self::$error = '诊所不存在';
+            return false;
+        }
+        Db::startTrans();
+        try {
+            $time = time();
+
+            Db::name('user_new_level_radio')->where('id',$id)->delete();
+            Db::name('user_new_level_log')->insert([
+                'user_id'   => $radio_data['user_id'],
+                'remark'    => '后台移除诊所',
+                'content'   => json_encode($radio_data),
+                'create_time'   => $time
+            ]);
+            Db::name('user_new_level')->where('id',$radio_data['self_id'])->delete();
+            Db::name('user')->where('id',$radio_data['user_id'])->update(['new_level'=>0,'new_level_hos'=>0]);
+            Db::name('hos_doctor')->where('id',$radio_data['self_id'])->delete();
+            Db::name('hos_info')->where('id',$radio_data['self_id'])->delete();
+            Db::commit();
+            return true;
+        } catch(\Exception $e) {
+            Db::rollback();
+            self::$error = $e->getMessage();
+            return false;
         }
     }
 }
