@@ -16,25 +16,38 @@ class DevRegion extends Model
         if ($cache) {
             return $cache;
         }
-        $list =  self::field(['name', 'id', 'parent_id as pid', 'level'])->where('parent_id',$pid)->select()->toArray();
+        $list =  self::field(['name', 'id', 'parent_id as pid', 'level'])->where('parent_id','in',$pid)->select()->toArray();
         Cache::set('area_pid_'.$pid, $list);
         return $list;
     }
 
     public static function getLevelSon($pid=100000,$level)
     {
-        $cache = Cache::get('area_son_'.$pid);
+        $cache = Cache::get('area_son_'.$level.'_'.$pid);
         if ($cache) {
             return $cache;
         }
-        $list =  self::field(['name', 'id', 'parent_id as pid', 'level'])->where('parent_id',$pid)->select()->toArray();
+
         if($level == 2){
+            $list =  self::field(['name', 'id', 'parent_id as pid', 'level'])->where('parent_id','in',$pid)->select()->toArray();
             foreach ($list as &$item){
                 $item['child'] = self::getLevelArea($item['id']);
             }
+        }else if($level == 3){
+            $list =  self::field(['name', 'id', 'parent_id as pid', 'level'])->where('id','in',$pid)->select()->toArray();
+            foreach ($list as &$item){
+                $item['child'] = self::getLevelArea($item['id']);
+            }
+        }else{
+            $pids = DevRegion::where('id','in',$pid)->column('parent_id');
+            $list =  self::field(['name', 'id', 'parent_id as pid', 'level'])->where('id','in',$pids)->select()->toArray();
+            foreach ($list as &$item){
+                $item['child'] = DevRegion::field(['name', 'id', 'parent_id as pid', 'level'])->where('parent_id',$item['id'])->where('id','in',$pid)->select()->toArray();
+            }
+
         }
 
-        Cache::set('area_son_'.$pid, $list);
+        Cache::set('area_son_'.$level.'_'.$pid, $list);
         return $list;
     }
 

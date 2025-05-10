@@ -549,19 +549,21 @@ class UserLogic extends LogicBase
         $user_data = User::where('id',$user_id)->field('new_level,new_level_province,new_level_city,new_level_area,id')->findOrEmpty()->toArray();
         $apply_level = UserLevelApply::where(['status'=>1,'user_id'=>$user_id])->value('level');
         if($apply_level){
-            $can_level = intval($apply_level -1);
-            if($can_level != $p_user_data['new_level']){
-                return '不可申请该级别推广';
-            }
+            return '请勿重复申请';
+            // $can_level = intval($apply_level -1);
+            // if($can_level != $p_user_data['new_level']){
+            //     return '不可申请该级别推广';
+            // }
         }
         if($user_data['new_level']){
-            $can_level = intval($user_data['new_level']);
-            if($can_level == 4){
-                return '不可申请多个诊所';
-            }
-            if($can_level != $apply_level){
-                return '不可申请其他级别推广';
-            }
+            return '不是可申请状态';
+            // $can_level = intval($user_data['new_level']);
+            // if($can_level == 4){
+            //     return '不可申请多个诊所';
+            // }
+            // if($can_level != $apply_level){
+            //     return '不可申请其他级别推广';
+            // }
         }
         if($status){
             return true;
@@ -574,29 +576,41 @@ class UserLogic extends LogicBase
     {
         $res = self::check_apply($p_user_id,$user_id,false);
         if(!isset($res['r_status'])){
+            self::$error = $res;
             return false;
         }
+        $now_province_id = $now_city_id = $now_area_id = 0;
+        $now_province = $now_city = $now_area = '';
         switch ($res['p_user_data']['new_level']){
             case 1:
                 $level_name = '市';
                 $level = 2;
                 $level_p_id = $res['p_user_data']['new_level_province'];
+                $now_province_id = $level_p_id;
+                $now_province = DevRegion::getArea($now_province_id);
                 break;
             case 2:
                 $level_name = '区县';
                 $level = 3;
                 $level_p_id = $res['p_user_data']['new_level_city'];
+                $now_city_id = $level_p_id;
+                $now_province_id = DevRegion::where('id',$now_city_id)->value('parent_id');
+                $now_province = DevRegion::getArea($now_province_id);
                 break;
             case 3:
                 $level_name = '诊所';
                 $level = 4;
                 $level_p_id = $res['p_user_data']['new_level_area'];
+                $now_area_id = $level_p_id;
+                $now_city_id = DevRegion::where('id',$now_area_id)->value('parent_id');
+                $now_province_id = DevRegion::where('id',$now_city_id)->value('parent_id');
+                $now_province = DevRegion::getArea($now_province_id);
                 break;
             default:
                 return false;
         }
-        $select_list = DevRegion::getLevelArea($level_p_id);
-        return compact('select_list','level_name','level');
+        $select_list = DevRegion::getLevelSon($level_p_id,$level);
+        return compact('select_list','level_name','level','now_province_id','now_province');
     }
 
     public static function level_apply($user_id,$data)
@@ -606,42 +620,136 @@ class UserLogic extends LogicBase
             return $res;
         }
         $p_user_data = $res['p_user_data'];
-        $level = $p_user_data['new_level'] + 1;
-        if($level != $data['level']){
+        // $level = $p_user_data['new_level'] + 1;
+        // if($level != $data['level']){
+        //     return '级别错误';
+        // }
+        $level = $data['level'];
+        if($level <= $p_user_data['new_level']){
             return '级别错误';
         }
-
-        $self_id = 0;
-        if($level != 4){
-            $key_name = $level == 2?'new_level_province':'new_level_city';
-            $son_area_id = DevRegion::getLevelArea($p_user_data[$key_name]);
-            $son_area_id = array_column($son_area_id,'id');
-            if(!in_array($data['area_id'],$son_area_id)){
-                return '区域错误';
-            }
-            $self_id = $data['area_id'];
-            $area_if = UserNewLevel::where('self_id',$self_id)->count();
-            if($area_if){
-                return '当前区域已有代理';
-            }
-        }else{
-
-        }
-        $apply_count = UserLevelApply::where(['status'=>1,'self_id'=>$self_id])->count();
-        if($apply_count){
-            return '请勿重复申请';
-        }
-        switch ($p_user_data['new_level']){
-            case 1:
+        $self_id = $data['area_id'];
+        switch ($level){
+            case 2://市代
+                $son_area_id = DevRegion::getLevelArea($p_user_data['new_level_province']);
+                $son_area_id = array_column($son_area_id,'id');
+                $self_id_arr = explode(',',$self_id);
+                $diff = array_diff($self_id_arr, $son_area_id);
+                if(!empty($diff)){
+                    return '所选城市错误';
+                }
+                $now_city_arr = Db::name('user_new_level_radio')->where('level',2)->column('self_id');
+                $common = array_intersect($self_id_arr, $now_city_arr);
+                if (!empty($common)) {
+                    return '所选城市已有代理';
+                }
                 $pid = $p_user_data['new_level_province'];
                 break;
-            case 2:
-                $pid = $p_user_data['new_level_city'];
+            case 3://区代
+
+                switch ($p_user_data['new_level']){
+                    case 1:
+                        $son_city_id = DevRegion::getLevelArea($p_user_data['new_level_province']);
+                        $son_city_id = array_column($son_city_id,'id');
+                        $son_area_id = DevRegion::where('parent_id','in',$son_city_id)->column('id');
+                        $self_id_arr = explode(',',$self_id);
+                        $diff = array_diff($self_id_arr, $son_area_id);
+                        if(!empty($diff)){
+                            return '所选区域错误';
+                        }
+                        $now_area_arr = Db::name('user_new_level_radio')->where('level',3)->column('self_id');
+                        $common = array_intersect($self_id_arr, $now_area_arr);
+                        if (!empty($common)) {
+                            return '所选区域已有代理';
+                        }
+                        $pid_arr = DevRegion::where('id','in',$self_id)->column('parent_id');
+                        $pid = implode(',',$pid_arr);
+                        break;
+                    case 2:
+                        $son_area_id = DevRegion::getLevelArea($p_user_data['new_level_city']);
+                        $son_area_id = array_column($son_area_id,'id');
+                        $self_id_arr = explode(',',$self_id);
+                        $diff = array_diff($self_id_arr, $son_area_id);
+                        if(!empty($diff)){
+                            return '所选区域错误';
+                        }
+                        $now_area_arr = Db::name('user_new_level_radio')->where('level',3)->column('self_id');
+                        $common = array_intersect($self_id_arr, $now_area_arr);
+                        if (!empty($common)) {
+                            return '所选区域已有代理';
+                        }
+                        $pid_arr = DevRegion::where('id','in',$self_id)->column('parent_id');
+                        $pid = implode(',',$pid_arr);
+                        break;
+                }
                 break;
-            case 3:
-                $pid = $p_user_data['new_level_area'];
+            case 4://诊所
+                switch ($p_user_data['new_level']){
+                    case 1:
+                        $son_city_id = DevRegion::getLevelArea($p_user_data['new_level_province']);
+                        $son_city_id = array_column($son_city_id,'id');
+                        $son_area_id = DevRegion::where('parent_id','in',$son_city_id)->column('id');
+                        $self_id_arr = explode(',',$self_id);
+                        $diff = array_diff($self_id_arr, $son_area_id);
+                        if(!empty($diff)){
+                            return '所选区域错误';
+                        }
+                        $now_area_arr = Db::name('user_new_level_radio')->where('level',3)->column('self_id');
+                        $common = array_intersect($self_id_arr, $now_area_arr);
+                        if (!empty($common)) {
+                            return '所选区域已有代理';
+                        }
+                        $pid_arr = DevRegion::where('id','in',$self_id)->column('parent_id');
+                        $pid = implode(',',$pid_arr);
+                        break;
+                    case 2:
+                        $son_area_id = DevRegion::getLevelArea($p_user_data['new_level_city']);
+                        $son_area_id = array_column($son_area_id,'id');
+                        $self_id_arr = explode(',',$self_id);
+                        $diff = array_diff($self_id_arr, $son_area_id);
+                        if(!empty($diff)){
+                            return '所选区域错误';
+                        }
+                        $now_area_arr = Db::name('user_new_level_radio')->where('level',3)->column('self_id');
+                        $common = array_intersect($self_id_arr, $now_area_arr);
+                        if (!empty($common)) {
+                            return '所选区域已有代理';
+                        }
+                        $pid_arr = DevRegion::where('id','in',$self_id)->column('parent_id');
+                        $pid = implode(',',$pid_arr);
+                        break;
+                    case 3:
+                        $son_area_id = $p_user_data['new_level_area'];
+                        $son_area_arr = explode(',',$son_area_id);
+                        if(!in_array($self_id,$son_area_arr)){
+                            return '所选区域错误';
+                        }
+                        $pid = $self_id;
+                        $self_id = 0;
+                        break;
+                }
                 break;
         }
+        // if($level != 4){//
+        //     $key_name = $level == 2?'new_level_province':'new_level_city';
+        //     $son_area_id = DevRegion::getLevelArea($p_user_data[$key_name]);
+        //     $son_area_id = array_column($son_area_id,'id');
+        //     if(!in_array($data['area_id'],$son_area_id)){
+        //         return '区域错误';
+        //     }
+        //     $self_id = $data['area_id'];
+        //     $area_if = UserNewLevel::where('self_id',$self_id)->count();
+        //     if($area_if){
+        //         return '当前区域已有代理';
+        //     }
+        // }else{
+        //
+        // }
+        // $apply_count = UserLevelApply::where(['status'=>1,'self_id'=>$self_id])->count();
+        // if($apply_count){
+        //     return '请勿重复申请';
+        // }
+
         $apply_data = [
             'user_id'   => $user_id,
             'name'      => $data['name'],
@@ -655,6 +763,7 @@ class UserLogic extends LogicBase
             'remark'    => $data['remark']??'',
             'create_time'   => time()
         ];
+        var_dump($apply_data);die;
         UserLevelApply::insert($apply_data);
         return true;
     }

@@ -15,7 +15,7 @@ class LevelApply extends Validate
         'name'      => 'require',
         'mobile'    => 'require|mobile',
         'level'     => 'require|in:2,3,4',
-        'area_id'   => 'number|requireIf:level,2,3',
+        'area_id'   => 'requireIf:level,2,3',
         'latitude'  => 'require',
         'longtude'  => 'require',
         'address'   => 'require',

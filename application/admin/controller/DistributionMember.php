@@ -6,6 +6,7 @@ use app\admin\logic\DistributionMemberLogic;
 use app\admin\logic\UserNewLevelRadioLogic;
 use app\admin\logic\SelffetchShopLogic;
 use app\admin\logic\HosInfoLogic;
+use app\admin\logic\HosDoctorLogic;
 use app\common\model\DevRegion;
 use app\common\server\ConfigServer;
 
@@ -44,6 +45,7 @@ class DistributionMember extends AdminBase
             $this->_error($result);
         }
         $this->assign('area_list',DevRegion::getLevelArea());
+        $this->assign('point',ConfigServer::get('distribution', 'province_point', 0));
         return $this->fetch('adjust_province');
     }
 
@@ -108,6 +110,7 @@ class DistributionMember extends AdminBase
             $this->_error($result);
         }
         $this->assign('area_list',DevRegion::getLevelSon(100000,2));
+        $this->assign('point',ConfigServer::get('distribution', 'city_point', 0));
         return $this->fetch('');
     }
 
@@ -172,6 +175,7 @@ class DistributionMember extends AdminBase
             $this->_error($result);
         }
         $this->assign('area_list',DevRegion::getLevelAll());
+        $this->assign('point',ConfigServer::get('distribution', 'area_point', 0));
         return $this->fetch('');
     }
 
@@ -238,6 +242,7 @@ class DistributionMember extends AdminBase
 
         $this->assign('tx_map_key',ConfigServer::get('map','tx_map_key',''));
         $this->assign('area_lists', json_encode(SelffetchShopLogic::getAreaLists(), JSON_UNESCAPED_UNICODE));
+        $this->assign('point',ConfigServer::get('distribution', 'hospital_point', 0));
         return $this->fetch('');
     }
 
@@ -264,6 +269,19 @@ class DistributionMember extends AdminBase
     }
 
     /**
+     * @notes 移除诊所
+     */
+    public function del_hos()
+    {
+        $params = $this->request->post();
+        $result = UserNewLevelRadioLogic::del_hos($params);
+        if($result) {
+            return $this->_success('操作成功');
+        }
+        return $this->_error(UserNewLevelRadioLogic::getError());
+    }
+
+    /**
      * 门店信息
      */
     public function hos_info($id){
@@ -281,17 +299,66 @@ class DistributionMember extends AdminBase
     }
 
     /**
-     * @notes 移除诊所
+     * 诊所-医生列表
+     * @return mixed
      */
-    public function del_hos()
+    public function doctor($hos_id)
+    {
+        if ($this->request->isAjax()) {
+            $get = $this->request->get();
+            $this->_success('获取成功', HosDoctorLogic::lists($get));
+        }
+        $this->assign('hos_id',$hos_id);
+        return $this->fetch();
+    }
+
+    /**
+     * 诊所-添加医生
+     * @return mixed
+     */
+    public function add_doctor($hos_id)
+    {
+        if ($this->request->isAjax()) {
+            $post = $this->request->post();
+            $result = HosDoctorLogic::add_doctor($post,$hos_id); //逻辑层处理信息
+            if($result === true){
+                $this->_success('操作成功');
+            }
+            $this->_error($result);
+        }
+        return $this->fetch('');
+    }
+
+    /**
+     * 编辑医生
+     */
+    public function edit_doctor($id){
+        if($this->request->isAjax()){
+            $post = $this->request->post();
+            $res = HosDoctorLogic::edit_doctor($post);
+            if($res === true){
+                $this->_success('保存成功');
+            }
+            return $this->_error($res);
+        }
+        $detail = HosDoctorLogic::getInfo($id);
+        $this->assign('info',$detail);
+        return $this->fetch();
+    }
+
+    /**
+     * @notes 移除医生
+     */
+    public function del_doctor()
     {
         $params = $this->request->post();
-        $result = UserNewLevelRadioLogic::del_hos($params);
-        if($result) {
+        $result = HosDoctorLogic::del_doctor($params);
+        if($result === true) {
             return $this->_success('操作成功');
         }
-        return $this->_error(UserNewLevelRadioLogic::getError());
+        return $this->_error($result);
     }
+
 
     /**
      * @notes 分销会员列表

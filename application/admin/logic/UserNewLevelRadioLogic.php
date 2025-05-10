@@ -457,20 +457,33 @@ class UserNewLevelRadioLogic extends LogicBase
             return '区域错误';
         }
         $pid = $area_data['parent_id'];
+        $province_id = DevRegion::where('id',$pid)->value('parent_id');
+
         Db::startTrans();
         try {
             $time = time();
             if($user['new_level']){
                 $level_data = Db::name('user_new_level')->where(['user_id'=>$user_id,'level'=>3])->find();
-                if($level_data['pid'] != $pid){
-                    return '非原归属城市';
+                // if($level_data['pid'] != $pid){
+                //     return '非原归属城市';
+                // }
+                $now_province_id = DevRegion::where('id','in',$level_data['pid'])->value('parent_id');
+
+                if($province_id != $now_province_id){
+                    return '不可跨省';
                 }
+                $now_pid_str = $level_data['pid'];
+                $now_pid_arr = explode(',',$now_pid_str);
+
                 $user_update = [
                     'new_level_area' => $user['new_level_area'].','.$level
                 ];
                 $level_update = [
                     'self_id'   => $level_data['self_id'].','.$level
                 ];
+                if(!in_array($pid,$now_pid_arr)){
+                    $level_update['pid'] = $now_pid_str.','.$pid;
+                }
                 Db::name('user_new_level')->where('id',$level_data['id'])->update($level_update);
             }else{
                 $user_update = [
@@ -558,11 +571,26 @@ class UserNewLevelRadioLogic extends LogicBase
                 Db::name('user_new_level')->where(['user_id'=>$user_id,'level'=>3])->update(['pid'=>$pid,'self_id'=>$level]);
                 Db::name('user')->where('id',$user_id)->update(['new_level'=>3,'new_level_area'=>$level]);
             }else{
-                if($radio_data['pid'] != $pid){
-                    return '非原归属城市';
+                $province_id = DevRegion::where('id',$pid)->value('parent_id');
+                $level_data = Db::name('user_new_level')->where(['user_id'=>$user_id,'level'=>3])->find();
+                $now_province_id = DevRegion::where('id','in',$level_data['pid'])->value('parent_id');
+                if($province_id != $now_province_id){
+                    return '不可跨省';
                 }
                 $self_str  = implode(',',$user_area_arr).','.$level;
-                Db::name('user_new_level')->where(['user_id'=>$radio_data['user_id'],'level'=>3])->update(['self_id'=>$self_str]);
+                $now_pid_str = $level_data['pid'];
+                $now_pid_arr = explode(',',$now_pid_str);
+                $level_update = [
+                    'self_id'   => $self_str
+                ];
+                if(!in_array($pid,$now_pid_arr)){
+                    $level_update['pid'] = $now_pid_str.','.$pid;
+                }
+                // if($radio_data['pid'] != $pid){
+                //     return '非原归属城市';
+                // }
+
+                Db::name('user_new_level')->where(['user_id'=>$radio_data['user_id'],'level'=>3])->update($level_update);
                 Db::name('user')->where('id',$radio_data['user_id'])->update(['new_level_area'=>$self_str]);
             }
 

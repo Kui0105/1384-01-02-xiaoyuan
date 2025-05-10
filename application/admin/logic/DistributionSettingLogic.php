@@ -30,6 +30,11 @@ class DistributionSettingLogic extends LogicBase
             'settlement' => ConfigServer::get('distribution', 'settlement', 1),
             // 结算时机 订单完成后多少天内(默认7天)
             'settlement_days' => ConfigServer::get('distribution', 'settlement_days', 7),
+
+            'province_point' => ConfigServer::get('distribution', 'province_point', 0),
+            'city_point' => ConfigServer::get('distribution', 'city_point', 0),
+            'area_point' => ConfigServer::get('distribution', 'area_point', 0),
+            'hospital_point' => ConfigServer::get('distribution', 'hospital_point', 0),
         ];
         return $config;
     }
@@ -38,9 +43,12 @@ class DistributionSettingLogic extends LogicBase
     {
         Db::startTrans();
         try {
-            $allowFields = ['is_open', 'level', 'is_show_earnings', 'apply_condition', 'cale_method', 'settlement_days', 'show_earnings_scope'];
+            $allowFields = ['is_open', 'level', 'is_show_earnings', 'apply_condition', 'cale_method', 'settlement_days', 'show_earnings_scope','province_point','city_point','area_point','hospital_point'];
             foreach ($allowFields as $field) {
                 if ($field == 'settlement_days' && isset($params[$field]) && $params[$field] < 0) {
+                    throw new \Exception('不允许填写负数');
+                }
+                if (in_array($field,['province_point','city_point','area_point','hospital_point']) && isset($params[$field]) && $params[$field] < 0) {
                     throw new \Exception('不允许填写负数');
                 }
                 if(isset($params[$field])) {
