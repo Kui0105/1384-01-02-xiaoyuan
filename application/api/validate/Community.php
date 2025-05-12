@@ -12,7 +12,7 @@ class Community extends Validate
         'name'      => 'require',
         'content'   => 'require|checkLength',
         'latitude'  => 'require',
-        'longtude'  => 'require',
+        'longitude' => 'require',
         'address'   => 'require',
     ];
 
@@ -20,7 +20,7 @@ class Community extends Validate
         'name.require'      => '请输入标题',
         'content.require'   => '请填写内容',
         'latitude.require'  => '缺少地址信息',
-        'longtude.require'  => '缺少地址信息',
+        'longitude.require' => '缺少地址信息',
         'address.require'   => '缺少地址信息',
     ];
 

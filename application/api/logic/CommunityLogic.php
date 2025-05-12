@@ -20,7 +20,7 @@ class CommunityLogic extends LogicBase{
             'content'   => $post['content']??'',
             'imgs'      => $post['imgs']?implode(',',clearDomain(explode(',',$post['imgs']))):'',
             'latitude'  => $post['latitude'],
-            'longtude'  => $post['longtude'],
+            'longitude' => $post['longitude'],
             'address'   => $post['address'],
             'create_time'   => time(),
         ];

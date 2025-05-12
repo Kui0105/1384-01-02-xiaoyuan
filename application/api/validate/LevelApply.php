@@ -17,7 +17,7 @@ class LevelApply extends Validate
         'level'     => 'require|in:2,3,4',
         'area_id'   => 'requireIf:level,2,3',
         'latitude'  => 'require',
-        'longtude'  => 'require',
+        'longitude' => 'require',
         'address'   => 'require',
     ];
 
@@ -30,7 +30,7 @@ class LevelApply extends Validate
         'level.in'          => '级别错误',
         'area_id.requireIf' => '请选择区域',
         'latitude.require'  => '请选择区域',
-        'longtude.province' => '请选择区域',
+        'longitude.province'=> '请选择区域',
         'address.require'   => '缺少地址信息',
     ];
 

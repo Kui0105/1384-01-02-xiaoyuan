@@ -181,7 +181,7 @@ class Index extends ApiBase
     public function getAddress()
     {
         $lat = $this->request->get('latitude', '');
-        $lon = $this->request->get('longtude', '');
+        $lon = $this->request->get('longitude', '');
         if(!$lat || !$lon){
             $this->_error('缺少经纬度');
         }

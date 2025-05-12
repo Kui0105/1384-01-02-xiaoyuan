@@ -646,7 +646,6 @@ class UserLogic extends LogicBase
                 $pid = $p_user_data['new_level_province'];
                 break;
             case 3://区代
-
                 switch ($p_user_data['new_level']){
                     case 1:
                         $son_city_id = DevRegion::getLevelArea($p_user_data['new_level_province']);
@@ -689,38 +688,33 @@ class UserLogic extends LogicBase
                         $son_city_id = DevRegion::getLevelArea($p_user_data['new_level_province']);
                         $son_city_id = array_column($son_city_id,'id');
                         $son_area_id = DevRegion::where('parent_id','in',$son_city_id)->column('id');
-                        $self_id_arr = explode(',',$self_id);
-                        $diff = array_diff($self_id_arr, $son_area_id);
-                        if(!empty($diff)){
+                        if (is_string($self_id) && strpos($self_id, ',') !== false) {
+                            return '区域只能选一个';
+                        }
+                        if(!in_array($self_id,$son_area_id)){
                             return '所选区域错误';
                         }
-                        $now_area_arr = Db::name('user_new_level_radio')->where('level',3)->column('self_id');
-                        $common = array_intersect($self_id_arr, $now_area_arr);
-                        if (!empty($common)) {
-                            return '所选区域已有代理';
-                        }
-                        $pid_arr = DevRegion::where('id','in',$self_id)->column('parent_id');
-                        $pid = implode(',',$pid_arr);
+                        $pid = $self_id;
+                        $self_id = 0;
                         break;
                     case 2:
                         $son_area_id = DevRegion::getLevelArea($p_user_data['new_level_city']);
                         $son_area_id = array_column($son_area_id,'id');
-                        $self_id_arr = explode(',',$self_id);
-                        $diff = array_diff($self_id_arr, $son_area_id);
-                        if(!empty($diff)){
+                        if (is_string($self_id) && strpos($self_id, ',') !== false) {
+                            return '区域只能选一个';
+                        }
+                        if(!in_array($self_id,$son_area_id)){
                             return '所选区域错误';
                         }
-                        $now_area_arr = Db::name('user_new_level_radio')->where('level',3)->column('self_id');
-                        $common = array_intersect($self_id_arr, $now_area_arr);
-                        if (!empty($common)) {
-                            return '所选区域已有代理';
-                        }
-                        $pid_arr = DevRegion::where('id','in',$self_id)->column('parent_id');
-                        $pid = implode(',',$pid_arr);
+                        $pid = $self_id;
+                        $self_id = 0;
                         break;
                     case 3:
                         $son_area_id = $p_user_data['new_level_area'];
                         $son_area_arr = explode(',',$son_area_id);
+                        if (is_string($self_id) && strpos($self_id, ',') !== false) {
+                            return '区域只能选一个';
+                        }
                         if(!in_array($self_id,$son_area_arr)){
                             return '所选区域错误';
                         }
@@ -758,12 +752,11 @@ class UserLogic extends LogicBase
             'pid'       => $pid,
             'self_id'   => $self_id,
             'latitude'  => $data['latitude'],
-            'longtude'  => $data['longtude'],
+            'longitude' => $data['longitude'],
             'address'   => $data['address'],
             'remark'    => $data['remark']??'',
             'create_time'   => time()
         ];
-        var_dump($apply_data);die;
         UserLevelApply::insert($apply_data);
         return true;
     }

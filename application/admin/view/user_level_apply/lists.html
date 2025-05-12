@@ -1,0 +1,317 @@
+{layout name="layout2" /}
+<style>
+    html,
+    body {
+        background: #fff;
+    }
+    .layui-tab-title {
+        background: #fff !important;
+    }
+    .layui-table-cell {
+        height:auto;
+    }
+</style>
+<div class="layui-fluid" style="margin-top:20px;">
+    <div class="layui-card">
+        <!-- 提示 -->
+        <div class="layui-card-body">
+            <div class="layui-collapse like-layui-collapse" style="border:1px dashed #c4c4c4">
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title like-layui-colla-title" style="background-color: #fff">操作提示</h2>
+                    <div class="layui-colla-content layui-show">
+                        <p>* 省市区代理及诊所申请列表，申请审核通过后即可成为对应级别会员；</p>
+                        <p>* 筛选仅单层筛选，省代只筛选省份，市代筛选市，区代筛选区，诊所筛选区；</p>
+                        <p>* 用户仅一次申请；同意后不可申请，拒绝后可再次申请</p>
+                        <p>* 省代和诊所仅能申请一个区域，市代和区代可多选申请</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 搜索区域 -->
+        <div class="layui-card-body layui-form">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label for="keyword_type" class="layui-form-label">会员信息：</label>
+                    <div class="layui-input-inline">
+                        <select name="keyword_type" id="keyword_type">
+                            <option value="name">申请信息</option>
+                            <option value="nickname">用户昵称</option>
+                            <option value="mobile">用户手机</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <div class="layui-input-inline">
+                        <input type="text" name="keyword" id="keyword" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label for="keyword_type" class="layui-form-label">等级：</label>
+                    <div class="layui-input-inline">
+                        <select name="level" id="level">
+                            <option value="">全部</option>
+                            <option value="1">省代</option>
+                            <option value="2">市代</option>
+                            <option value="3">区代</option>
+                            <option value="4">诊所</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <div class="layui-form-label">地区</div>
+                    <div class="layui-input-inline">
+                        <select name="province" id="province"  placeholder="请选择" lay-filter="province" lay-search>
+                        </select>
+                    </div>
+                    <div class="layui-input-inline">
+                        <select name="city" id="city" lay-filter="city" lay-verify="required" lay-search>
+                        </select>
+                    </div>
+                    <div class="layui-input-inline">
+                        <select name="district" id="district" lay-filter="district" lay-verify="required" lay-search>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <a class="layui-btn layui-btn-sm layui-btn-normal" lay-submit lay-filter="search">搜索</a>
+                    <a class="layui-btn layui-btn-sm layui-btn-primary" lay-submit lay-filter="clear-search">重置</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主体 -->
+        <div class="layui-tab layui-tab-card" lay-filter="like-tabs">
+            <ul class="layui-tab-title">
+                <li data-status="1" class="layui-this">待审核会员列表</li>
+                <li data-status="2">审核通过会员列表</li>
+                <li data-status="3">审核拒绝会员列表</li>
+            </ul>
+            <div class="layui-tab-content" style="padding: 0 15px;">
+                <table id="like-table-lists" lay-filter="like-table-lists"></table>
+                <script type="text/html" id="table-userInfo">
+                    <img src="{{d.avatar}}" alt="头像" style="width:60px;height:60px;margin-right:5px;">
+                    <div class="layui-inline" style="text-align:left;">
+                        <p>会员ID：{{d.user_id}}</p>
+                        <p>会员昵称：{{d.nickname}}</p>
+                        <p>会员电话：{{d.user_mobile}}</p>
+                    </div>
+                </script>
+                <script type="text/html" id="table-operation">
+                    <a class="layui-btn layui-btn-primary layui-btn-sm" lay-event="detail">申请详情</a>
+                    {{#  if(d.status === 1){ }}
+                    <a class="layui-btn layui-btn-normal layui-btn-sm" lay-event="audit">审核</a>
+                    {{#  } }}
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    layui.config({
+        version:"{$front_version}",
+        base: '/static/plug/layui-admin/dist/layuiadmin/modules/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(["table", "form", "element", "laydate", 'like'], function() {
+        var table = layui.table;
+        var form = layui.form;
+        var like = layui.like;
+        var element = layui.element;
+        var laydate = layui.laydate;
+        var $ = layui.jquery;
+        var listStatus = '';
+
+        //获取列表
+        getList(listStatus);
+
+        function getList(listStatus) {
+            // 数据表格渲染
+            table.render({
+                elem: '#like-table-lists'
+                , url: '{:url("UserLevelApply/lists")}?status=' + listStatus //数据接口
+                , method: 'get'
+                , page: true //开启分页
+                , cols: [[ //表头
+                    {field: "id", width: 60, title: "ID"}
+                    , {field: "user", width: 280, title: "会员信息", templet: '#table-userInfo'}
+                    , {field: "name", width: 100, align: "center", title: "姓名"}
+                    , {field: "mobile", width: 120, align: "center", title: "手机"}
+                    , {field: "level_name", width: 100, align: "center", title: "等级"}
+                    , {field: "level_area", width: 180, align: "center", title: "申请区域"}
+                    , {field: "address", width: 120, align: "center", title: "地址"}
+                    , {field: "status_name", width: 120, align: "center", title: "状态"}
+                    , {field: "remark", width: 150, align: "center", title: "申请原因"}
+                    , {field: "create_time", width: 150, align: "center", title: "申请时间"}
+                    , {field: "audit_time", width: 150, align: "center", title: "审核时间"}
+                    , {field: "reason", width: 150, align: "center", title: "审核理由"}
+                    , {title: "操作", width: 230, align: "center", fixed: "right", toolbar: "#table-operation"}
+                ]]
+                , text: {none: '暂无数据！'}
+                , parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+                    return {
+                        "code": res.code,
+                        "msg": res.msg,
+                        "count": res.data.count, //解析数据长度
+                        "data": res.data.lists, //解析数据列表
+                    };
+                },
+                response: {
+                    statusCode: 1
+                }
+                , done: function (res, curr, count) {
+                    // 解决操作栏因为内容过多换行问题
+                    $(".layui-table-main tr").each(function (index, val) {
+                        $($(".layui-table-fixed-l .layui-table-body tbody tr")[index]).height($(val).height());
+                        $($(".layui-table-fixed-r .layui-table-body tbody tr")[index]).height($(val).height());
+                    });
+                }
+            });
+        }
+
+        var active = {
+            detail: function (obj) {
+                layer.open({
+                    type: 2
+                    ,title: "申请详情"
+                    ,content: "{:url('UserLevelApply/detail')}?id=" + obj.data.id
+                    ,area: ["600px", "800px"]
+
+                });
+            },
+            audit: function (obj) {
+                layer.open({
+                    type: 2
+                    ,title: "审核分销会员申请"
+                    ,content: "{:url('UserLevelApply/audit')}?id=" + obj.data.id
+                    ,area: ["700px", "600px"]
+                    ,btn: ["确定", "取消"]
+                    ,yes: function(index, layero){
+                        var iframeWindow = window["layui-layer-iframe" + index];
+                        var submit = layero.find("iframe").contents().find("#addSubmit");
+                        iframeWindow.layui.form.on("submit(addSubmit)", function(data){
+                            data.field["id"] = obj.data.id;
+                            like.ajax({
+                                url: "{:url('UserLevelApply/audit')}",
+                                data: data.field,
+                                type: "POST",
+                                success:function(res) {
+                                    if(res.code === 1) {
+                                        layui.layer.msg(res.msg);
+                                        layer.close(index);
+                                        table.reload("like-table-lists", {
+                                            where: {},
+                                            page: { cur: 1 }
+                                        });
+                                    }
+                                }
+                            });
+                        });
+                        submit.trigger("click");
+                    }
+                });
+            }
+        };
+
+        like.eventClick(active);
+
+        element.on("tab(like-tabs)", function(){
+            $("#keyword_type").val("");
+            $("#keyword").val("");
+            $("#level").val("");
+            $('#province').val('');
+            $('#city').val('');
+            $('#district').val('');
+            form.render("select");
+            var listStatus = this.getAttribute("data-status");
+            getList(listStatus);
+        });
+
+        /**
+         * 搜索
+         */
+        form.on("submit(search)", function(data){
+            var field = data.field;
+            table.reload("like-table-lists", {
+                where: field,
+                page: {
+                    curr: 1
+                }
+            });
+        });
+
+        /**
+         * 清空搜索
+         */
+        form.on("submit(clear-search)", function(){
+            $("#keyword_type").val("");
+            $("#keyword").val("");
+            $("#level").val("");
+            $('#province').val('');
+            $('#city').val('');
+            $('#district').val('');
+            form.render("select");
+            setTimeout(function (){
+                table.reload("like-table-lists", {
+                    where: [],
+                    page: {
+                        curr: 1
+                    }
+                });
+            },300)
+
+        });
+
+        var area = {$area_lists | raw};
+
+        setSelectFirst();
+
+        function setSelectFirst(default_id) {
+            var category_select_html = '';
+            for (var i in area) {
+                if (area[i]['level'] == 1) {
+                    category_select_html += '<option value="' + area[i]['id'] + '">' + area[i]['name'] + '</option>';
+                }
+            }
+            $('select[id="province"]').html(category_select_html);
+            $('select[id="province"]').val(default_id);
+            form.render('select');
+        }
+        function setSelectSecond(default_id, pid) {
+            pid = pid === undefined ? $('select[id="province"]').val() : pid;
+            $('select[id="city"]').html('');
+            $('select[name="district"]').html('');
+            var category_select_html = '';
+            for (var i in area) {
+                if (area[i]['pid'] == pid) {
+                    category_select_html += '<option value="' + area[i]['id'] + '">' + area[i]['name'] + '</option>';
+                }
+            }
+            $('select[id="city"]').html(category_select_html);
+            $('select[id="city"]').val(default_id);
+            form.render('select');
+        }
+        function setSelectThird(default_id, pid) {
+            pid = pid === undefined ? $('select[id="city"]').val() : pid;
+            $('select[name="district"]').html('');
+            var province = $('select[name="province"]').val();
+            var category_select_html = '';
+            for (var i in area) {
+                if (area[i]['pid'] == pid) {
+                    category_select_html += '<option value="' + area[i]['id'] + '">' + area[i]['name'] + '</option>';
+                }
+            }
+            $('select[name="district"]').html(category_select_html);
+            $('select[name="district"]').val(default_id);
+            form.render('select');
+        }
+        form.on('select(province)', function (data) {
+            setSelectSecond('', data.value);
+        });
+        form.on('select(city)', function (data) {
+            setSelectThird('', data.value);
+        });
+    });
+</script>

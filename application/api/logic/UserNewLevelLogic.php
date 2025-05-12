@@ -111,7 +111,7 @@ class UserNewLevelLogic extends LogicBase
         $model = new UserLevelApply();
         $detail = $model->alias('c')
             ->leftJoin('user u','u.id = c.user_id')
-            ->field('c.id,c.level,c.create_time,u.nickname,c.status,u.avatar,c.name,c.mobile,c.self_id,c.address,c.latitude,c.longtude,c.remark,c.status,c.reason,c.audit_time,c.pid')
+            ->field('c.id,c.level,c.create_time,u.nickname,c.status,u.avatar,c.name,c.mobile,c.self_id,c.address,c.latitude,c.longitude,c.remark,c.status,c.reason,c.audit_time,c.pid')
             ->where($where)
             ->findOrEmpty()->toArray();
         if(empty($detail)){
@@ -207,7 +207,7 @@ class UserNewLevelLogic extends LogicBase
         $model = new UserLevelApply();
         $detail = $model->alias('c')
             ->leftJoin('user u','u.id = c.user_id')
-            ->field('c.id,c.level,c.create_time,u.nickname,c.status,u.avatar,c.name,c.mobile,c.self_id,c.address,c.latitude,c.longtude,c.remark,c.status,c.reason,c.audit_time,c.pid,c.user_id')
+            ->field('c.id,c.level,c.create_time,u.nickname,c.status,u.avatar,c.name,c.mobile,c.self_id,c.address,c.latitude,c.longitude,c.remark,c.status,c.reason,c.audit_time,c.pid,c.user_id')
             ->where($where)
             ->findOrEmpty()->toArray();
         if(empty($detail)){
@@ -260,7 +260,7 @@ class UserNewLevelLogic extends LogicBase
                     'name'          => $detail['name'],
                     'mobile'        => $detail['mobile'],
                     'latitude'      => $detail['latitude'],
-                    'longtude'      => $detail['longtude'],
+                    'longitude'     => $detail['longitude'],
                     'address'       => $detail['address'],
                     'create_time'   => $time
                 ]);

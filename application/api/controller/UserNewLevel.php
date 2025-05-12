@@ -11,6 +11,7 @@ class UserNewLevel extends ApiBase{
      */
     public function apply_list()
     {
+        $this->_error('废弃');
         $page = $this->request->get('page_no', $this->page_no);
         $size = $this->request->get('page_size', $this->page_size);
         $status = $this->request->get('status',1);
@@ -23,6 +24,7 @@ class UserNewLevel extends ApiBase{
      */
     public function apply_detail()
     {
+        $this->_error('废弃');
         $id = $this->request->get('id');
         $res = UserNewLevelLogic::apply_detail($id,$this->user_id);
         if($res === false){
@@ -36,6 +38,7 @@ class UserNewLevel extends ApiBase{
      */
     public function my_apply_list()
     {
+        $this->_error('废弃');
         $page = $this->request->get('page_no', $this->page_no);
         $size = $this->request->get('page_size', $this->page_size);
         $status = $this->request->get('status',1);
@@ -48,6 +51,7 @@ class UserNewLevel extends ApiBase{
      */
     public function audit()
     {
+        $this->_error('废弃');
         $id = $this->request->post('id');
         $status = $this->request->post('status');
         $reason = $this->request->post('reason','');

@@ -1,0 +1,63 @@
+{layout name="layout1" /}
+
+<style>
+    .layui-input-block { line-height: 39px; }
+</style>
+
+<div class="layui-card">
+    <div class="layui-card-body">
+        <div class="layui-form-item">
+            <label class="layui-form-label">会员ID：</label>
+            <div class="layui-input-block">{$detail.user_id}</div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">会员昵称：</label>
+            <div class="layui-input-block">{$detail.nickname}</div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">会员手机：</label>
+            <div class="layui-input-block">{$detail.user_mobile}</div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">真实姓名：</label>
+            <div class="layui-input-block">{$detail.name}</div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">手机号码：</label>
+            <div class="layui-input-block">{$detail.mobile}</div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">等级：</label>
+            <div class="layui-input-block">{$detail.level_name}</div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">申请区域：</label>
+            <div class="layui-input-block">{$detail.level_area}</div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">地址：</label>
+            <div class="layui-input-block">{$detail.address}</div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">状态：</label>
+            <div class="layui-input-block">{$detail.status_name}</div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">申请原因：</label>
+            <div class="layui-input-block">{$detail.remark}</div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">申请时间：</label>
+            <div class="layui-input-block">{$detail.create_time}</div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">审核时间：</label>
+            <div class="layui-input-block">{$detail.audit_time}</div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">审核说明：</label>
+            <div class="layui-input-block">{$detail.reason}</div>
+        </div>
+    </div>
+</div>
