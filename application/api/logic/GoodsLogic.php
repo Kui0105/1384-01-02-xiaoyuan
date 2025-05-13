@@ -58,7 +58,7 @@ class GoodsLogic{
         }
         //价格排序
         if(isset($get['price']) && $get['price']){
-            $order['min_price'] = $get['price'];
+            $order['market_price'] = $get['price'];
         }
 
         $order['sort'] = 'desc';
@@ -75,6 +75,11 @@ class GoodsLogic{
                     ->field('id,name,image,min_price as price,market_price,sales_sum+virtual_sales_sum as sales_sum,sort')
                 ->select();
 
+        foreach($goods_list as &$goods){
+            if($user_id){
+                $goods['price'] = Goods::getLevelListPrice($goods['id'],$user_id,$goods['price']);
+            }
+        }
         $more = is_more($goods_count,$page,$size);  //是否有下一页
 
         $data = [
@@ -113,6 +118,9 @@ class GoodsLogic{
         $goods->member_price = 0;
         $goods->append(['order_give_integral', 'commission_price']);
 
+        foreach ($goods->goods_item as $item => $value){
+            $goods->goods_item[$item]['price'] = Goods::getLevelDetailPrice($value['id'],$user_id,$value['price']);
+        }
         //检查商品是否整在参加活动，如果正在参加活动替换商品的价格为活动价
         $goods = self::checkActivity($goods);
         if($user_id) {

@@ -77,7 +77,7 @@ class OrderLogic extends LogicBase
                 if (!isset($infos[$good['item_id']])) {
                     continue;
                 }
-                $goods_info = self::goodsTemolate($infos, $good['item_id'], $good['num'], $seckill_goods, $user->getData('level'), $post);
+                $goods_info = self::goodsTemolate($infos, $good['item_id'], $good['num'], $seckill_goods, $user->getData('level'), $post,$user->getData('new_level'));
                 $goods_info['sub_price'] = round($goods_info['goods_price'] * $good['num'], 2);
                 $goods_lists[] = $goods_info;
 
@@ -200,9 +200,16 @@ class OrderLogic extends LogicBase
      * @author 段誉(2021/4/1 19:00)
      * @return mixed
      */
-    public static function goodsTemolate($infos, $item_id, $goods_num, $seckill_goods, $level, $post)
+    public static function goodsTemolate($infos, $item_id, $goods_num, $seckill_goods, $level, $post, $new_level)
     {
         $goods_info = $infos[$item_id];
+        if($new_level == 0){
+
+        }else if($new_level == 4){
+            $goods_info['goods_price'] = $goods_info['hos_price'];
+        }else{
+            $goods_info['goods_price'] = $goods_info['agent_price'];
+        }
         $goods_info['goods_num'] = $goods_num;
         $image_str = empty($goods_info['spec_image']) ? $goods_info['image'] : $goods_info['spec_image'];
         $goods_info['image_str'] = UrlServer::getFileUrl($image_str);
@@ -471,7 +478,7 @@ class OrderLogic extends LogicBase
         $field = 'i.id as item_id,g.id as goods_id,g.name as goods_name,g.status,g.del,g.image,
         g.is_integral,g.is_member,g.give_integral_type,g.give_integral,g.free_shipping_type,
         g.free_shipping,g.free_shipping_template_id,i.image as spec_image,
-        i.spec_value_str,i.spec_value_ids,i.price as goods_price,i.volume,i.stock,
+        i.spec_value_str,i.spec_value_ids,i.price as goods_price,i.volume,i.stock,i.hos_price,i.agent_price,
         i.weight,g.first_category_id,g.second_category_id,g.third_category_id,g.is_express,g.is_selffetch';
 
         $goods = Db::name('goods g')

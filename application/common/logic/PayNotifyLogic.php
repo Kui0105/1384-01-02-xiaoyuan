@@ -55,13 +55,14 @@ class PayNotifyLogic
         $user = User::get($order['user_id']);
         $user->total_order_amount = ['inc', $order['order_amount']];
         $user->save();
-        
+        $hos_id = Db::name('user_new_level')->where(['user_id'=>$user->first_leader,'level'=>4])->value('id')?:0;
         // 更改订单状态
         $orderData = [
             'pay_status'        => Pay::ISPAID,
             'pay_time'          => $time,
             'order_status'      => Order::STATUS_WAIT_DELIVERY,
             'transaction_id'    => $extra['transaction_id'] ?? '',
+            'hos_id'            => $hos_id
         ];
         if (! Order::where('id', $order->id)->where('pay_status', Pay::UNPAID)->update($orderData)) {
             throw new \Exception('订单更改状态失败');
@@ -90,13 +91,15 @@ class PayNotifyLogic
 
         // 普通订单参与分销
         if ($order['order_type'] == Order::NORMAL_ORDER){
-            // 生成分销订单
-            DistributionOrderGoodsLogic::add($order['id']);
+            if($hos_id){
+                // 生成分销订单
+                DistributionOrderGoodsLogic::add($order['id']);
+            }
+
 
             // 更新分销会员等级
-            DistributionLevelLogic::updateDistributionLevel($order['user_id']);
+            // DistributionLevelLogic::updateDistributionLevel($order['user_id']);
         }
-
         //下单奖励积分(每天首单)
         IntegralLogic::rewardIntegral($user['id'], $order['id']);
 

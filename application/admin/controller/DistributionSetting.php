@@ -13,6 +13,7 @@ class DistributionSetting extends AdminBase
 
     public function set()
     {
+        return $this->_success('设置成功');
         $params = $this->request->post();
         $result = DistributionSettingLogic::set($params);
         if ($result) {

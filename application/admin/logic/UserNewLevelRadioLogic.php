@@ -32,19 +32,21 @@ class UserNewLevelRadioLogic extends LogicBase
         }
 
         if (isset($get['keyword']) && $get['keyword']) {
-            $where[] = ['u.nickname|u.mobile', 'like', '%' . $get['keyword'] . '%'];
+            $where[] = ['u.nickname|u.mobile|n.name|n.mobile', 'like', '%' . $get['keyword'] . '%'];
         }
 
         $count = $model->alias('l')
             ->leftJoin('user u','u.id = l.user_id')
             ->leftJoin('dev_region r','r.id = l.self_id')
+            ->leftJoin('user_new_level n','n.user_id = l.user_id')
             ->where($where)
             ->order('l.id asc')
             ->count();
         $list = $model->alias('l')
             ->leftJoin('user u','u.id = l.user_id')
             ->leftJoin('dev_region r','r.id = l.self_id')
-            ->field('r.name as self_name,u.nickname,u.mobile as user_mobile,u.avatar,l.*')
+            ->leftJoin('user_new_level n','n.user_id = l.user_id')
+            ->field('r.name as self_name,u.nickname,u.mobile as user_mobile,u.avatar,l.*,n.name as n_name,n.mobile as n_mobile')
             ->where($where)
             ->page($get['page'], $get['limit'])
             ->order('l.id asc')
@@ -84,7 +86,9 @@ class UserNewLevelRadioLogic extends LogicBase
         $level      = $post_data['level']??0;
         $remark     = $post_data['remark']??'';
         $money      = $post_data['money']??0;
-        if(!$user_id || !$level || !$money || !$remark){
+        $name       = $post_data['name']??'';
+        $mobile     = $post_data['mobile']??'';
+        if(!$user_id || !$level || !$money || !$remark ||!$name ||!$mobile){
             return '请填写完整';
         }
         if($money < 0){
@@ -114,6 +118,8 @@ class UserNewLevelRadioLogic extends LogicBase
                 'user_id'   => $user_id,
                 'pid'       => 0,
                 'self_id'   => $level,
+                'name'      => $name,
+                'mobile'    => $mobile,
                 'level'     => 1,
                 'create_time'   => $time,
             ]);
@@ -146,7 +152,9 @@ class UserNewLevelRadioLogic extends LogicBase
         $level      = $post_data['level']??0;
         $remark     = $post_data['remark']??'';
         $money      = $post_data['money']??0;
-        if(!$id || !$level || !$money || !$remark){
+        $name       = $post_data['name']??'';
+        $mobile     = $post_data['mobile']??'';
+        if(!$id || !$level || !$money || !$remark || !$name || !$mobile){
             return '请填写完整';
         }
         if($money < 0){
@@ -171,7 +179,7 @@ class UserNewLevelRadioLogic extends LogicBase
             $user_id = $radio_data['user_id'];
             $time = time();
             Db::name('user')->where('id',$user_id)->update(['new_level'=>1,'new_level_province'=>$level]);
-            Db::name('user_new_level')->where(['user_id'=>$user_id,'level'=>1])->update(['self_id'=>$level]);
+            Db::name('user_new_level')->where(['user_id'=>$user_id,'level'=>1])->update(['self_id'=>$level,'name'=>$name,'mobile'=>$mobile]);
             Db::name('user_new_level_log')->insert([
                 'user_id'   => $user_id,
                 'remark'    => '后台编辑省代:'.$remark,
@@ -228,12 +236,14 @@ class UserNewLevelRadioLogic extends LogicBase
         if(!$radio_data){
             return [];
         }
+        $level_data = Db::name('user_new_level')->where('user_id',$radio_data['user_id'])->find();
         $radio_data['avatar'] = addImgDomain($radio_data['avatar']);
+        $radio_data['name'] = $level_data['name'];
+        $radio_data['mobile'] = $level_data['mobile'];
         if($radio_data['level'] == 4){
             $radio_data['city'] = DevRegion::where('id',$radio_data['pid'])->value('parent_id');
             $radio_data['province'] = DevRegion::where('id',$radio_data['city'])->value('parent_id');
             $radio_data['district']  = $radio_data['pid'];
-            $level_data = Db::name('user_new_level')->where('id',$radio_data['self_id'])->find();
             $radio_data['latitude'] = $level_data['latitude'];
             $radio_data['longitude'] = $level_data['longitude'];
             $radio_data['address'] = $level_data['address'];

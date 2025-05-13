@@ -45,11 +45,25 @@ class DistributionLevel extends Model
 
     public static function getLevelName($levelId)
     {
-        $level = self::field('name,weights')->findOrEmpty($levelId)->toArray();
-        if (empty($level)) {
-            return '';
+        switch ($levelId){
+            case 1:
+                return '省代';
+                break;
+            case 2:
+                return '市代';
+                break;
+            case 3:
+                return '区代';
+                break;
+            case 4:
+                return '诊所';
+                break;
         }
-        return $level['name']. '(' . $level['weights'] . ')级';
+        // $level = self::field('name,weights')->findOrEmpty($levelId)->toArray();
+        // if (empty($level)) {
+        //     return '';
+        // }
+        // return $level['name']. '(' . $level['weights'] . ')级';
     }
 
     public static function getLevelNameTwo($levelId)

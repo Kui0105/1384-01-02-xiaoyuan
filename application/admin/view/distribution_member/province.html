@@ -71,6 +71,13 @@
                 </div>
             </script>
 
+            <script type="text/html" id="agent-info">
+                <div class="layui-input-inline"  style="text-align: left;">
+                    <p>代理姓名:{{d.n_name}}</p>
+                    <p>代理电话:{{d.n_mobile}}</p>
+                </div>
+            </script>
+
 
         </div>
     </div>
@@ -120,6 +127,7 @@
             ,page: true //开启分页
             ,cols: [[ //表头
                 {templet: '#user-info', title: '用户信息', width:380}
+                ,{templet: '#agent-info', title: '代理信息', width:380}
                 ,{field: 'area_name', title: '省份',width: 200}
                 ,{field: 'radio', title: '抽成（%）',width: 200}
                 ,{field: 'create_time', title: '成为时间'}

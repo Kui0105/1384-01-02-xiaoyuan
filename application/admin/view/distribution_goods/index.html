@@ -25,7 +25,7 @@
                 <div class="layui-colla-item">
                     <h2 class="layui-colla-title like-layui-colla-title" style="background-color: #fff">操作提示</h2>
                     <div class="layui-colla-content layui-show">
-                        <p>*设置分销商品的佣金比例；</p>
+                        <p>*设置商品是否参与分销；</p>
                     </div>
                 </div>
             </div>
@@ -61,7 +61,7 @@
             <table id="lists" lay-filter="lists"></table>
             <!--工具条模板-->
             <script type="text/html" id="operate">
-                <a class="layui-btn layui-btn-xs layui-bg-blue" lay-event="set">设置佣金</a>
+<!--                <a class="layui-btn layui-btn-xs layui-bg-blue" lay-event="set">设置佣金</a>-->
                 {{#  if(d.distribution_flag){ }}
                 <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="cancel">取消分销</a>
                 {{#  } else { }}

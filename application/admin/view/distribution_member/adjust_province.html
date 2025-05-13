@@ -12,6 +12,24 @@
     </div>
 
     <div class="layui-form-item">
+        <label class="layui-form-label">姓名：</label>
+        <div class="layui-input-inline">
+            <input type="text" name="name" value="" lay-verify="" lay-vertype="tips" placeholder="" autocomplete="off" class="layui-input">
+
+        </div>
+<!--        <label class="layui-form-mid layui-word-aux">用户无等级时必填，有等级时为同步更新</label>-->
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">电话：</label>
+        <div class="layui-input-inline">
+            <input type="text" name="mobile" value="" lay-verify="" lay-vertype="tips" placeholder="" autocomplete="off" class="layui-input">
+
+        </div>
+<!--        <label class="layui-form-mid layui-word-aux">用户无等级时必填，有等级时为同步更新</label>-->
+    </div>
+
+    <div class="layui-form-item">
         <label class="layui-form-label">选择省代：</label>
         <div class="layui-inline">
             <div class="layui-input-inline">
@@ -26,7 +44,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">抽成比例：</label>
         <div class="layui-input-inline">
-            <input type="text" name="money" value="{$point}" lay-verify="" lay-vertype="tips" placeholder="" autocomplete="off" class="layui-input">
+            <input type="number" name="money" value="{$point}" lay-verify="" lay-vertype="tips" placeholder="" autocomplete="off" class="layui-input">
             <label class="layui-form-mid layui-word-aux">请输入0-100（%）</label>
         </div>
         <label class="layui-form-mid">%</label>

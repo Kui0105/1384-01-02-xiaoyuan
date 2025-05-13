@@ -295,9 +295,19 @@ class CouponLogic{
 
             $seckill_list = SeckillLogic::getSeckillGoods();
             $seckill_goods = $seckill_list['seckill_goods'];
+            $new_level = Db::name('user')->where('id',$user_id)->value('new_level');
 
             //会员折扣价(优先级最高且不和其他活动重叠) > 活动价格
             foreach ($goods_price_array as $key => $item) {
+                if($new_level == 0){
+
+                }else if($new_level == 4){
+                    $item['price'] = $item['hos_price'];
+                    $goods_price_array[$key]['price'] = $item['hos_price'];
+                }else{
+                    $item['price'] = $item['agent_price'];
+                    $goods_price_array[$key]['price'] = $item['agent_price'];
+                }
 
                 if ($item['is_member'] == 1 && $level_discount > 0) {
                     $goods_price_array[$key]['price'] = round($item['price'] * $level_discount / 10, 2);

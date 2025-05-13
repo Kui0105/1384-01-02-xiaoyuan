@@ -121,7 +121,7 @@ class CartLogic
     public static function lists($user_id)
     {
         $field = 'g.name,g.image,g.id as goods_id,g.status as g_status,g.del as g_del,
-        i.spec_value_str,i.price,i.image as item_image,c.goods_num,c.selected,c.id as cart_id,c.item_id,i.stock as item_stock';
+        i.spec_value_str,i.price,i.image as item_image,c.goods_num,c.selected,c.id as cart_id,c.item_id,i.stock as item_stock,i.hos_price,i.agent_price';
 
         $carts = Db::name('cart c')
             ->field($field)
@@ -135,6 +135,7 @@ class CartLogic
         $total = 0;
         $lists = [];
 
+        $user_level = Db::name('user')->where('id',$user_id)->value('new_level');
         foreach ($carts as $k1 => $cart) {
 
             $cart_img = empty($cart['item_image']) ? $cart['image'] : $cart['item_image'];
@@ -147,6 +148,16 @@ class CartLogic
 
             if ($cart['g_del'] == 1) {
                 $cart['cart_status'] = 2;
+            }
+
+            if($user_level == 0){
+
+            }else if($user_level == 4){
+                $cart['price'] = $cart['hos_price'];
+                $carts[$k1]['price'] = $cart['hos_price'];
+            }else{
+                $cart['price'] = $cart['agent_price'];
+                $carts[$k1]['price'] = $cart['agent_price'];
             }
 
             $cart['sub_price'] = 0;

@@ -206,4 +206,32 @@ class Goods extends Model{
             }
         }
     }
+
+    //获取用户等级价格
+    public static function getLevelListPrice($goods_id,$user_id,$goods_price)
+    {
+        $user_level = Db::name('user')->where('id',$user_id)->value('new_level');
+        if($user_level == 0){
+            return $goods_price;
+        }else if($user_level == 4){//诊所
+            return Db::name('goods_item')->where('goods_id',$goods_id)->min('hos_price');
+        }else{//代理
+            return Db::name('goods_item')->where('goods_id',$goods_id)->min('agent_price');
+        }
+    }
+
+    public static function getLevelDetailPrice($item_id,$user_id,$goods_price)
+    {
+        $user_level = Db::name('user')->where('id',$user_id)->value('new_level');
+        if($user_level == 0){
+            return $goods_price;
+        }else if($user_level == 4){//诊所
+            return Db::name('goods_item')->where('id',$item_id)->value('hos_price');
+        }else{//代理
+            return Db::name('goods_item')->where('id',$item_id)->value('agent_price');
+        }
+    }
+
+    
+
 }
