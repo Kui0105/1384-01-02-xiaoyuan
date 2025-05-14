@@ -49,6 +49,7 @@ class CommentHelper extends AdminBase
         $goods_id = $this->request->get('id');
         if ($this->request->isAjax()) {
             $post = $this->request->post();
+            $post['level'] = 0;
             $check = $this->validate($post, 'app\admin\validate\CommentHelper');
             if ($check !== true) {
                 $this->_error($check);

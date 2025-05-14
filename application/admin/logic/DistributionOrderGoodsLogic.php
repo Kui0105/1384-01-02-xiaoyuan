@@ -29,7 +29,7 @@ class DistributionOrderGoodsLogic extends LogicBase
         }
         // 分销会员
         if (isset($params['distribution_keyword']) && !empty($params['distribution_keyword'])) {
-            $where[] = ['u.sn|u.nickname', 'like', '%'.$params['distribution_keyword'].'%'];
+            $where[] = ['u.sn|u.nickname|nl.name|nl.mobile', 'like', '%'.$params['distribution_keyword'].'%'];
         }
         // 佣金状态
         if (isset($params['status']) && !empty($params['status'])) {
@@ -55,7 +55,9 @@ class DistributionOrderGoodsLogic extends LogicBase
             'dog.ratio',
             'dog.money',
             'dog.status' => 'status_desc',
-            'dog.settlement_time'
+            'dog.settlement_time',
+            'nl.name'   => 'nl_name',
+            'nl.mobile' => 'nl_mobile'
         ];
 
         $lists = DistributionOrderGoods::alias('dog')
@@ -64,7 +66,7 @@ class DistributionOrderGoodsLogic extends LogicBase
             ->leftJoin('order_goods og', 'og.id = dog.order_goods_id')
             ->leftJoin('goods g', 'g.id = og.goods_id')
             ->leftJoin('goods_item gi', 'gi.id = og.item_id')
-            ->leftJoin('distribution_level dl', 'dl.id = dog.level_id')
+            ->leftJoin('user_new_level nl', 'nl.user_id = dog.user_id')
             ->field($field)
             ->where($where)
             ->order('dog.id', 'desc')
@@ -78,7 +80,7 @@ class DistributionOrderGoodsLogic extends LogicBase
             ->leftJoin('order_goods og', 'og.id = dog.order_goods_id')
             ->leftJoin('goods g', 'g.id = og.goods_id')
             ->leftJoin('goods_item gi', 'gi.id = og.item_id')
-            ->leftJoin('distribution_level dl', 'dl.id = dog.level_id')
+            ->leftJoin('user_new_level nl', 'nl.user_id = dog.user_id')
             ->field($field)
             ->where($where)
             ->count();

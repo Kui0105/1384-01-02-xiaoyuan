@@ -43,7 +43,7 @@ class DistributionSettingLogic extends LogicBase
     {
         Db::startTrans();
         try {
-            $allowFields = ['is_open', 'level', 'is_show_earnings', 'apply_condition', 'cale_method', 'settlement_days', 'show_earnings_scope','province_point','city_point','area_point','hospital_point'];
+            $allowFields = [ 'cale_method', 'settlement_days', 'province_point','city_point','area_point','hospital_point'];//'show_earnings_scope','is_open', 'level', 'is_show_earnings', 'apply_condition',
             foreach ($allowFields as $field) {
                 if ($field == 'settlement_days' && isset($params[$field]) && $params[$field] < 0) {
                     throw new \Exception('不允许填写负数');

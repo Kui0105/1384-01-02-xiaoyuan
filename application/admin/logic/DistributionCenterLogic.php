@@ -3,7 +3,9 @@ namespace app\admin\logic;
 
 use app\common\logic\LogicBase;
 use app\common\model\Distribution;
-use app\common\model\DistributionOrder;
+use app\common\model\User;
+use app\common\model\UserNewLevel;
+use app\common\model\UserNewLevelRadio;
 use app\common\model\DistributionOrderGoods;
 use app\common\server\UrlServer;
 
@@ -64,17 +66,28 @@ class DistributionCenterLogic extends LogicBase
      */
     public static function members()
     {
-        $members = Distribution::where('is_distribution', 1)->count();
+        $members = UserNewLevel::count();
         $users = Distribution::count();
         $proportion = 0;
         if ($users) {
             $proportion = round(($members / $users), 2) * 100;
         }
 
-
+        $provinces = UserNewLevel::where('level',1)->count();
+        $citys = UserNewLevel::where('level',2)->count();
+        $areas = UserNewLevel::where('level',3)->count();
+        $hospitals = UserNewLevel::where('level',4)->count();
+        $cityss = UserNewLevelRadio::where('level',2)->count();
+        $areass = UserNewLevelRadio::where('level',3)->count();
         return [
-            'members' => $members,
-            'proportion' => $proportion,
+            'members'       => $members,
+            'proportion'    => $proportion,
+            'provinces'     => $provinces,
+            'citys'         => $citys,
+            'areas'         => $areas,
+            'hospitals'     => $hospitals,
+            'cityss'        => $cityss,
+            'areass'        => $areass
         ];
     }
 
@@ -120,15 +133,19 @@ class DistributionCenterLogic extends LogicBase
             'sum(dog.money)' => 'total_money',
             'u.avatar',
             'u.nickname',
+            'nl.name',
+            'nl.mobile'
         ];
         $where = [
             'dog.status' => 2, // 已入账
         ];
         $topMembers = DistributionOrderGoods::alias('dog')
             ->leftJoin('user u', 'u.id = dog.user_id')
+            ->leftJoin('user_new_level nl', 'nl.user_id = dog.user_id')
             ->field($field)
             ->where($where)
-            ->group('dog.money,u.avatar,u.nickname')
+            ->group('dog.user_id')
+            // ->group('dog.money,u.avatar,u.nickname')
             ->order('total_money', 'desc')
             ->limit(10)
             ->select()

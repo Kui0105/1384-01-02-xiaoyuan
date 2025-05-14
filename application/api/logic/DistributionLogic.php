@@ -13,6 +13,32 @@ use think\facade\Hook;
 
 class DistributionLogic
 {
+    public static function father($hos_id,$my_id)
+    {
+        $hos_data = Db::name('user_new_level')->where('id',$hos_id)->find();
+        if(!$hos_data || $hos_data['level'] !=4){
+            return '诊所不存在';
+        }
+        if($hos_data['user_id'] == $my_id){
+            return '不可绑定';
+        }
+        $my_data = User::where('id',$my_id)->find()->toArray();
+        if($my_data['new_level'] == 4){
+            return '诊所不可绑定';
+        }
+        if($my_data['first_leader']){
+            return '请勿重复绑定';
+        }
+        User::where('id',$my_id)->update(['first_leader'=>$hos_data['user_id']]);
+        //消息通知
+        Hook::listen('notice', [
+            'user_id' => $hos_data['user_id'],
+            'lower_id' => $my_id,
+            'scene' => NoticeSetting::INVITE_SUCCESS_NOTICE,
+        ]);
+        return true;
+    }
+
     /**
      * 填写邀请码
      * @param $code
@@ -21,6 +47,7 @@ class DistributionLogic
      */
     public static function code($code, $my_id)
     {
+        return true;
         try {
             Db::startTrans();
 

@@ -258,6 +258,8 @@ class UserNewLevelRadioLogic extends LogicBase
         $level      = $post_data['level']??0;
         $remark     = $post_data['remark']??'';
         $money      = $post_data['money']??0;
+        $name       = $post_data['name']??'';
+        $mobile     = $post_data['mobile']??'';
         if(!$user_id || !$level || !$money || !$remark){
             return '请填写完整';
         }
@@ -272,6 +274,10 @@ class UserNewLevelRadioLogic extends LogicBase
         if($user['new_level']){
             if($user['new_level'] !=2){
                 return '用户已有其他等级';
+            }
+        }else{
+            if(!$name || !$mobile){
+                return '请填写姓名电话';
             }
         }
         $now_city_arr = Db::name('user_new_level_radio')->where('level',2)->column('self_id');//->where('level','in',[1,2,3])
@@ -297,6 +303,12 @@ class UserNewLevelRadioLogic extends LogicBase
                 $level_update = [
                     'self_id'   => $level_data['self_id'].','.$level
                 ];
+                if($name){
+                    $level_update['name'] = $name;
+                }
+                if($mobile){
+                    $level_update['mobile'] = $mobile;
+                }
                 Db::name('user_new_level')->where('id',$level_data['id'])->update($level_update);
             }else{
                 $user_update = [
@@ -307,6 +319,8 @@ class UserNewLevelRadioLogic extends LogicBase
                     'user_id'   => $user_id,
                     'pid'       => $pid,
                     'self_id'   => $level,
+                    'name'      => $name,
+                    'mobile'    => $mobile,
                     'level'     => 2,
                     'create_time'   => $time,
                 ]);
@@ -377,6 +391,8 @@ class UserNewLevelRadioLogic extends LogicBase
         $level      = $post_data['level']??0;
         $remark     = $post_data['remark']??'';
         $money      = $post_data['money']??0;
+        $name       = $post_data['name']??'';
+        $mobile     = $post_data['mobile']??'';
         if(!$id || !$level || !$money || !$remark){
             return '请填写完整';
         }
@@ -417,14 +433,28 @@ class UserNewLevelRadioLogic extends LogicBase
             $user_city_arr = Db::name('user_new_level_radio')->where('user_id',$radio_data['user_id'])->where('id','<>',$id)->column('self_id');
 
             if(empty($user_city_arr)){
-                Db::name('user_new_level')->where(['user_id'=>$user_id,'level'=>2])->update(['pid'=>$pid,'self_id'=>$level]);
+                $level_update = ['pid'=>$pid,'self_id'=>$level];
+                if($name){
+                    $level_update['name'] = $name;
+                }
+                if($mobile){
+                    $level_update['mobile'] = $mobile;
+                }
+                Db::name('user_new_level')->where(['user_id'=>$user_id,'level'=>2])->update($level_update);
                 Db::name('user')->where('id',$user_id)->update(['new_level'=>2,'new_level_city'=>$level]);
             }else{
                 if($radio_data['pid'] != $pid){
                     return '非原归属省份';
                 }
                 $self_str  = implode(',',$user_city_arr).','.$level;
-                Db::name('user_new_level')->where(['user_id'=>$radio_data['user_id'],'level'=>2])->update(['self_id'=>$self_str]);
+                $level_update = ['self_id'=>$self_str];
+                if($name){
+                    $level_update['name'] = $name;
+                }
+                if($mobile){
+                    $level_update['mobile'] = $mobile;
+                }
+                Db::name('user_new_level')->where(['user_id'=>$radio_data['user_id'],'level'=>2])->update($level_update);
                 Db::name('user')->where('id',$radio_data['user_id'])->update(['new_level_city'=>$self_str]);
             }
 
@@ -442,6 +472,8 @@ class UserNewLevelRadioLogic extends LogicBase
         $level      = $post_data['level']??0;
         $remark     = $post_data['remark']??'';
         $money      = $post_data['money']??0;
+        $name       = $post_data['name']??'';
+        $mobile     = $post_data['mobile']??'';
         if(!$user_id || !$level || !$money || !$remark){
             return '请填写完整';
         }
@@ -456,6 +488,10 @@ class UserNewLevelRadioLogic extends LogicBase
         if($user['new_level']){
             if($user['new_level'] !=3){
                 return '用户已有其他等级';
+            }
+        }else{
+            if(!$name || !$mobile){
+                return '请填写姓名电话';
             }
         }
         $now_city_arr = Db::name('user_new_level_radio')->where('level',3)->column('self_id');//->where('level','in',[1,2,3])
@@ -494,6 +530,12 @@ class UserNewLevelRadioLogic extends LogicBase
                 if(!in_array($pid,$now_pid_arr)){
                     $level_update['pid'] = $now_pid_str.','.$pid;
                 }
+                if($name){
+                    $level_update['name'] = $name;
+                }
+                if($mobile){
+                    $level_update['mobile'] = $mobile;
+                }
                 Db::name('user_new_level')->where('id',$level_data['id'])->update($level_update);
             }else{
                 $user_update = [
@@ -505,6 +547,8 @@ class UserNewLevelRadioLogic extends LogicBase
                     'pid'       => $pid,
                     'self_id'   => $level,
                     'level'     => 3,
+                    'name'      => $name,
+                    'mobile'    => $mobile,
                     'create_time'   => $time,
                 ]);
             }
@@ -538,6 +582,8 @@ class UserNewLevelRadioLogic extends LogicBase
         $level      = $post_data['level']??0;
         $remark     = $post_data['remark']??'';
         $money      = $post_data['money']??0;
+        $name       = $post_data['name']??'';
+        $mobile     = $post_data['mobile']??'';
         if(!$id || !$level || !$money || !$remark){
             return '请填写完整';
         }
@@ -578,7 +624,14 @@ class UserNewLevelRadioLogic extends LogicBase
             $user_area_arr = Db::name('user_new_level_radio')->where('user_id',$radio_data['user_id'])->where('id','<>',$id)->column('self_id');
 
             if(empty($user_area_arr)){
-                Db::name('user_new_level')->where(['user_id'=>$user_id,'level'=>3])->update(['pid'=>$pid,'self_id'=>$level]);
+                $level_update = ['pid'=>$pid,'self_id'=>$level];
+                if($name){
+                    $level_update['name'] = $name;
+                }
+                if($mobile){
+                    $level_update['mobile'] = $mobile;
+                }
+                Db::name('user_new_level')->where(['user_id'=>$user_id,'level'=>3])->update($level_update);
                 Db::name('user')->where('id',$user_id)->update(['new_level'=>3,'new_level_area'=>$level]);
             }else{
                 $province_id = DevRegion::where('id',$pid)->value('parent_id');
@@ -595,6 +648,12 @@ class UserNewLevelRadioLogic extends LogicBase
                 ];
                 if(!in_array($pid,$now_pid_arr)){
                     $level_update['pid'] = $now_pid_str.','.$pid;
+                }
+                if($name){
+                    $level_update['name'] = $name;
+                }
+                if($mobile){
+                    $level_update['mobile'] = $mobile;
                 }
                 // if($radio_data['pid'] != $pid){
                 //     return '非原归属城市';
@@ -659,8 +718,16 @@ class UserNewLevelRadioLogic extends LogicBase
         $latitude   = $post_data['latitude']??'';
         $remark     = $post_data['remark']??'';
         $money      = $post_data['money']??0;
+        $name       = $post_data['name']??'';
+        $mobile     = $post_data['mobile']??'';
         if(!$user_id ){
             return '请选择用户';
+        }
+        if(!$name){
+            return '请输入姓名';
+        }
+        if(!$mobile){
+            return '请输入电话';
         }
         if(!$province || !$city || !$district){
             return '请选择地区';
@@ -697,6 +764,8 @@ class UserNewLevelRadioLogic extends LogicBase
             $time = time();
             $hos_id = Db::name('user_new_level')->insertGetId([
                 'user_id'   => $user_id,
+                'name'      => $name,
+                'mobile'    => $mobile,
                 'pid'       => $district,
                 'longitude' => $longitude,
                 'latitude'  => $latitude,
@@ -743,6 +812,14 @@ class UserNewLevelRadioLogic extends LogicBase
         $latitude   = $post_data['latitude']??'';
         $remark     = $post_data['remark']??'';
         $money      = $post_data['money']??0;
+        $name       = $post_data['name']??'';
+        $mobile     = $post_data['mobile']??'';
+        if(!$name){
+            return '请输入姓名';
+        }
+        if(!$mobile){
+            return '请输入电话';
+        }
         if(!$province || !$city || !$district){
             return '请选择地区';
         }
@@ -785,7 +862,14 @@ class UserNewLevelRadioLogic extends LogicBase
                 'create_time'   => $time
             ]);
 
-            Db::name('user_new_level')->where('id',$radio_data['self_id'])->update(['pid'=>$district,'longitude'=>$longitude,'latitude'=>$latitude,'address'=>$address]);
+            Db::name('user_new_level')->where('id',$radio_data['self_id'])->update([
+                'pid'       => $district,
+                'longitude' => $longitude,
+                'latitude'  => $latitude,
+                'name'      => $name,
+                'mobile'    => $mobile,
+                'address'   => $address
+            ]);
 
             Db::commit();
             return true;
@@ -816,6 +900,7 @@ class UserNewLevelRadioLogic extends LogicBase
             ]);
             Db::name('user_new_level')->where('id',$radio_data['self_id'])->delete();
             Db::name('user')->where('id',$radio_data['user_id'])->update(['new_level'=>0,'new_level_hos'=>0]);
+            Db::name('user')->where('first_leader',$radio_data['user_id'])->update(['first_leader'=>0]);
             Db::name('hos_doctor')->where('id',$radio_data['self_id'])->delete();
             Db::name('hos_info')->where('id',$radio_data['self_id'])->delete();
             Db::commit();

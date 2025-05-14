@@ -11,6 +11,20 @@ use app\common\model\User;
 class Distribution extends ApiBase
 {
     public $like_not_need_login = ['fixAncestorRelation'];
+
+    /**
+     * 推广下级
+     */
+    public function father()
+    {
+        $hos_id = $this->request->post('hos_id');
+        $result = DistributionLogic::father($hos_id, $this->user_id);
+        if ($result !== true) {
+            $this->_error($result, [], 0, 0);
+        }
+        $this->_success();
+    }
+
     /**
      * 填写邀请码
      */

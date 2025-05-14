@@ -27,6 +27,7 @@
                     <div class="layui-colla-content layui-show">
                         <p>*诊所；</p>
                         <p>*地区筛选仅能筛选最后一个下拉选项</p>
+                        <p>*移除诊所会清空所有绑定关系，操作不可逆</p>
                     </div>
                 </div>
             </div>
@@ -164,7 +165,7 @@
         table.on('tool(lists)', function(obj){
             var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
             if(layEvent === 'freeze'){ // 移除诊所
-                layer.confirm('确定要移除诊所吗?', function(index){
+                layer.confirm("确定要移除诊所吗?<span style='color: red'>会清空绑定关系，操作不可逆！！！</span>", function(index){
                     layer.close(index);
                     like.ajax({
                         url: "{:url('distribution_member/del_hos')}",

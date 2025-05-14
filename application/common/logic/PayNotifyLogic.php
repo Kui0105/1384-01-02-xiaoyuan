@@ -93,7 +93,7 @@ class PayNotifyLogic
         if ($order['order_type'] == Order::NORMAL_ORDER){
             if($hos_id){
                 // 生成分销订单
-                DistributionOrderGoodsLogic::add($order['id']);
+                DistributionOrderGoodsLogic::add($order['id'],$order['delivery_type']);
             }
 
 

@@ -84,7 +84,7 @@ class CommentHelperLogic
                 'nickname' => $post['nickname'],
                 'avatar' => $post['avatar'],
                 'comment_time' => strtotime($post['comment_time']),
-                'level' => $post['level'],
+                'level' => 0//$post['level'],
             ];
 
             $data = [

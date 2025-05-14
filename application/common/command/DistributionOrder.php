@@ -62,13 +62,17 @@ class DistributionOrder extends Command
             }
 
             foreach ($orders as $order) {
-                $distribution = Distribution::where('user_id', $order['user_id'])->findOrEmpty()->toArray();
-
-                //当前分佣订单是否可结算   //非分销会员或已被冻结的分销会员不参与分佣
-                if ( false === self::isSettle($order) || empty($distribution)
-                    || $distribution['is_distribution'] != 1
-                    || $distribution['is_freeze'] == 1
-                ) {
+                // var_dump($order);die;
+                // $distribution = Distribution::where('user_id', $order['user_id'])->findOrEmpty()->toArray();
+                //
+                // //当前分佣订单是否可结算   //非分销会员或已被冻结的分销会员不参与分佣
+                // if ( false === self::isSettle($order) || empty($distribution)
+                //     || $distribution['is_distribution'] != 1
+                //     || $distribution['is_freeze'] == 1
+                // ) {
+                //     continue;
+                // }
+                if(false === self::isSettle($order)){
                     continue;
                 }
 
@@ -93,7 +97,7 @@ class DistributionOrder extends Command
                 DistributionOrderModel::updateOrderStatus($order['distribution_id'], DistributionOrderModel::STATUS_SUCCESS);
 
                 // 更新分销会员等级
-                DistributionLevelLogic::updateDistributionLevel($order['user_id']);
+                // DistributionLevelLogic::updateDistributionLevel($order['user_id']);
 
                 //通知会员
                 Hook::listen('notice', [

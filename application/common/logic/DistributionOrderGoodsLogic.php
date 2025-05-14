@@ -20,7 +20,7 @@ class DistributionOrderGoodsLogic extends LogicBase
      * @param $user_id
      * @author Tab
      */
-    public static function add($orderId)
+    public static function add($orderId,$delivery_type)
     {
         // 获取分销配置
         // $distributionConfig = [
@@ -47,7 +47,12 @@ class DistributionOrderGoodsLogic extends LogicBase
                 continue;
             }
 
-            self::NewLevelCommission($item);
+            if($delivery_type == 1){
+                self::NewLevelCommission($item);
+            }else{
+                self::NewLevelCommissionHos($item);
+            }
+
 
             // // 分销层级
             // switch($distributionConfig['level'])
@@ -75,6 +80,38 @@ class DistributionOrderGoodsLogic extends LogicBase
     {
         $earnings = round(($total_pay_price * $radio / 100), 2);
         return $earnings;
+    }
+
+    public static function NewLevelCommissionHos($item)
+    {
+        $radio_data = Db::name('user_new_level_radio')->where(['level'=>4,'self_id'=>$item['hos_id']])->find();
+        if(!$radio_data){
+            return false;
+        }
+        $name = Db::name('user_new_level')->where('id',$item['hos_id'])->value('name');
+        if(!$name){
+            $name = Db::name('user')->where('id',$radio_data['user_id'])->value('nickname');
+        }
+        $earnings = $item['total_pay_price'];
+        if($earnings > 0) {
+            $hos_data = [
+                'sn' => createSn('distribution_order_goods', 'sn'),
+                'user_id' => $radio_data['user_id'],
+                'real_name' => $name,
+                'level_id' => 4,
+                'level' => 1,
+                'ratio' => 100,
+                'order_id' => $item['order_id'],
+                'order_goods_id' => $item['order_goods_id'],
+                'goods_num' => $item['goods_num'],
+                'money' => $earnings,
+                'status' => 1,
+                'create_time' => time(),
+            ];
+        }
+        if(!empty($hos_data)){
+            DistributionOrderGoods::insert($hos_data);
+        }
     }
 
     public static function NewLevelCommission($item)
