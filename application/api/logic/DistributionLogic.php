@@ -205,7 +205,7 @@ class DistributionLogic
     public static function myLeader($user_id)
     {
 
-        $field = 'nickname,avatar,is_distribution,mobile,first_leader,distribution_code,earnings';
+        $field = 'nickname,avatar,mobile,first_leader,distribution_code,earnings,';
 
         $user = Db::name('user')
             ->field($field)

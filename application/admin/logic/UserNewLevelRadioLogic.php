@@ -776,7 +776,8 @@ class UserNewLevelRadioLogic extends LogicBase
             ]);
             $user_update = [
                 'new_level'             => 4,
-                'new_level_hos'         => $hos_id
+                'new_level_hos'         => $hos_id,
+                'hos_p_area_id'         => $district,
             ];
             Db::name('user')->where('id',$user_id)->update($user_update);
             Db::name('user_new_level_log')->insert([
@@ -846,6 +847,7 @@ class UserNewLevelRadioLogic extends LogicBase
         if(empty($area_data) || $area_data['level'] !=3){
             return '区域错误';
         }
+        var_dump(222112);die;
         Db::startTrans();
         try {
             $user_id = $radio_data['user_id'];
@@ -855,6 +857,8 @@ class UserNewLevelRadioLogic extends LogicBase
                 'pid'       => $district,
                 'radio'     => $money,
             ]);
+            var_dump($district);die;
+            Db::name('user')->where('id',$user_id)->update(['hos_p_area_id'=> $district]);
             Db::name('user_new_level_log')->insert([
                 'user_id'   => $user_id,
                 'remark'    => '后台编辑诊所:'.$remark,
@@ -899,7 +903,7 @@ class UserNewLevelRadioLogic extends LogicBase
                 'create_time'   => $time
             ]);
             Db::name('user_new_level')->where('id',$radio_data['self_id'])->delete();
-            Db::name('user')->where('id',$radio_data['user_id'])->update(['new_level'=>0,'new_level_hos'=>0]);
+            Db::name('user')->where('id',$radio_data['user_id'])->update(['new_level'=>0,'new_level_hos'=>0,'hos_p_area_id'=>0]);
             Db::name('user')->where('first_leader',$radio_data['user_id'])->update(['first_leader'=>0]);
             Db::name('hos_doctor')->where('id',$radio_data['self_id'])->delete();
             Db::name('hos_info')->where('id',$radio_data['self_id'])->delete();
