@@ -18,7 +18,8 @@ class Distribution extends ApiBase
     public function father()
     {
         $hos_id = $this->request->post('hos_id');
-        $result = DistributionLogic::father($hos_id, $this->user_id);
+        $user_id = $this->request->post('user_id');
+        $result = DistributionLogic::father($hos_id,$user_id, $this->user_id);
         if ($result !== true) {
             $this->_error($result, [], 0, 0);
         }
@@ -94,7 +95,11 @@ class Distribution extends ApiBase
      */
     public function index()
     {
-        $this->_success('', DistributionLogic::index($this->user_id));
+        $res = DistributionLogic::index($this->user_id);
+        if($res === false){
+            $this->_error('暂无等级');
+        }
+        $this->_success('',$res);
     }
 
 
@@ -170,5 +175,18 @@ class Distribution extends ApiBase
     {
         $result = DistributionLogic::getPoster();
         $this->_success('',$result);
+    }
+
+    public function hos_info()
+    {
+        $hos_id = $this->request->get('hos_id');
+        if(!$hos_id){
+            $this->_error('缺少必要参数');
+        }
+        $res = DistributionLogic::hos_info($hos_id);
+        if($res === false){
+            $this->_error(DistributionLogic::getError() ?? '失败');
+        }
+        return $this->_success('成功',$res);
     }
 }

@@ -33,6 +33,9 @@ class UserNewLevelLogic extends LogicBase
         return $user_data;
     }
 
+    /**
+     * 查看下级申请列表
+     */
     public static function apply_list($user_id, $status, $page, $size)
     {
         // $level_data = UserNewLevel::where('user_id',$user_id)->findOrEmpty()->toArray();
@@ -94,6 +97,9 @@ class UserNewLevelLogic extends LogicBase
         ];
     }
 
+    /**
+     * 获取申请详细
+     */
     public static function apply_detail($id,$user_id)
     {
         // $level_data = UserNewLevel::where('user_id',$user_id)->findOrEmpty()->toArray();
@@ -132,6 +138,9 @@ class UserNewLevelLogic extends LogicBase
         return $detail;
     }
 
+    /**
+     * 我的申请列表(xxx)
+     */
     public static function my_apply_list($user_id, $status, $page, $size)
     {
         // $user_data = User::field('new_level,id,new_level_province,new_level_city,new_level_area')->where('id',$user_id)->findOrEmpty()->toArray();
@@ -192,6 +201,9 @@ class UserNewLevelLogic extends LogicBase
         // ];
     }
 
+    /**
+     * 申请审核
+     */
     public static function audit($id,$user_id,$status,$reason)
     {
         // $level_data = UserNewLevel::where('user_id',$user_id)->findOrEmpty()->toArray();
@@ -333,6 +345,9 @@ class UserNewLevelLogic extends LogicBase
         }
     }
 
+    /**
+     * 诊所-门店简介
+     */
     public static function hos_info($user_id)
     {
         $user_data = User::field('new_level,id,new_level_province,new_level_city,new_level_area,new_level_hos')->where('id',$user_id)->findOrEmpty()->toArray();
@@ -347,6 +362,9 @@ class UserNewLevelLogic extends LogicBase
         return $hos_info;
     }
 
+    /**
+     * 诊所-门店简介-添加/编辑
+     */
     public static function hos_info_edit($user_id,$data)
     {
         if(empty($data['name'])){
@@ -395,6 +413,9 @@ class UserNewLevelLogic extends LogicBase
         return true;
     }
 
+    /**
+     * 诊所-医生列表
+     */
     public static function hos_doctor_list($user_id,$page, $size)
     {
         $user_data = User::field('new_level,id,new_level_province,new_level_city,new_level_area,new_level_hos')->where('id',$user_id)->findOrEmpty()->toArray();
@@ -424,6 +445,9 @@ class UserNewLevelLogic extends LogicBase
         return ;
     }
 
+    /**
+     * 诊所-添加医生
+     */
     public static function doctor_add($user_id,$data)
     {
         if(empty($data['name'])){
@@ -462,6 +486,9 @@ class UserNewLevelLogic extends LogicBase
         return true;
     }
 
+    /**
+     * 诊所-编辑医生
+     */
     public static function doctor_edit($user_id,$data)
     {
         if(empty($data['id'])){
@@ -500,6 +527,9 @@ class UserNewLevelLogic extends LogicBase
         return true;
     }
 
+    /**
+     * 诊所-医生详细
+     */
     public static function doctor_info($user_id,$id)
     {
         $user_data = User::field('new_level,id,new_level_province,new_level_city,new_level_area,new_level_hos')->where('id',$user_id)->findOrEmpty()->toArray();
@@ -514,6 +544,9 @@ class UserNewLevelLogic extends LogicBase
         return $hos_info;
     }
 
+    /**
+     * 诊所-删除医生
+     */
     public static function doctor_del($user_id,$id)
     {
         $user_data = User::field('new_level,id,new_level_province,new_level_city,new_level_area,new_level_hos')->where('id',$user_id)->findOrEmpty()->toArray();
@@ -531,5 +564,98 @@ class UserNewLevelLogic extends LogicBase
         return true;
     }
 
+    /**
+     * 诊所-我的推荐
+     */
+    public static function fans($user_id, $get, $page, $size)
+    {
+        $where = [];
+        if (isset($get['keyword']) && $get['keyword'] != '') {
+            $where[] = ['nickname|mobile|hp.name', 'like', '%' . $get['keyword'] . '%'];
+        }
 
+        $where[] = ['first_leader', '=', $user_id];
+
+        $field = 'u.id, avatar, nickname, mobile, u.create_time,hp.name,hp.end_time';
+
+        $count = Db::name('user u')
+            ->field($field)
+            ->leftJoin('hos_product hp', 'hp.son_id = u.id and hp.del = 0')
+            ->where($where)
+            ->count();
+
+        $lists = Db::name('user u')
+            ->field($field)
+            ->leftJoin('hos_product hp', 'hp.son_id = u.id and hp.del = 0')
+            ->where($where)
+            ->page($page, $size)
+            ->order('id desc')
+            ->select();
+
+        foreach ($lists as &$item) {
+            $item['avatar'] = addImgDomain($item['avatar']);
+            $item['name'] = $item['name']?:'';
+            $item['create_time'] = date('Y-m-d H:i:s', $item['create_time']);
+            $item['end_time'] = $item['end_time']?date('Y-m-d', $item['end_time']):'';
+        }
+
+        $data = [
+            'list' => $lists,
+            'page' => $page,
+            'size' => $size,
+            'count' => $count,
+            'more' => is_more($count, $page, $size)
+        ];
+        return $data;
+    }
+
+    /**
+     * 诊所-编辑产品
+     */
+    public static function product_edit($user_id,$data)
+    {
+        $user_data = User::field('new_level,id,new_level_province,new_level_city,new_level_area,new_level_hos')->where('id',$user_id)->findOrEmpty()->toArray();
+        if($user_data['new_level'] != 4){
+            self::$error = '不是诊所';
+            return false;
+        }
+        if(empty($data['id'])){
+            self::$error = '请选择用户';
+            return false;
+        }
+        if(empty($data['name'])){
+            self::$error = '请输入产品名称';
+            return false;
+        }
+        if(empty($data['end_time'])){
+            self::$error = '请选择到期时间';
+            return false;
+        }
+        $hos_id = $user_data['new_level_hos'];
+        $son_parent_id = User::where('id',$data['id'])->value('first_leader');
+        if($son_parent_id != $user_id){
+            self::$error = '无操作权限';
+            return false;
+        }
+        $if_product_data = Db::name('hos_product')->where(['del'=>0,'son_id'=>$data['id']])->find();
+        $time = time();
+        if($if_product_data){
+            Db::name('hos_product')->where('id',$if_product_data['id'])->update([
+                'name'      => $data['name'],
+                'end_time'  => strtotime($data['end_time']),
+                'status'    => 1,
+                'update_time'   => $time,
+            ]);
+        }else{
+            Db::name('hos_product')->insert([
+                'user_id'   => $user_id,
+                'hos_id'    => $hos_id,
+                'son_id'    => $data['id'],
+                'name'      => $data['name'],
+                'end_time'  => strtotime($data['end_time']),
+                'create_time'   => $time
+            ]);
+        }
+        return true;
+    }
 }

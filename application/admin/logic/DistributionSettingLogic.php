@@ -35,6 +35,8 @@ class DistributionSettingLogic extends LogicBase
             'city_point' => ConfigServer::get('distribution', 'city_point', 0),
             'area_point' => ConfigServer::get('distribution', 'area_point', 0),
             'hospital_point' => ConfigServer::get('distribution', 'hospital_point', 0),
+
+            'share_poster'  => addImgDomain(ConfigServer::get('distribution', 'share_poster', 0)),
         ];
         return $config;
     }
@@ -43,7 +45,7 @@ class DistributionSettingLogic extends LogicBase
     {
         Db::startTrans();
         try {
-            $allowFields = [ 'cale_method', 'settlement_days', 'province_point','city_point','area_point','hospital_point'];//'show_earnings_scope','is_open', 'level', 'is_show_earnings', 'apply_condition',
+            $allowFields = [ 'cale_method', 'settlement_days', 'province_point','city_point','area_point','hospital_point','share_poster'];//'show_earnings_scope','is_open', 'level', 'is_show_earnings', 'apply_condition',
             foreach ($allowFields as $field) {
                 if ($field == 'settlement_days' && isset($params[$field]) && $params[$field] < 0) {
                     throw new \Exception('不允许填写负数');
@@ -58,6 +60,7 @@ class DistributionSettingLogic extends LogicBase
                     // 开通分销会员无条件时，所有会员均成为分销会员
                     self::distribution();
                 }
+
             }
             Db::commit();
             return true;

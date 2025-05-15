@@ -192,30 +192,30 @@ class UserLogic extends LogicBase
         }
 
         //查询条件
-        $type = $get['type'] ?? 'all';
-        switch ($type) {
-            case 'first':
+        // $type = $get['type'] ?? 'all';
+        // switch ($type) {
+        //     case 'first':
                 $where[] = ['first_leader', '=', $user_id];
-                break;
-            case 'second':
-                $where[] = ['second_leader', '=', $user_id];
-                break;
-            default:
-                $where[] = ['first_leader|second_leader', '=', $user_id];
-        }
+        //         break;
+        //     case 'second':
+        //         $where[] = ['second_leader', '=', $user_id];
+        //         break;
+        //     default:
+        //         $where[] = ['first_leader|second_leader', '=', $user_id];
+        // }
 
         $field = 'u.id, avatar, nickname, mobile, u.create_time, order_num as fans_order,
                   order_amount as fans_money, fans as fans_team';
 
         $count = Db::name('user u')
             ->field($field)
-            ->leftJoin('user_distribution d', 'd.user_id = u.id')
+            // ->leftJoin('user_distribution d', 'd.user_id = u.id')
             ->where($where)
             ->count();
 
         $lists = Db::name('user u')
             ->field($field)
-            ->leftJoin('user_distribution d', 'd.user_id = u.id')
+            // ->leftJoin('user_distribution d', 'd.user_id = u.id')
             ->where($where)
             ->page($page, $size)
             ->order(self::fansListsSort($get))

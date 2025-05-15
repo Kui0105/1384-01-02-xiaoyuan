@@ -171,11 +171,11 @@ class QrCodeLogic extends LogicBase{
         return [
             //会员头像
             'head_pic' => [
-                'w' => 80, 'h' => 80, 'x' => 30, 'y' => 680,
+                'w' => 70, 'h' => 70, 'x' => 210, 'y' => 1100,
             ],
             //会员昵称
             'nickname' => [
-                'color' => '#333333', 'font_face' => ROOT_PATH.'/font/SourceHanSansCN-Regular.otf', 'font_size' => 20, 'x' => 120, 'y' => 730,
+                'color' => '#333333', 'font_face' => ROOT_PATH.'/font/SourceHanSansCN-Bold.otf', 'font_size' => 20, 'x' => 350, 'y' => 1130,
             ],
             //标题
             'title' => [
@@ -191,7 +191,7 @@ class QrCodeLogic extends LogicBase{
             ],
             //二维码
             'qr' => [
-                'w' => 170,'h' => 170, 'x' => 370, 'y' => 730,
+                'w' => 170,'h' => 170, 'x' => 160, 'y' => 1050,
             ],
         ];
     }
@@ -224,7 +224,8 @@ class QrCodeLogic extends LogicBase{
     //获取分享海报背景
     public function getSharePosterBg()
     {
-        $share_bg = ConfigServer::get('invite', 'poster');
+        // $share_bg = ConfigServer::get('invite', 'poster');
+        $share_bg = ConfigServer::get('distribution', 'share_poster');
         // 获取存储引擎
         $config = [
             'default' => ConfigServer::get('storage', 'default', 'local'),
@@ -308,23 +309,23 @@ class QrCodeLogic extends LogicBase{
 
             //获取背景图
             $share_background_img = imagecreatefromstring(file_get_contents($background_img));
-            //合成头像
-            $qr_code_logic->writeImg($share_background_img, $user_avatar, $poster_config['head_pic'],true);
+
 
             //合成昵称
             $nickname = filterEmoji($user['nickname']);
             $qr_code_logic->writeText($share_background_img, $nickname, $poster_config['nickname']);
             //长按识别
-            $notice = '长按识别二维码 >>';
-            $qr_code_logic->writeText($share_background_img, $notice, $poster_config['notice']);
+            // $notice = '长按识别二维码 >>';
+            // $qr_code_logic->writeText($share_background_img, $notice, $poster_config['notice']);
             //合成商品标题
-            $title = auto_adapt($poster_config['title']['font_size'], 0, $poster_config['title']['font_face'], '邀请你一起来赚大钱', $poster_config['title']['w'],$poster_config['title']['y'],getimagesize($background_img));
-            $qr_code_logic->writeText($share_background_img, $title, $poster_config['title']);
+            // $title = auto_adapt($poster_config['title']['font_size'], 0, $poster_config['title']['font_face'], '邀请你一起来赚大钱', $poster_config['title']['w'],$poster_config['title']['y'],getimagesize($background_img));
+            // $qr_code_logic->writeText($share_background_img, $title, $poster_config['title']);
             //邀请码
-            $qr_code_logic->writeText($share_background_img, '邀请码 '.$user['distribution_code'], $poster_config['code_text']);
+            // $qr_code_logic->writeText($share_background_img, '邀请码 '.$user['distribution_code'], $poster_config['code_text']);
             //合成二维码
             $qr_code_logic->writeImg($share_background_img, $poster_url, $poster_config['qr'],false);
-
+            //合成头像
+            $qr_code_logic->writeImg($share_background_img, $user_avatar, $poster_config['head_pic'],true);
             imagepng($share_background_img, $poster_url);
 
             $file_name = $save_dir . $qr_src;

@@ -5,17 +5,31 @@
 namespace app\api\logic;
 
 use app\common\logic\AccountLogLogic;
-use app\common\model\{AccountLog, AfterSale, DistributionOrder, NoticeSetting, Order, User};
+use app\common\model\{AccountLog, AfterSale, DevRegion, DistributionOrder, NoticeSetting, Order, User};
+use app\common\logic\LogicBase;
 use app\common\server\{AreaServer, ConfigServer, UrlServer};
 use think\Db;
 use think\Exception;
 use think\facade\Hook;
 
-class DistributionLogic
+class DistributionLogic extends LogicBase
 {
-    public static function father($hos_id,$my_id)
+    public static function father($hos_id,$user_id,$my_id)
     {
-        $hos_data = Db::name('user_new_level')->where('id',$hos_id)->find();
+        if($hos_id){
+            $hos_data = Db::name('user_new_level')->where('id',$hos_id)->find();
+        }else{
+            if($user_id){
+                $leader_uid = Db::name('user')->where('id',$user_id)->value('first_leader');
+                if($leader_uid){
+                    $hos_data = Db::name('user_new_level')->where('user_id',$leader_uid)->find();
+                }else{
+                    return '无诊所';
+                }
+            }else{
+                return '缺少参数';
+            }
+        }
         if(!$hos_data || $hos_data['level'] !=4){
             return '诊所不存在';
         }
@@ -29,6 +43,7 @@ class DistributionLogic
         if($my_data['first_leader']){
             return '请勿重复绑定';
         }
+
         User::where('id',$my_id)->update(['first_leader'=>$hos_data['user_id']]);
         //消息通知
         Hook::listen('notice', [
@@ -205,22 +220,46 @@ class DistributionLogic
     public static function myLeader($user_id)
     {
 
-        $field = 'nickname,avatar,mobile,first_leader,distribution_code,earnings,';
+        $field = 'nickname,avatar,mobile,first_leader,distribution_code,earnings,new_level,new_level_province,new_level_city,new_level_area,new_level_hos';
 
         $user = Db::name('user')
             ->field($field)
             ->where(['id' => $user_id])
             ->find();
 
-        $first_leader = Db::name('user')
-            ->field('nickname,mobile')
-            ->where(['id' => $user['first_leader']])
-            ->findOrEmpty();
+        $level_data = Db::name('user_new_level')->field('id,name,mobile,level,address,latitude,longitude')->where('user_id',$user_id)->find();
+        if(!$level_data){
+            return false;
+        }
+        switch ($level_data['level']){
+            case 1:
+                $level_data['level_name'] = '省代';
+                // $area_name = DevRegion::where('id','in',$level_data['self_id'])->column('name');
+                break;
+            case 2:
+                $level_data['level_name'] = '市代';
+                // $area_name = DevRegion::where('id','in',$level_data['self_id'])->column('name');
+                break;
+            case 3:
+                $level_data['level_name'] = '区代';
+                // $area_name = DevRegion::where('id','in',$level_data['self_id'])->column('name');
+                break;
+            case 4:
+                $level_data['level_name'] = '诊所';
+                break;
+        }
+
+        // $first_leader = Db::name('user')
+        //     ->field('nickname,mobile')
+        //     ->where(['id' => $user['first_leader']])
+        //     ->findOrEmpty();
 
         $user['avatar'] = UrlServer::getFileUrl($user['avatar'], 'local');
         return [
             'user' => $user,
-            'leader' => $first_leader,
+            'level_data'    => $level_data
+            // 'area_name' => $area_name
+            // 'leader' => $first_leader,
         ];
     }
 
@@ -235,6 +274,9 @@ class DistributionLogic
     public static function index($user_id)
     {
         $user_info = self::myLeader($user_id);//用户信息
+        if($user_info === false){
+            return false;
+        }
         $fans = Db::name('user')
             ->where('first_leader|second_leader', '=', $user_id)
             ->count();
@@ -258,7 +300,9 @@ class DistributionLogic
 
         $data = [
             'user' => $user_info['user'],
-            'leader' => $user_info['leader'],
+            'level_data'   => $user_info['level_data'],
+            // 'area_name'     => $user_info['area_name'],
+            // 'leader' => $user_info['leader'],
             'fans' => $fans,//粉丝数量
             'able_withdrawal' => $user_info['user']['earnings'],//可提现佣金
             'today_earnings' => round($today_earnings, 2),//今天预估收益
@@ -649,5 +693,44 @@ class DistributionLogic
         $poster = ConfigServer::get('invite', 'poster', '/images/share/share_user_bg.png');
         $poster = empty($poster) ? $poster : UrlServer::getFileUrl($poster);
         return ['poster'=>$poster];
+    }
+
+
+    public static function hos_info($hos_id)
+    {
+        $level_data = Db::name('user_new_level')->where('id',$hos_id)->find();
+        if(!$level_data){
+            self::$error = '诊所不存在';
+            return false;
+        }
+        $hos_info = Db::name('hos_info')->field('id,name,imgs,intro')->where('hos_id',$hos_id)->findOrEmpty();
+        if(!$hos_info){
+            self::$error = '诊所不存在';
+            return false;
+        }
+        if($hos_info){
+            $hos_info['imgs'] = addImgDomain($hos_info['imgs']);
+        }
+
+        $city_id = DevRegion::where('id',$level_data['pid'])->value('parent_id');
+        $province_id = DevRegion::where('id',$city_id)->value('parent_id');
+        $hos_info['area_name'] = DevRegion::getArea($province_id).'-'.DevRegion::getArea($city_id).'-'.DevRegion::getArea($level_data['pid']);
+        $hos_info['longitude'] = $level_data['longitude'];
+        $hos_info['latitude'] = $level_data['latitude'];
+        $hos_info['name'] = $level_data['name'];
+        $hos_info['mobile'] = $level_data['mobile'];
+        $hos_info['address'] = Db::name('user_new_level')->where('id',$level_data['self_id'])->value('address');
+
+        $doctor_lst = Db::name('hos_doctor')
+            ->field('id,name,imgs,intro')
+            ->where(['hos_id'=>$hos_id,'del'=>0])
+            ->order('id', 'desc')
+            ->select();
+        if(!empty($doctor_lst)){
+            foreach ($doctor_lst as &$v){
+                $v['imgs'] =  addImgDomain($v['imgs']);
+            }
+        }
+        return compact('hos_info','doctor_lst');
     }
 }

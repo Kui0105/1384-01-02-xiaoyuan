@@ -108,6 +108,30 @@ class UserNewLevel extends ApiBase{
     }
 
     /**
+     * 诊所-我的推荐
+     */
+    public function my_fans()
+    {
+        $get = $this->request->get();
+        $page = $this->request->get('page_no', $this->page_no);
+        $size = $this->request->get('page_size', $this->page_size);
+        $this->_success('', UserNewLevelLogic::fans($this->user_id, $get, $page, $size));
+    }
+
+    /**
+     * 诊所-编辑产品
+     */
+    public function product_edit()
+    {
+        $post = $this->request->post();
+        $res = UserNewLevelLogic::product_edit($this->user_id,$post);
+        if($res === false){
+            $this->_error(UserNewLevelLogic::getError() ?? '失败');
+        }
+        return $this->_success('成功',$res);
+    }
+
+    /**
      * 诊所-添加医生
      */
     public function doctor_add()
