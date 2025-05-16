@@ -23,6 +23,8 @@ return [
     'app\common\command\BargainEnd',
     'app\common\command\Password',
     'app\common\command\WechatMerchantTransfer',//商家转账到零钱查询
+
+    'app\common\command\Medication',//用药消息
     
     // 微信小程序发货同步
     WechatMiniExpressSendSync::class,

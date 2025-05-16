@@ -3,6 +3,7 @@ namespace app\admin\logic;
 
 use app\common\logic\LogicBase;
 use app\common\model\DevRegion;
+use app\common\model\NoticeSetting;
 use app\common\model\User;
 use app\common\model\UserLevelApply;
 use app\common\model\UserNewLevel;
@@ -10,13 +11,14 @@ use app\common\server\AreaServer;
 use app\common\server\ConfigServer;
 use app\common\server\UrlServer;
 use think\Db;
+use think\facade\Hook;
 
 class UserLevelApplyLogic extends LogicBase
 {
     public static function lists($get)
     {
         try {
-            $where[] = ['a.status', '=', $get['status'] ?? 1];
+            $where[] = ['a.status', '=', $get['status'] ?: 1];
             if (!empty($get['keyword']) and $get['keyword']) {
                 switch ($get['keyword_type']) {
                     case 'name':
@@ -152,16 +154,16 @@ class UserLevelApplyLogic extends LogicBase
         Db::startTrans();
         try {
             $time = time();
+            // 审核通过
+            $model = new UserLevelApply();
+            $detail = $model->field(true)->findOrEmpty((int)$post['id'])->toArray();
+            if($detail['status'] !=1){
+                static::$error = '不是可审核状态';
+                return false;
+            }
+            $user_id = $detail['user_id'];
+            $level_name = UserLevelApply::getLevelName($detail['level']);
             if ($post['audit_status'] == 1) {
-                // 审核通过
-                $model = new UserLevelApply();
-                $detail = $model->field(true)->findOrEmpty((int)$post['id'])->toArray();
-
-                if($detail['status'] !=1){
-                    static::$error = '不是可审核状态';
-                    return false;
-                }
-
                 UserLevelApply::update([
                     'status'        => 2,
                     'reason'        => $post['reason'] ?? '',
@@ -194,7 +196,7 @@ class UserLevelApplyLogic extends LogicBase
                     'address'       => $detail['address'],
                     'create_time'   => $time
                 ]);
-                $user_id = $detail['user_id'];
+
                 $reason = $post['reason'] ?? '';
                 switch ($detail['level']){
                     case 1:
@@ -273,7 +275,7 @@ class UserLevelApplyLogic extends LogicBase
                             'pid'       => $hos_id,
                             'self_id'   => 0,
                             'level'     => 4,
-                            'radio'     => $post[$detail['self_id']],
+                            'radio'     => $post[$detail['pid']],
                             'create_time'   => $time,
                         ]);
                         break;
@@ -286,24 +288,36 @@ class UserLevelApplyLogic extends LogicBase
                     // ]);
                 }else{
                     $self_ids = explode(',', $detail['self_id']);//[430111,433100,430822];//
-                    $refuse_id = $model
-                        ->where(['level'=>$detail['level'],'status'=>1])
+                    $refuse_data = $model
+                        // ->where(['level'=>$detail['level'],'status'=>1])
                         ->where(function ($query) use ($self_ids) {
                             foreach ($self_ids as $id) {
                                 $query->whereOrRaw("FIND_IN_SET({$id}, self_id)");
                             }
                         })
-                        ->column('id');
+                        ->select()->toArray();
+                        // ->column('id');
                     // var_dump($model->getLastSql());die;
-                    // var_dump($refuse_id);die;
-                    if(!empty($refuse_id)){
+                    if(!empty($refuse_data)){
+                        $refuse_id = array_column($refuse_data,'id');
                         $model->where('id','in',$refuse_id)->update([
                             'status' => 3,
                             'reason' => '自动驳回同地区申请',
                             'audit_time' => $time
                         ]);
+                        foreach ($refuse_data as $r){
+                            $result = '已被拒绝，拒绝理由：区域已有代理';
+                            //发送通知
+                            Hook::listen('notice', [
+                                'user_id' => $r['user_id'],
+                                'level_name' => $level_name,
+                                'result'    => $result,
+                                'scene' => NoticeSetting::NEW_LEVEL_AUDIT,
+                            ]);
+                        }
                     }
                 }
+                $result ='已审核通过';
             } else {
                 $reason = $post['reason'] ?? '';
                 if(!$reason){
@@ -313,10 +327,18 @@ class UserLevelApplyLogic extends LogicBase
                 // 审核拒绝
                 UserLevelApply::update([
                     'status'        => 3,
-                    'reason'        => $post['reason'] ?? '',
+                    'reason'        => $reason,
                     'audit_time'    => $time
                 ], ['id'=>(int)$post['id']]);
+                $result = '已被拒绝，拒绝理由：'.$reason;
             }
+            //发送通知
+            Hook::listen('notice', [
+                'user_id' => $user_id,
+                'level_name' => $level_name,
+                'result'    => $result,
+                'scene' => NoticeSetting::NEW_LEVEL_AUDIT,
+            ]);
             Db::commit();
             return true;
         } catch (\Exception $e) {

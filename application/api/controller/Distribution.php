@@ -183,7 +183,7 @@ class Distribution extends ApiBase
         if(!$hos_id){
             $this->_error('缺少必要参数');
         }
-        $res = DistributionLogic::hos_info($hos_id);
+        $res = DistributionLogic::hos_info($hos_id,$this->user_id);
         if($res === false){
             $this->_error(DistributionLogic::getError() ?? '失败');
         }

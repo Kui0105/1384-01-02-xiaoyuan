@@ -902,7 +902,7 @@ class UserNewLevelRadioLogic extends LogicBase
                 'content'   => json_encode($radio_data),
                 'create_time'   => $time
             ]);
-            Db::name('user_new_level')->where('id',$radio_data['self_id'])->delete();
+            Db::name('user_new_level')->where('id',$radio_data['pid'])->delete();
             Db::name('user')->where('id',$radio_data['user_id'])->update(['new_level'=>0,'new_level_hos'=>0,'hos_p_area_id'=>0]);
             Db::name('user')->where('first_leader',$radio_data['user_id'])->update(['first_leader'=>0]);
             Db::name('hos_doctor')->where('hos_id',$radio_data['self_id'])->delete();

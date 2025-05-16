@@ -48,6 +48,10 @@ class NoticeSetting extends Model
     const GET_BACK_PAY_CODE_NOTICE = 112;//找回支付密码
     const USER_WITH_WITHDRAW_WAIT_RECEIVE = 113;// 提现待收款
 
+    const HOSPITAL_USER = 114;// 用药消息用户
+    const HOSPITAL_DOCTOR = 115;// 用药消息诊所
+
+    const NEW_LEVEL_AUDIT = 116;// 审核结果消息
 
     //通知平台
     const USER_PAID_NOTICE_PLATFORM = 200;//会员支付下单通知平台
@@ -83,6 +87,9 @@ class NoticeSetting extends Model
         self::INVITE_SUCCESS_NOTICE,
         self::GET_EARNINGS_NOTICE,
         self::USER_WITH_WITHDRAW_WAIT_RECEIVE,
+        self::HOSPITAL_USER,
+        self::HOSPITAL_DOCTOR,
+        self::NEW_LEVEL_AUDIT,
     ];
 
     //通知游客(还不存在当前系统的人)
@@ -147,6 +154,10 @@ class NoticeSetting extends Model
 
             self::USER_PAID_NOTICE_PLATFORM => '会员支付下单通知平台',
             self::AFTER_SALE_NOTICE_PLATFORM => '会员发起售后退款通知',
+
+            self::HOSPITAL_DOCTOR       => '用药消息',
+            self::HOSPITAL_USER         => '用药消息',
+            self::NEW_LEVEL_AUDIT       => '审核消息',
         ];
         if ($state === true) {
             return $data;

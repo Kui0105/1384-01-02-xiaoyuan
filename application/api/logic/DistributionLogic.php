@@ -696,8 +696,17 @@ class DistributionLogic extends LogicBase
     }
 
 
-    public static function hos_info($hos_id)
+    public static function hos_info($hos_id,$user_id)
     {
+        $user_parent_id = User::where('id',$user_id)->value('first_leader');
+        if(!$user_parent_id){
+            self::$error = '未绑定诊所';
+            return false;
+        }
+        if($user_parent_id != $hos_id){
+            self::$error = '非绑定诊所';
+            return false;
+        }
         $level_data = Db::name('user_new_level')->where('id',$hos_id)->find();
         if(!$level_data){
             self::$error = '诊所不存在';

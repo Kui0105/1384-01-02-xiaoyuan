@@ -202,7 +202,7 @@ class QrCodeLogic extends LogicBase{
         try {
             $config = WeChatServer::getMnpConfig();
             $app = Factory::miniProgram($config);
-            $response = $app->app_code->get($content.'?invite_code='.$code, [
+            $response = $app->app_code->get($content.'?hos_id='.$code, [
                 'width' => 170,
             ]);
 
@@ -287,7 +287,7 @@ class QrCodeLogic extends LogicBase{
             $poster_config = $this->userShareConfig();
             //生成二维码
             if($url_type == 'path'){
-                $result = $this->makeUserMnpQrcode($user['distribution_code'], $content, $qr_src);
+                $result = $this->makeUserMnpQrcode($user['new_level_hos'], $content, $qr_src);
                 if(true !== $result){
                     return ['status' => 0, 'msg' => '微信配置错误：'.$result, 'data' => ''];
                 }
