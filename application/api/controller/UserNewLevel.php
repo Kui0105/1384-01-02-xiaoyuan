@@ -188,4 +188,38 @@ class UserNewLevel extends ApiBase{
         }
         return $this->_success('成功',$res);
     }
+
+    /**
+     * 诊所-创建订单
+     */
+    public function create_order()
+    {
+        $hos_id = $this->request->post('hos_id');
+        if(!$hos_id){
+            $this->_error('未知诊所');
+        }
+        $money = $this->request->post('money');
+        if(!$money){
+            $this->_error('请填写金额');
+        }
+        if($money <= 0){
+            $this->_error('金额错误');
+        }
+        $res = UserNewLevelLogic::create_order($this->user_id,$hos_id,$money);
+        if($res === false){
+            $this->_error(UserNewLevelLogic::getError() ?? '失败');
+        }
+        return $this->_success('成功',$res);
+    }
+
+    /**
+     * 诊所-当面付订单列表
+     */
+    public function order_lst()
+    {
+        $get = $this->request->get();
+        $page = $this->request->get('page_no', $this->page_no);
+        $size = $this->request->get('page_size', $this->page_size);
+        $this->_success('', UserNewLevelLogic::order_lst($this->user_id, $get, $page, $size));
+    }
 }

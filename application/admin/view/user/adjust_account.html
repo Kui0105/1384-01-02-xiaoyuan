@@ -14,7 +14,7 @@
                     <li data-type="money" class="layui-this">余额调整</li>
                     <li data-type="integral" >小元币调整</li>
 <!--                    <li data-type="growth" >成长值调整</li>-->
-<!--                    <li data-type="earnings" >佣金调整</li>-->
+                    <li data-type="earnings" >佣金调整</li>
                 </ul>
                 <div class="layui-tab-content" >
                     <div class="layui-tab-item  layui-show " >
@@ -78,37 +78,37 @@
                             </div>
                         </div>
                     </div>
-                    <div class="layui-tab-item">
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">当前成长值：</label>
-                            <div class="layui-input-inline">
-                                <label class="layui-form-mid">{$info.user_growth}</label>
-                                <input type="hidden" value="{$info.user_growth}" name="now_growth">
-                            </div>
-                        </div>
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">成长值增减：</label>
-                            <div class="layui-input-block">
-                                <input type="radio" name="growth_handle" value="1" title="增加成长值">
-                                <input type="radio" name="growth_handle" value="0" title="扣减成长值">
-                            </div>
-                        </div>
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">调整成长值：</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="growth" value="" lay-verify="" lay-vertype="tips" placeholder="" autocomplete="off" class="layui-input">
-                                <label class="layui-form-mid layui-word-aux">请输入调整的成长值</label>
-                            </div>
-<!--                            <label class="layui-form-mid">分</label>-->
-                        </div>
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">备注：</label>
-                            <div class="layui-input-block">
-                                <textarea type="text" name="growth_remark" autocomplete="off" class="layui-textarea" style="width: 30%;"></textarea>
-                                <label class="layui-form-mid layui-word-aux" style="margin-left: 10px;">不超过100字</label>
-                            </div>
-                        </div>
-                    </div>
+<!--                    <div class="layui-tab-item">-->
+<!--                        <div class="layui-form-item">-->
+<!--                            <label class="layui-form-label">当前成长值：</label>-->
+<!--                            <div class="layui-input-inline">-->
+<!--                                <label class="layui-form-mid">{$info.user_growth}</label>-->
+<!--                                <input type="hidden" value="{$info.user_growth}" name="now_growth">-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="layui-form-item">-->
+<!--                            <label class="layui-form-label">成长值增减：</label>-->
+<!--                            <div class="layui-input-block">-->
+<!--                                <input type="radio" name="growth_handle" value="1" title="增加成长值">-->
+<!--                                <input type="radio" name="growth_handle" value="0" title="扣减成长值">-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="layui-form-item">-->
+<!--                            <label class="layui-form-label">调整成长值：</label>-->
+<!--                            <div class="layui-input-inline">-->
+<!--                                <input type="text" name="growth" value="" lay-verify="" lay-vertype="tips" placeholder="" autocomplete="off" class="layui-input">-->
+<!--                                <label class="layui-form-mid layui-word-aux">请输入调整的成长值</label>-->
+<!--                            </div>-->
+<!--&lt;!&ndash;                            <label class="layui-form-mid">分</label>&ndash;&gt;-->
+<!--                        </div>-->
+<!--                        <div class="layui-form-item">-->
+<!--                            <label class="layui-form-label">备注：</label>-->
+<!--                            <div class="layui-input-block">-->
+<!--                                <textarea type="text" name="growth_remark" autocomplete="off" class="layui-textarea" style="width: 30%;"></textarea>-->
+<!--                                <label class="layui-form-mid layui-word-aux" style="margin-left: 10px;">不超过100字</label>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
                     <div class="layui-tab-item " >
                         <div class="layui-form-item">
                             <label class="layui-form-label">当前佣金：</label>

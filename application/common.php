@@ -1077,7 +1077,7 @@ function check_is_image($image) : bool
         return false;
     }
     
-    return in_array($ImageType, [1, 2, 3, 6]);
+    return in_array($ImageType, [1, 2, 3, 6, 18]);
 }
 
 function check_is_video($video) : bool

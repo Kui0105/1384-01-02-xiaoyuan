@@ -68,7 +68,7 @@ class UserLogic extends LogicBase
         $user['hasPayPassword'] = $user['pay_password'] ? 1 : 0;
         $user->visible(['id', 'nickname', 'sn', 'avatar', 'mobile', 'hasPayPassword', 'next_level_tips', 'user_money', 'total_order_amount', 'total_recharge_amount',
             'coupon', 'user_integral', 'level', 'wait_pay', 'wait_take', 'wait_delivery',
-            'wait_comment', 'after_sale', 'distribution_setting', 'distribution_code', 'notice_num','is_new_user']);
+            'wait_comment', 'after_sale', 'distribution_setting', 'distribution_code', 'notice_num','is_new_user','new_level']);
 
         return $user;
     }
@@ -204,8 +204,8 @@ class UserLogic extends LogicBase
         //         $where[] = ['first_leader|second_leader', '=', $user_id];
         // }
 
-        $field = 'u.id, avatar, nickname, mobile, u.create_time, order_num as fans_order,
-                  order_amount as fans_money, fans as fans_team';
+        $field = 'u.id, avatar, nickname, mobile, u.create_time, u.order_num as fans_order,
+                  u.order_amount as fans_money, fans as fans_team';
 
         $count = Db::name('user u')
             ->field($field)

@@ -358,6 +358,8 @@ class UserNewLevelLogic extends LogicBase
         $hos_info = Db::name('hos_info')->field('id,name,imgs,intro')->where('user_id',$user_id)->findOrEmpty();
         if($hos_info){
             $hos_info['imgs'] = addImgDomain($hos_info['imgs']);
+        }else{
+            $hos_info = '';
         }
         return $hos_info;
     }
@@ -592,11 +594,17 @@ class UserNewLevelLogic extends LogicBase
             ->order('id desc')
             ->select();
 
+        $time = time();
         foreach ($lists as &$item) {
             $item['avatar'] = addImgDomain($item['avatar']);
             $item['name'] = $item['name']?:'';
+            $item['btn_status'] = true;
+            if($item['end_time'] && ($item['end_time'] > $time) ){
+                $item['btn_status'] = false;
+            }
             $item['create_time'] = date('Y-m-d H:i:s', $item['create_time']);
             $item['end_time'] = $item['end_time']?date('Y-m-d', $item['end_time']):'';
+
         }
 
         $data = [
@@ -657,5 +665,88 @@ class UserNewLevelLogic extends LogicBase
             ]);
         }
         return true;
+    }
+
+    /**
+     * 诊所-创建订单
+     * $hos_id 诊所id
+     * $money 支付金额
+     */
+    public static function create_order($user_id,$hos_id,$money)
+    {
+        $user_parent_id = User::where('id',$user_id)->value('first_leader');
+        if(!$user_parent_id){
+            self::$error = '未绑定诊所';
+            return false;
+        }
+        $level_data = Db::name('user_new_level')->where('id',$hos_id)->find();
+        if(!$level_data){
+            self::$error = '诊所不存在';
+            return false;
+        }
+        if($user_parent_id != $level_data['user_id']){
+            self::$error = '非绑定诊所';
+            return false;
+        }
+
+        $order_data = [
+            'order_sn'          => createSn('hos_order', 'order_sn', '', 4),
+            'user_id'           => $user_id,
+            'hos_id'            => $hos_id,
+            'hos_user_id'       => $level_data['user_id'],
+            'order_amount'      => $money,
+            'pay_status'        => 0,
+            'pay_time'          => 0,
+            'wechat_mini_express_sync'          => '',
+            'wechat_mini_express_sync_time'     => '',
+            'transaction_id'    => '',
+            'create_time'       => time(),
+        ];
+        $order_id = Db::name('hos_order')->insertGetId($order_data);
+        return ['order_id' => $order_id, 'type' => 'hos_order'];
+    }
+
+    /**
+     * 诊所-当面付订单列表
+     */
+    public static function order_lst($user_id, $get, $page, $size)
+    {
+        $where = [];
+
+        $hos_id = Db::name('user_new_level')->where(['user_id'=>$user_id,'level'=>4])->value('id');
+        $where[] = ['o.hos_id', '=', $hos_id];
+        // $where[] = ['o.hos_user_id', '=', $user_id];
+
+        $field = 'u.avatar, nickname, mobile, u.create_time,o.order_sn,o.id,o.order_amount,o.pay_status,o.pay_time';
+
+        $count = Db::name('hos_order o')
+            ->field($field)
+            ->leftJoin('user u', 'u.id = o.user_id')
+            ->where($where)
+            ->count();
+
+        $lists = Db::name('hos_order o')
+            ->field($field)
+            ->leftJoin('user u', 'u.id = o.user_id')
+            ->where($where)
+            ->page($page, $size)
+            ->order('o.id desc')
+            ->select();
+
+        foreach ($lists as &$item) {
+            $item['avatar'] = addImgDomain($item['avatar']);
+            $item['create_time'] = date('Y-m-d H:i:s', $item['create_time']);
+            $item['pay_time'] = $item['pay_time']?date('Y-m-d', $item['pay_time']):'';
+            $item['pay_str'] = $item['pay_status']?'已支付':'未支付';
+        }
+
+        $data = [
+            'list' => $lists,
+            'page' => $page,
+            'size' => $size,
+            'count' => $count,
+            'more' => is_more($count, $page, $size)
+        ];
+        return $data;
     }
 }

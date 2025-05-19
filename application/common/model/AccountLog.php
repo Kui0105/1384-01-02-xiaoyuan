@@ -55,6 +55,7 @@ class AccountLog extends Model{
     const distribution_inc_earnings = 402;//分销订单结算增加佣金
     const admin_inc_earnings = 403; //后台增加佣金
     const admin_reduce_earnings = 404; //后台减少佣金
+    const hos_order_inc_earnings = 405;//扫码付入账
 
     const money_change = [      //余额变动类型
         self::admin_add_money,self::admin_reduce_money,self::recharge_money,self::balance_pay_order,self::cancel_order_refund,self::after_sale_refund
@@ -71,7 +72,7 @@ class AccountLog extends Model{
     ];
 
     const earnings_change = [   //佣金变动
-        self::withdraw_dec_earnings, self::withdraw_back_earnings, self::distribution_inc_earnings, self::admin_inc_earnings, self::admin_reduce_earnings
+        self::withdraw_dec_earnings, self::withdraw_back_earnings, self::distribution_inc_earnings, self::admin_inc_earnings, self::admin_reduce_earnings, self::hos_order_inc_earnings
     ];
 
     public static function getAcccountDesc($from = true){
@@ -98,6 +99,7 @@ class AccountLog extends Model{
             self::withdraw_dec_earnings         => '提现扣减佣金',
             self::withdraw_back_earnings        => '拒绝提现返还佣金',
             self::distribution_inc_earnings     => '订单结算获得佣金',
+            self::hos_order_inc_earnings        => '当面付获得佣金',
             self::cancel_order_refund_integral  => '取消订单退回小元币',
             self::deduct_order_first_integral   => '扣除首单小元币',
             self::luck_draw_integral            => '小元币抽奖中奖',

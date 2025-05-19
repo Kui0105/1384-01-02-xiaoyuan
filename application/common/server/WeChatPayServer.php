@@ -187,6 +187,17 @@ class WeChatPayServer
                     'attach' => 'recharge'
                 ];
                 break;
+            case 'hos_order':
+                $attributes = [
+                    'trade_type' => 'JSAPI',
+                    'body' => '当面付',
+                    // 'out_trade_no' => $order['order_sn'],
+                    'total_fee' => $order['order_amount'] * 100, // 单位：分
+                    'notify_url' => $notify_url,
+                    'openid' => $auth['openid'] ?? '',
+                    'attach' => 'order'
+                ];
+                break;
         }
 
         //app支付类型
@@ -282,6 +293,13 @@ class WeChatPayServer
                             return true;
                         }
                         PayNotifyLogic::handle('recharge', $message['out_trade_no'], $extra);
+                        break;
+                    case 'hos_order':
+                        $order = Db::name('hos_order')->where(['order_sn' => $message['out_trade_no']])->find();
+                        if (!$order || $order['pay_status'] >= Pay::ISPAID) {
+                            return true;
+                        }
+                        PayNotifyLogic::handle('hos_order', $message['out_trade_no'], $extra);
                         break;
                 }
             } elseif ($message['result_code'] === 'FAIL') {

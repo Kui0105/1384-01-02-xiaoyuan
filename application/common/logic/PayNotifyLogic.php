@@ -188,4 +188,37 @@ class PayNotifyLogic
         $order['give_growth'] > 0 &&AccountLogLogic::AccountRecord($user->id,$order['give_growth'],1, AccountLog::recharge_give_growth);
     }
 
+    /**
+     * note 当面付
+     */
+    private static function hos_order($order_sn,$extra = []){
+        $new = time();
+        $order = Db::name('hos_order')->where(['order_sn'=>$order_sn])->find();
+        $update_data['pay_time'] = $new;
+        $update_data['pay_status'] = Pay::ISPAID;
+        if (isset($extra['transaction_id'])) {
+            $update_data['transaction_id'] = $extra['transaction_id'];
+        }
+        Db::name('hos_order')->where(['id'=>$order['id']])->update($update_data);
+        $user = User::get($order['user_id']);
+        $user->total_order_amount = ['inc', $order['order_amount']];
+        $user->save();
+
+        //增加佣金
+        $hos_user = User::findOrEmpty($order['hos_user_id']);
+        $hos_user->earnings = ['inc', $order['order_amount']];
+        $hos_user->update_time = time();
+        $hos_user->save();
+
+        //增加佣金变动记录
+        AccountLogLogic::AccountRecord(
+            $order['hos_user_id'],
+            $order['order_amount'],
+            1,
+            AccountLog::hos_order_inc_earnings,
+            '',
+            $order['id'],
+            $order['order_sn']
+        );
+    }
 }

@@ -57,6 +57,10 @@ class PaymentLogic extends LogicBase
             Db::name('recharge_order')->where('id', $order['id'])->update(['pay_way' => $order['pay_way']]);
         }
 
+        if($from == 'hos_order') {
+            Db::name('hos_order')->where('id', $order['id'])->update(['pay_way' => $order['pay_way']]);
+        }
+
         // 订单金额为0的情况，直接走支付回调接口
         if($order['order_amount'] == 0) {
             PayNotifyLogic::handle('order', $order['order_sn'], []);

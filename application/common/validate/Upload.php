@@ -8,7 +8,7 @@ class Upload extends Validate
 {
 
     protected $rule = [
-        'file' => 'fileExt:pem,jpg,jpeg,gif,png,bmp,tga,tif,pdf,psd,avi,mp4,mp3,wmv,mpg,mpeg,mov,rm,ram,swf,flv,ico',
+        'file' => 'fileExt:pem,jpg,jpeg,gif,png,bmp,tga,tif,pdf,psd,avi,mp4,mp3,wmv,mpg,mpeg,mov,rm,ram,swf,flv,ico,webp',
     ];
 
     protected $message = [

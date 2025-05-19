@@ -49,6 +49,9 @@ class Payment extends ApiBase
             case 'recharge':
                 $order = Db::name('recharge_order')->where(['id' => $post['order_id']])->find();
                 break;
+            case 'hos_order':
+                $order = Db::name('hos_order')->where(['id' => $post['order_id']])->find();
+                break;
         }
         //找不到订单
         if (empty($order)) {
@@ -190,6 +193,8 @@ class Payment extends ApiBase
             $order = Db::name('order')->where('id', $params['order_id'])->find();
         }else if($params['from'] == 'recharge') {
             $order = Db::name('recharge_order')->where('id', $params['order_id'])->find();
+        }else if($params['from'] == 'hos_order') {
+            $order = Db::name('hos_order')->where('id', $params['order_id'])->find();
         }
 
         $payModel = new Pay();
@@ -216,6 +221,10 @@ class Payment extends ApiBase
 //                unset($pay[$k]);
 //            }
             if($params['from'] == 'recharge' && $item['code'] == 'balance') {
+                unset($pay[$k]);
+            }
+
+            if($params['from'] == 'hos_order' && $item['code'] == 'balance') {
                 unset($pay[$k]);
             }
 

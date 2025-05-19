@@ -86,31 +86,31 @@ class AccountLogLogic
                         'source'     => AccountLog::admin_add_money.','.AccountLog::recharge_money,
                         'name'       => '钱包充值',
                     ],
-                    [
-                        'source'     => AccountLog::withdraw_to_balance,
-                        'name'       => '佣金提现',
-                    ],
+                    // [
+                    //     'source'     => AccountLog::withdraw_to_balance,
+                    //     'name'       => '佣金提现',
+                    // ],
 
                 ];
                 break;
             case 2:
                 $list = [
-                    [
-                        'source'     => AccountLog::register_add_integral,
-                        'name'       => '关注赠送积分',
-                    ],
-                    [
-                        'source'     => AccountLog::invite_add_integral,
-                        'name'       => '邀请赠送积分',
-                    ],
-                    [
-                        'source'     => AccountLog::sign_in_integral,
-                        'name'       => '签到赠送积分',
-                    ],
-                    [
-                        'source'     => AccountLog::recharge_give_integral,
-                        'name'       => '充值赠送积分',
-                    ],
+                    // [
+                    //     'source'     => AccountLog::register_add_integral,
+                    //     'name'       => '关注赠送积分',
+                    // ],
+                    // [
+                    //     'source'     => AccountLog::invite_add_integral,
+                    //     'name'       => '邀请赠送积分',
+                    // ],
+                    // [
+                    //     'source'     => AccountLog::sign_in_integral,
+                    //     'name'       => '签到赠送积分',
+                    // ],
+                    // [
+                    //     'source'     => AccountLog::recharge_give_integral,
+                    //     'name'       => '充值赠送积分',
+                    // ],
                     [
                         'source'     => AccountLog::order_add_integral,
                         'name'       => '消费赠送积分',
@@ -119,7 +119,30 @@ class AccountLogLogic
                         'source'     => AccountLog::order_deduction_integral,
                         'name'       => '订单抵扣积分',
                     ],
-
+                    [
+                        'source'     => AccountLog::check_height,
+                        'name'       => '记身高赠送',
+                    ],
+                    [
+                        'source'     => AccountLog::order_send,
+                        'name'       => '下单赠送',
+                    ],
+                    [
+                        'source'     => AccountLog::invite_user,
+                        'name'       => '邀请好友赠送',
+                    ],
+                    [
+                        'source'     => AccountLog::community_like,
+                        'name'       => '动态评论赠送',
+                    ],
+                    [
+                        'source'     => AccountLog::share_article,
+                        'name'       => '分享日志赠送',
+                    ],
+                    [
+                        'source'     => AccountLog::watch_video,
+                        'name'       => '观看视频赠送',
+                    ],
                 ];
                 break;
             case 3:
