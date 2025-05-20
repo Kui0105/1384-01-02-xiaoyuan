@@ -84,7 +84,7 @@ class User extends Model
 
     public static function getUserInfo($userId)
     {
-        $user = self::field('id,sn,nickname,avatar')->findOrEmpty($userId)->toArray();
+        $user = self::field('id,sn,nickname,avatar,mobile')->findOrEmpty($userId)->toArray();
         if (empty($user)) {
             return '系统';
         }

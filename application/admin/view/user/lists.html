@@ -149,13 +149,13 @@
 <!--                <a class="layui-btn layui-btn-normal layui-btn-sm"  id="adjust_level" lay-event="adjust_level">等级调整</a>-->
 <!--                <a class="layui-btn layui-btn-normal layui-btn-sm"  id="adjust_province" lay-event="adjust_province">省代调整</a>-->
                 <a class="layui-btn layui-btn-normal layui-btn-sm"  id="baby" lay-event="baby">档案管理</a>
-<!--                <a class="layui-btn layui-btn-danger layui-btn-sm xx" lay-event="live_switch">-->
-<!--                    {{#  if(d.is_live == 1){ }}-->
-<!--                    直播忽略-->
-<!--                    {{#  } else { }}-->
-<!--                    直播同步-->
-<!--                    {{#  } }}-->
-<!--                </a>-->
+                <a class="layui-btn layui-btn-danger layui-btn-sm xx" lay-event="live_switch">
+                    {{#  if(d.is_live == 1){ }}
+                    直播忽略
+                    {{#  } else { }}
+                    直播同步
+                    {{#  } }}
+                </a>
 <!--                <a class="layui-btn layui-btn-normal layui-btn-sm"  id="adjust_first_leader" lay-event="adjust_first_leader">推荐人调整</a>-->
 
             </script>
@@ -387,7 +387,7 @@
                 // ,{title: '上级推荐人',align: 'center',width: 380,toolbar: '#first-info'}
                 // ,{field: 'fans', title: '推荐下级人数',align:"center",width: 120}
                 ,{field: 'create_time',align:"center", title: '注册时间',width: 200}
-                ,{fixed: 'right', title: '操作', width: 420,toolbar: '#user-operation'}
+                ,{fixed: 'right', title: '操作', width: 400,toolbar: '#user-operation'}
 
             ]]
             ,page:true

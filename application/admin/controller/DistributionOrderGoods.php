@@ -1,7 +1,7 @@
 <?php
 namespace app\admin\controller;
 
-use app\admin\logic\DistributionOrderGoodsLogic;
+use app\admin\logic\{DistributionOrderGoodsLogic, HosOrderLogic};
 use app\common\model\OrderGoods;
 
 class DistributionOrderGoods extends AdminBase
@@ -17,6 +17,20 @@ class DistributionOrderGoods extends AdminBase
         if($this->request->isPost()) {
             $params = $this->request->post();
             $result = DistributionOrderGoodsLogic::lists($params);
+            return $this->_success('', $result);
+        }
+        return view();
+    }
+
+    /**
+     * @notes 当面付订单列表
+     * @return \think\response\View
+     */
+    public function order_lst()
+    {
+        if($this->request->isPost()) {
+            $params = $this->request->post();
+            $result = HosOrderLogic::lists($params);
             return $this->_success('', $result);
         }
         return view();

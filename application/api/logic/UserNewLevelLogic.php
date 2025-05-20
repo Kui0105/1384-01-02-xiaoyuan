@@ -444,7 +444,6 @@ class UserNewLevelLogic extends LogicBase
             'count' => $count,
             'more' => is_more($count, $page, $size)
         ];
-        return ;
     }
 
     /**
@@ -689,6 +688,10 @@ class UserNewLevelLogic extends LogicBase
             return false;
         }
 
+        $hos_info = Db::name('hos_info')->where('hos_id',$hos_id)->field('name,imgs,intro')->find();
+        $level_data['hos_name'] = $hos_info['name']??'';
+        $level_data['imgs'] = $hos_info['imgs']??'';
+        $level_data['intro'] = $hos_info['intro']??'';
         $order_data = [
             'order_sn'          => createSn('hos_order', 'order_sn', '', 4),
             'user_id'           => $user_id,
@@ -701,6 +704,7 @@ class UserNewLevelLogic extends LogicBase
             'wechat_mini_express_sync_time'     => '',
             'transaction_id'    => '',
             'create_time'       => time(),
+            'hos_data'          => json_encode($level_data)
         ];
         $order_id = Db::name('hos_order')->insertGetId($order_data);
         return ['order_id' => $order_id, 'type' => 'hos_order'];

@@ -369,12 +369,13 @@ class DistributionLogic extends LogicBase
             $where[] = ['d.status', '=', $status];
         }
 
-        $field = 'o.order_sn, og.total_pay_price as pay_price, d.create_time, d.money, og.item_id, og.goods_num, d.status';
+        $field = 'o.order_sn, og.total_pay_price as pay_price, d.create_time, d.money, og.item_id, og.goods_num, d.status,u.nickname';
 
         $count = Db::name('distribution_order_goods d')
             ->field($field)
             ->join('order_goods og', 'og.id = d.order_goods_id')
             ->join('order o', 'o.id = og.order_id')
+            ->join('user u', 'u.id = o.user_id')
             ->where($where)
             ->count();
 
@@ -382,6 +383,7 @@ class DistributionLogic extends LogicBase
             ->field($field)
             ->join('order_goods og', 'og.id = d.order_goods_id')
             ->join('order o', 'o.id = og.order_id')
+            ->join('user u', 'u.id = o.user_id')
             ->where($where)
             ->order('o.id desc')
             ->page($page, $size)
@@ -703,15 +705,16 @@ class DistributionLogic extends LogicBase
             self::$error = '未绑定诊所';
             return false;
         }
-        if($user_parent_id != $hos_id){
-            self::$error = '非绑定诊所';
-            return false;
-        }
         $level_data = Db::name('user_new_level')->where('id',$hos_id)->find();
         if(!$level_data){
             self::$error = '诊所不存在';
             return false;
         }
+        if($user_parent_id != $level_data['user_id']){
+            self::$error = '非绑定诊所';
+            return false;
+        }
+
         $hos_info = Db::name('hos_info')->field('id,name,imgs,intro')->where('hos_id',$hos_id)->findOrEmpty();
         if(!$hos_info){
             self::$error = '诊所不存在';
@@ -723,12 +726,12 @@ class DistributionLogic extends LogicBase
 
         $city_id = DevRegion::where('id',$level_data['pid'])->value('parent_id');
         $province_id = DevRegion::where('id',$city_id)->value('parent_id');
-        $hos_info['area_name'] = DevRegion::getArea($province_id).'-'.DevRegion::getArea($city_id).'-'.DevRegion::getArea($level_data['pid']);
+        $hos_info['area_name'] = DevRegion::getArea($province_id).DevRegion::getArea($city_id).DevRegion::getArea($level_data['pid']).$level_data['address'];
         $hos_info['longitude'] = $level_data['longitude'];
         $hos_info['latitude'] = $level_data['latitude'];
         $hos_info['name'] = $level_data['name'];
         $hos_info['mobile'] = $level_data['mobile'];
-        $hos_info['address'] = Db::name('user_new_level')->where('id',$level_data['self_id'])->value('address');
+        $hos_info['address'] = $level_data['address'];
 
         $doctor_lst = Db::name('hos_doctor')
             ->field('id,name,imgs,intro')
