@@ -250,6 +250,26 @@
                     </div>
                 </div>
 
+                <!--服务号二维码-->
+                <div class="layui-form-item ">
+                    <label class="layui-form-label">服务号二维码：</label>
+                    <div class="layui-inline" >
+                        <div class="" style="height:80px;line-height:80px">
+                            <input name="fw_ewm" type="hidden" value="{$config.fw_ewm}" >
+                            {if !empty($config.fw_ewm)}
+                            <div class="goods-img-add" style="display: none"></div>
+                            <div class="goods-li">
+                                <img class="goods-img" src="{$config.fw_ewm}">
+                                <a class="goods-img-del-x" style="display: none">x</a>
+                            </div>
+                            {else}
+                            <div class="goods-img-add"></div>
+                            {/if}
+                        </div>
+                        <div class=" layui-form-mid layui-word-aux">服务号二维码，建议尺寸：宽400px*高400px。jpg，jpeg，png格式</div>
+                    </div>
+                </div>
+
                 <div class="layui-form-item">
                     <div class="layui-input-block">
                         <button class="layui-btn layui-btn-sm {$view_theme_color}" lay-submit lay-filter="setmnp">确认</button>

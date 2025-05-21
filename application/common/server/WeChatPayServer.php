@@ -195,7 +195,7 @@ class WeChatPayServer
                     'total_fee' => $order['order_amount'] * 100, // 单位：分
                     'notify_url' => $notify_url,
                     'openid' => $auth['openid'] ?? '',
-                    'attach' => 'order'
+                    'attach' => 'hos_order'
                 ];
                 break;
         }

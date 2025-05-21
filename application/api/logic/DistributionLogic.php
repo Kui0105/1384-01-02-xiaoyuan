@@ -20,11 +20,16 @@ class DistributionLogic extends LogicBase
             $hos_data = Db::name('user_new_level')->where('id',$hos_id)->find();
         }else{
             if($user_id){
-                $leader_uid = Db::name('user')->where('id',$user_id)->value('first_leader');
-                if($leader_uid){
-                    $hos_data = Db::name('user_new_level')->where('user_id',$leader_uid)->find();
+                $user_data = Db::name('user')->where('id',$user_id)->field('first_leader,new_level_hos')->find();
+                if($user_data['new_level_hos']){
+                    $hos_data = Db::name('user_new_level')->where('id',$user_data['new_level_hos'])->find();
                 }else{
-                    return '无诊所';
+                    $leader_uid = $user_data['first_leader'];
+                    if($leader_uid){
+                        $hos_data = Db::name('user_new_level')->where('user_id',$leader_uid)->find();
+                    }else{
+                        return '无诊所';
+                    }
                 }
             }else{
                 return '缺少参数';

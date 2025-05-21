@@ -34,4 +34,18 @@ class File extends ApiBase
         $data = FileServer::userFormPdf($this->user_id);
         $this->_success($data['msg'], $data['data'], $data['code']);
     }
+
+    /**
+     * 上传 base64 图片
+     *
+     * @method post
+     * @url /file/base64image
+     * @param string $base64Image base64 图片数据
+     */
+    public function base64Image()
+    {
+        $base64Image = input('post.base64Image'); // 获取 base64 数据
+        $data = FileServer::userBase64Image($this->user_id, $base64Image); // 调用文件服务处理 base64 图片上传
+        $this->_success($data['msg'], $data['data'], $data['code']);
+    }
 }

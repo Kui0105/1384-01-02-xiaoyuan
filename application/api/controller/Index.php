@@ -117,6 +117,7 @@ class Index extends ApiBase
             'app_wechat_login' => ConfigServer::get('app', 'wechat_login', 0),//APP是否允许微信授权登录
             'shop_login_logo'  => UrlServer::getFileUrl(ConfigServer::get('website', 'shop_login_logo')),//移动端登录页logo
             'web_favicon'      => UrlServer::getFileUrl(ConfigServer::get('website', 'web_favicon')),//浏览器标签图标
+            'fw_ewm'           => UrlServer::getFileUrl(ConfigServer::get('website', 'fw_ewm')),//浏览器标签图标
             'name'             => ConfigServer::get('website', 'name'),//商城名称
             'copyright_info'   => ConfigServer::get('copyright', 'company_name'),//版权信息
             'icp_number'       => ConfigServer::get('copyright', 'number'),//ICP备案号

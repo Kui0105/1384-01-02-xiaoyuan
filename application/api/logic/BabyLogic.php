@@ -651,10 +651,14 @@ class BabyLogic extends LogicBase{
         return $data;
     }
 
-    public static function check_result($user_id,$id)
+    public static function check_result($user_id,$id)//
     {
         $model = new BabyCheck();
-        $check_result = $model->where(['id'=>$id,'user_id'=>$user_id])->findOrEmpty()->toArray();
+        if($user_id){
+            $check_result = $model->where(['id'=>$id,'user_id'=>$user_id])->findOrEmpty()->toArray();
+        }else{
+            $check_result = $model->where(['id'=>$id])->findOrEmpty()->toArray();//,'user_id'=>$user_id
+        }
         if(empty($check_result)){
             self::$error = '测评不存在';
             return false;
@@ -688,9 +692,9 @@ class BabyLogic extends LogicBase{
                 $return_data['height_pot'] = $result_data['height_pot'];//身高百分位
                 $return_data['cha_height'] = $result_data['cha_height'];//标准差
                 $return_data['ai_predicting_height'] = $result_data['ai_predicting_height'];//AI测评身高
-                $return_data['ai_predicting_height_str'] = (($result_data['ai_predicting_height'] > $return_data['sup_height'])?'矮':'高').abs(floatval($result_data['ai_predicting_height'] - $return_data['sup_height'])).'cm';//AI测评身高字符串
+                $return_data['ai_predicting_height_str'] = (($return_data['sup_height'] > $result_data['ai_predicting_height'])?'矮':'高').abs(floatval($result_data['ai_predicting_height'] - $return_data['sup_height'])).'cm';//AI测评身高字符串
                 $return_data['bf_predicting_height'] = $result_data['bf_predicting_height'];//百分位测评身高
-                $return_data['bf_predicting_height_str'] = (($result_data['bf_predicting_height'] > $return_data['sup_height'])?'矮':'高').abs(floatval($result_data['bf_predicting_height'] - $return_data['sup_height'])).'cm';//百分位测评身高字符串
+                $return_data['bf_predicting_height_str'] = (($return_data['sup_height'] > $result_data['bf_predicting_height'])?'矮':'高').abs(floatval($result_data['bf_predicting_height'] - $return_data['sup_height'])).'cm';//百分位测评身高字符串
                 $return_data['arg_18_height'] = $return_data['sex']==1?'172.7':'160.6';//平均成年身高
                 $return_data['bmi'] = $result_data['bmi'];//BMI
                 $return_data['weight_key'] = $result_data['weight_key'];//体重区间
@@ -1046,7 +1050,8 @@ class BabyLogic extends LogicBase{
         ];
     }
 
-    public static function all_check_result($user_id,$data){
+    public static function all_check_result($sn){//$user_id,$data
+        $user_id = Db::name('user')->where('sn',$sn)->value('id');
         $baby_model = new Baby();
         $baby_id = $baby_model->where(['user_id'=>$user_id,'del'=>0,'is_default'=>1])->value('id');
         if(!$baby_id){

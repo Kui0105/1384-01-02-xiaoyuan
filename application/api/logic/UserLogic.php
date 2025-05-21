@@ -68,7 +68,7 @@ class UserLogic extends LogicBase
         // 是否设置支付密码
         $user['hasPayPassword'] = $user['pay_password'] ? 1 : 0;
         $user->visible(['id', 'nickname', 'sn', 'avatar', 'mobile', 'hasPayPassword', 'next_level_tips', 'user_money', 'total_order_amount', 'total_recharge_amount',
-            'coupon', 'user_integral', 'level', 'wait_pay', 'wait_take', 'wait_delivery', 'wait_comment', 'after_sale', 'distribution_setting', 'distribution_code', 'notice_num','is_new_user','new_level','pub_num','is_live']);
+            'coupon', 'user_integral', 'level', 'wait_pay', 'wait_take', 'wait_delivery', 'wait_comment', 'after_sale', 'distribution_setting', 'distribution_code', 'notice_num','is_new_user','new_level','pub_num','is_live','new_level_hos']);
         return $user;
     }
 

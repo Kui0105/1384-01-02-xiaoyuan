@@ -33,6 +33,8 @@ class Basic extends AdminBase
             'user_image'      => UrlServer::getFileUrl(ConfigServer::get('website', 'user_image')),
             'goods_image'     => UrlServer::getFileUrl(ConfigServer::get('website', 'goods_image')),
             'web_favicon'     => UrlServer::getFileUrl(ConfigServer::get('website', 'web_favicon')),
+            'fw_ewm'          => UrlServer::getFileUrl(ConfigServer::get('website', 'fw_ewm')),
+
         ];
 
         $this->assign('config', $config);
@@ -67,6 +69,7 @@ class Basic extends AdminBase
             ConfigServer::set('website', 'pc_logo', UrlServer::setFileUrl($post['pc_logo']));
             ConfigServer::set('website', 'user_image', UrlServer::setFileUrl($post['user_image']));
             ConfigServer::set('website', 'goods_image', UrlServer::setFileUrl($post['goods_image']));
+            ConfigServer::set('website', 'fw_ewm', UrlServer::setFileUrl($post['fw_ewm']));
 
             $this->_success('修改成功');
         }

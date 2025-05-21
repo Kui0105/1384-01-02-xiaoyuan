@@ -73,6 +73,56 @@ class FileServer extends ServerBase
         }
     }
 
+    public static function userBase64Image($user_id,$base64_img,$save_dir='uploads/base64_images'){
+        if (!file_exists($save_dir)) {
+            mkdir($save_dir, 0775, true);
+        }
+        $name = uniqid() . '.png';
+        $data = base64_decode(preg_replace('#^data:image/\w+;base64,#', '', $base64_img));
+        if (!$data) {
+            throw new Exception('无效的 base64 图片数据');
+        }
+        $pdf_file = fopen($save_dir."/".$name, "wb");
+        fwrite($pdf_file, $data);
+        fclose($pdf_file);
+        try {
+            $config = [
+                'default' => ConfigServer::get('storage', 'default', 'local'),
+                'engine'  => ConfigServer::get('storage_engine')
+            ];
+            if (empty($config['engine']['local'])) {
+                $config['engine']['local'] = [];
+            }
+            if($config['default'] == 'local'){
+                return self::dataSuccess('成功', ['uuuri'=>addImgDomain($save_dir.'/'.$name)]);
+            }
+            $filePath = ROOT_PATH.'/'.$save_dir."/".$name;
+            $StorageDriver = new StorageDriver($config);
+            $StorageDriver->setUploadFileByReal($filePath);
+            if (!$StorageDriver->upload($save_dir)) {
+                throw new Exception('上传失败' . $StorageDriver->getError());
+            }
+            // 图片上传路径
+            $fileName = $StorageDriver->getFileName();
+            // 图片信息
+            $fileInfo = $StorageDriver->getFileInfo();
+            // 信息
+            $data = [
+                'name'        => $fileInfo['name'],
+                'type'        => File::type_other,
+                'uri'         => $save_dir . '/' . str_replace("\\","/", $fileName),
+                'create_time' => time(),
+                'user_id'     => $user_id??0
+            ];
+            Db::name('user_file')->insert($data);
+            $data['uuuri'] = addImgDomain($data['uri']);
+            return self::dataSuccess('上传文件成功', $data);
+        } catch (\Exception $e) {
+            $message = lang($e->getMessage()) ?? $e->getMessage();
+            return self::dataError('上传文件失败:' . $message);
+        }
+    }
+
     /**
      * Notes: 用户上传图片
      * @param $user_id (用户ID)

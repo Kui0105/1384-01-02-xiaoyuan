@@ -3,12 +3,13 @@
 namespace app\api\controller;
 
 use app\api\logic\BabyLogic;
+use think\facade\Cache;
 
 
 class Baby extends ApiBase
 {
 
-    public $like_not_need_login = [];
+    public $like_not_need_login = ['check_result','set_tmp','get_tmp','all_check_result'];
 
     /**
      * 添加宝宝
@@ -201,8 +202,8 @@ class Baby extends ApiBase
         if(!$id){
             $this->_error('缺少必要参数');
         }
-        $data['user_id'] = $this->user_id;
-        $re = BabyLogic::check_result($this->user_id, $id);
+        // $data['user_id'] = $this->user_id;
+        $re = BabyLogic::check_result($this->user_id,$id);//$this->user_id,
         if($re === false){
             $this->_error(BabyLogic::getError() ?? '失败');
         }
@@ -279,12 +280,29 @@ class Baby extends ApiBase
      */
     public function all_check_result()
     {
-        $data = $this->request->post();
-        $data['user_id'] = $this->user_id;
-        $re = BabyLogic::all_check_result($this->user_id, $data);
+        // $data = $this->request->post();
+        // $data['user_id'] = $this->user_id;
+        $sn = $this->request->get('sn');
+        $re = BabyLogic::all_check_result($sn);//$this->user_id, $data
         if($re === false){
             $this->_error(BabyLogic::getError() ?? '失败');
         }
         $this->_success('成功',$re);
+    }
+
+    public function set_tmp()
+    {
+        $key = $this->request->post('key');
+        $value = $this->request->post('value');
+        Cache::set($key, $value,60);
+        $res = Cache::get($key);
+        $this->_success('成功',$res);
+    }
+
+    public function get_tmp()
+    {
+        $key = $this->request->get('key');
+        $res = Cache::get($key);
+        $this->_success('成功',$res);
     }
 }
