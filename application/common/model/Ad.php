@@ -143,7 +143,7 @@ class Ad extends Model{
 
     public static function getGoodsPath($from = true){
         $desc = [
-            self::mobile    => '/pages/goods_details/goods_details',
+            self::mobile    => '/mall/pages/goods/detail?id=',//'/pages/goods_details/goods_details',
             self::pc        => '/goods_details',
         ];
         if(true === $from){
@@ -155,7 +155,7 @@ class Ad extends Model{
 
     public static function getArticlePath($from = true){
         $desc = [
-            self::mobile    => '/pages/article_details/article_details',
+            self::mobile    => '/pages/classroom/detail?id=',//'/pages/article_details/article_details',
             self::pc        => '/goods_details',
         ];
         if(true === $from){

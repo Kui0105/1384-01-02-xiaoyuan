@@ -11,6 +11,7 @@ use app\common\model\Client_;
 use app\common\model\DevRegion;
 use app\common\model\DistributionOrder;
 use app\common\model\Order;
+use app\common\model\SelffetchVerifier;
 use app\common\model\TeamFollow;
 use app\common\model\UserAuth;
 use app\common\model\UserLevelApply;
@@ -65,10 +66,11 @@ class UserLogic extends LogicBase
             $diff_growth_value > 0 && $user['next_level_tips'] = '距离升级还差' . $diff_growth_value;
         }
         $user->pub_num = Db::name('community')->where(['user_id' => $user_id, 'del' => 0, 'status' => 1])->count();
+        $user->hx = SelffetchVerifier::where(['user_id'=>$user_id,'status'=>1,'del'=>0])->count()?true:false;
         // 是否设置支付密码
         $user['hasPayPassword'] = $user['pay_password'] ? 1 : 0;
         $user->visible(['id', 'nickname', 'sn', 'avatar', 'mobile', 'hasPayPassword', 'next_level_tips', 'user_money', 'total_order_amount', 'total_recharge_amount',
-            'coupon', 'user_integral', 'level', 'wait_pay', 'wait_take', 'wait_delivery', 'wait_comment', 'after_sale', 'distribution_setting', 'distribution_code', 'notice_num','is_new_user','new_level','pub_num','is_live','new_level_hos']);
+            'coupon', 'user_integral', 'level', 'wait_pay', 'wait_take', 'wait_delivery', 'wait_comment', 'after_sale', 'distribution_setting', 'distribution_code', 'notice_num','is_new_user','new_level','pub_num','is_live','new_level_hos','hx']);
         return $user;
     }
 
