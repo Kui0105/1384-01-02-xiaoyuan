@@ -25,7 +25,7 @@ class Baby extends ApiBase
         if($re === false){
             $this->_error(BabyLogic::getError() ?? '失败');
         }
-        $this->_success('成功',$re);
+        $this->_success('添加宝贝成功',$re);
     }
 
     /**

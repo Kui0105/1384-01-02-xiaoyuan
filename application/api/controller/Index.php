@@ -162,6 +162,8 @@ class Index extends ApiBase
             'site_statistic'    => [
                 'clarity_app_id'    => ConfigServer::get('site_statistic', 'clarity_app_id', ''),
             ],
+
+            'show_hb'   => true
         ];
         $this->_success('', $config);
     }

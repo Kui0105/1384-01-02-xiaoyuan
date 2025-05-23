@@ -145,9 +145,9 @@
                                 <tr style="background-color: #f3f5f9">
                                     <th>规格图片</th>
                                     <th>市场价(元)</th>
+                                    <th><span class="form-label-asterisk">*</span>零售价(元)</th>
                                     <th><span class="form-label-asterisk">*</span>会员价(元)</th>
-                                    <th><span class="form-label-asterisk">*</span>诊所价(元)</th>
-                                    <th><span class="form-label-asterisk">*</span>代理价(元)</th>
+                                    <th><span class="form-label-asterisk">*</span>采购价(元)</th>
                                     <th>成本价(元)</th>
                                     <th><span class="form-label-asterisk">*</span>库存</th>
                                     <th>体积(m3)</th>
@@ -206,9 +206,9 @@
                             <div class="batch-div"><span class="batch-spec-title">批量设置：</span>
                                 <div>
                                     <span class="batch-spec-content click-a" input-name="market_price">市场价</span>
-                                    <span class="batch-spec-content click-a" input-name="price">会员价</span>
-                                    <span class="batch-spec-content click-a" input-name="hos_price">诊所价</span>
-                                    <span class="batch-spec-content click-a" input-name="agent_price">代理价</span>
+                                    <span class="batch-spec-content click-a" input-name="price">零售价</span>
+                                    <span class="batch-spec-content click-a" input-name="hos_price">会员价</span>
+                                    <span class="batch-spec-content click-a" input-name="agent_price">采购价</span>
                                     <span class="batch-spec-content click-a" input-name="cost_price">成本价</span>
                                     <span class="batch-spec-content click-a" input-name="stock">库存</span>
                                     <span class="batch-spec-content click-a" input-name="volume">体积</span>
@@ -350,7 +350,7 @@
             </div>
             <!--赠送积分-end-->
             <!--会员价-start-->
-            <div class="layui-form-item">
+            <div class="layui-form-item layui-hide">
                 <label class="layui-form-label">会员价：</label>
                 <div class="layui-input-block">
                     <input type="radio" name="is_member" value="0" title="不参与会员价" checked>
@@ -440,9 +440,9 @@
         {spec_th}
         <th>规格图片</th>
         <th>市场价(元)</th>
+        <th><span class="form-label-asterisk">*</span>零售价(元)</th>
         <th><span class="form-label-asterisk">*</span>会员价(元)</th>
-        <th><span class="form-label-asterisk">*</span>诊所价(元)</th>
-        <th><span class="form-label-asterisk">*</span>代理价(元)</th>
+        <th><span class="form-label-asterisk">*</span>采购价(元)</th>
         <th>成本价(元)</th>
         <th><span class="form-label-asterisk">*</span>库存</th>
         <th>体积(m3)</th>
@@ -463,9 +463,9 @@
     <td><input type="number" class="layui-input" lay-verify="more_spec_required|more_price" lay-verType="tips"
                autocomplete="off" switch-tab="1" verify-msg="请输入价格" name="price[]"></td>
     <td><input type="number" class="layui-input" lay-verify="more_spec_required|more_price" lay-verType="tips"
-               autocomplete="off" switch-tab="1" verify-msg="请输入诊所价格" name="hos_price[]"></td>
+               autocomplete="off" switch-tab="1" verify-msg="请输入会员价格" name="hos_price[]"></td>
     <td><input type="number" class="layui-input" lay-verify="more_spec_required|more_price" lay-verType="tips"
-               autocomplete="off" switch-tab="1" verify-msg="请输入代理价格" name="agent_price[]"></td>
+               autocomplete="off" switch-tab="1" verify-msg="请输入采购价格" name="agent_price[]"></td>
     <td><input type="number" class="layui-input" lay-verType="tips"
                autocomplete="off" switch-tab="1" name="cost_price[]"></td>
     <td><input type="number" class="layui-input" lay-verify="more_spec_required|more_stock" lay-verType="tips"
@@ -1256,7 +1256,7 @@
                 if ($('input[name="spec_type"]:checked').val() == 2) {
                     if (value && value < 0.01) {
                         switchTab($(item).attr('switch-tab'));
-                        return '诊所价格必须大于或等于0.01';
+                        return '会员价格必须大于或等于0.01';
                     }
                 }
             },
@@ -1264,7 +1264,7 @@
                 if ($('input[name="spec_type"]:checked').val() == 2) {
                     if (value && value < 0.01) {
                         switchTab($(item).attr('switch-tab'));
-                        return '代理价格必须大于或等于0.01';
+                        return '采购价格必须大于或等于0.01';
                     }
                 }
             },
