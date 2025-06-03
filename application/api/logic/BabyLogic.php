@@ -786,36 +786,51 @@ class BabyLogic extends LogicBase{
             case 3://睡眠
                 $result_data = json_decode($check_result['check_result'],true);
                 foreach ($result_data as $k => &$r){
-                    $r['status'] = false;
-                    if($r['num'] > 39){
-                        $r['status'] = true;
-                    }
+                    // $r['status'] = false;
+                    // if($r['num'] > 39){
+                    //     $r['status'] = true;
+                    // }
                     switch ($k){
                         case 0:
-                            $r['total_num'] = 35;
+                            $r['total_num'] = 130;
+                            $r['img_num'] = round($r['num']/$r['total_num'],2);
                             break;
                         case 1:
-                            $r['total_num'] = 15;
+                            $r['total_num'] = 5;
+                            $r['img_num'] = round($r['num']/$r['total_num'],2);
                             break;
                         case 2:
-                            $r['total_num'] = 15;
+                            $r['total_num'] = 35;
+                            $r['img_num'] = round($r['num']/$r['total_num'],2);
                             break;
                         case 3:
-                            $r['total_num'] = 30;
+                            $r['total_num'] = 95;
+                            $r['img_num'] = round($r['num']/$r['total_num'],2);
                             break;
                         case 4:
-                            $r['total_num'] = 25;
+                            $r['total_num'] = 15;
+                            $r['img_num'] = round($r['num']/$r['total_num'],2);
                             break;
                         case 5:
-                            $r['total_num'] = 10;
+                            $r['total_num'] = 15;
+                            $r['img_num'] = round($r['num']/$r['total_num'],2);
                             break;
                         case 6:
-                            $r['total_num'] = 130;
+                            $r['total_num'] = 30;
+                            $r['img_num'] = round($r['num']/$r['total_num'],2);
+                            break;
+                        case 7:
+                            $r['total_num'] = 25;
+                            $r['img_num'] = round($r['num']/$r['total_num'],2);
+                            break;
+                        case 8:
+                            $r['total_num'] = 10;
+                            $r['img_num'] = round($r['num']/$r['total_num'],2);
                             break;
                     }
                 }
-                $return_data['total_num'] = $result_data[6]['num'];
-                $return_data['total_total_num'] = $result_data[6]['total_num'];
+                $return_data['total_num'] = $result_data[0]['num'];
+                $return_data['total_total_num'] = $result_data[0]['total_num'];
                 $return_data['result_data'] = $result_data;
                 break;
             case 4://骨龄

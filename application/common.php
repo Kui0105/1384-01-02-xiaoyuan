@@ -1421,19 +1421,19 @@ function sleep_ques()
             'answer'=> [
                 [
                     'name'  => '9-11个小时',
-                    'num'   => 1
+                    'num'   => 5
                 ],[
                     'name'  => '8-9个小时',
-                    'num'   => 2
+                    'num'   => 4
                 ],[
                     'name'  => '7-8个小时',
                     'num'   => 3
                 ],[
                     'name'  => '5-7个小时',
-                    'num'   => 4
+                    'num'   => 2
                 ],[
                     'name'  => '小于5个小时',
-                    'num'   => 5
+                    'num'   => 1
                 ]
             ]
         ],[
@@ -1442,19 +1442,19 @@ function sleep_ques()
             'answer'=> [
                 [
                     'name'  => '小于15分钟',
-                    'num'   => 1
+                    'num'   => 5
                 ],[
                     'name'  => '15-30分钟',
-                    'num'   => 2
+                    'num'   => 4
                 ],[
                     'name'  => '30-45分钟',
                     'num'   => 3
                 ],[
                     'name'  => '45-50分钟',
-                    'num'   => 4
+                    'num'   => 2
                 ],[
                     'name'  => '大于60分钟',
-                    'num'   => 5
+                    'num'   => 1
                 ]
             ]
         ],[
@@ -1463,19 +1463,19 @@ function sleep_ques()
             'answer'=> [
                 [
                     'name'  => '无',
-                    'num'   => 1
+                    'num'   => 5
                 ],[
                     'name'  => '偶尔（每月少于1或2次）',
-                    'num'   => 2
+                    'num'   => 4
                 ],[
                     'name'  => '有时（每月1-2次）',
                     'num'   => 3
                 ],[
                     'name'  => '经常（每月3或5次）',
-                    'num'   => 4
+                    'num'   => 2
                 ],[
                     'name'  => '总是（日常）',
-                    'num'   => 5
+                    'num'   => 1
                 ]
             ]
         ],[
@@ -1484,19 +1484,19 @@ function sleep_ques()
             'answer'=> [
                 [
                     'name'  => '无',
-                    'num'   => 1
+                    'num'   => 5
                 ],[
                     'name'  => '偶尔（每月少于1或2次）',
-                    'num'   => 2
+                    'num'   => 4
                 ],[
                     'name'  => '有时（每月1-2次）',
                     'num'   => 3
                 ],[
                     'name'  => '经常（每月3或5次）',
-                    'num'   => 4
+                    'num'   => 2
                 ],[
                     'name'  => '总是（日常）',
-                    'num'   => 5
+                    'num'   => 1
                 ]
             ]
         ],[
@@ -1505,19 +1505,19 @@ function sleep_ques()
             'answer'=> [
                 [
                     'name'  => '无',
-                    'num'   => 1
+                    'num'   => 5
                 ],[
                     'name'  => '偶尔（每月少于1或2次）',
-                    'num'   => 2
+                    'num'   => 4
                 ],[
                     'name'  => '有时（每月1-2次）',
                     'num'   => 3
                 ],[
                     'name'  => '经常（每月3或5次）',
-                    'num'   => 4
+                    'num'   => 2
                 ],[
                     'name'  => '总是（日常）',
-                    'num'   => 5
+                    'num'   => 1
                 ]
             ]
         ],[
@@ -1526,19 +1526,19 @@ function sleep_ques()
             'answer'=> [
                 [
                     'name'  => '无',
-                    'num'   => 1
+                    'num'   => 5
                 ],[
                     'name'  => '偶尔（每月少于1或2次）',
-                    'num'   => 2
+                    'num'   => 4
                 ],[
                     'name'  => '有时（每月1-2次）',
                     'num'   => 3
                 ],[
                     'name'  => '经常（每月3或5次）',
-                    'num'   => 4
+                    'num'   => 2
                 ],[
                     'name'  => '总是（日常）',
-                    'num'   => 5
+                    'num'   => 1
                 ]
             ]
         ],[
@@ -1547,19 +1547,19 @@ function sleep_ques()
             'answer'=> [
                 [
                     'name'  => '无',
-                    'num'   => 1
+                    'num'   => 5
                 ],[
                     'name'  => '偶尔（每月少于1或2次）',
-                    'num'   => 2
+                    'num'   => 4
                 ],[
                     'name'  => '有时（每月1-2次）',
                     'num'   => 3
                 ],[
                     'name'  => '经常（每月3或5次）',
-                    'num'   => 4
+                    'num'   => 2
                 ],[
                     'name'  => '总是（日常）',
-                    'num'   => 5
+                    'num'   => 1
                 ]
             ]
         ],[
@@ -1568,19 +1568,19 @@ function sleep_ques()
             'answer'=> [
                 [
                     'name'  => '无',
-                    'num'   => 1
+                    'num'   => 5
                 ],[
                     'name'  => '偶尔（每月少于1或2次）',
-                    'num'   => 2
+                    'num'   => 4
                 ],[
                     'name'  => '有时（每月1-2次）',
                     'num'   => 3
                 ],[
                     'name'  => '经常（每月3或5次）',
-                    'num'   => 4
+                    'num'   => 2
                 ],[
                     'name'  => '总是（日常）',
-                    'num'   => 5
+                    'num'   => 1
                 ]
             ]
         ],[
@@ -1589,19 +1589,19 @@ function sleep_ques()
             'answer'=> [
                 [
                     'name'  => '无',
-                    'num'   => 1
+                    'num'   => 5
                 ],[
                     'name'  => '偶尔（每月少于1或2次）',
-                    'num'   => 2
+                    'num'   => 4
                 ],[
                     'name'  => '有时（每月1-2次）',
                     'num'   => 3
                 ],[
                     'name'  => '经常（每月3或5次）',
-                    'num'   => 4
+                    'num'   => 2
                 ],[
                     'name'  => '总是（日常）',
-                    'num'   => 5
+                    'num'   => 1
                 ]
             ]
         ],[
@@ -1610,19 +1610,19 @@ function sleep_ques()
             'answer'=> [
                 [
                     'name'  => '无',
-                    'num'   => 1
+                    'num'   => 5
                 ],[
                     'name'  => '偶尔（每月少于1或2次）',
-                    'num'   => 2
+                    'num'   => 4
                 ],[
                     'name'  => '有时（每月1-2次）',
                     'num'   => 3
                 ],[
                     'name'  => '经常（每月3或5次）',
-                    'num'   => 4
+                    'num'   => 2
                 ],[
                     'name'  => '总是（日常）',
-                    'num'   => 5
+                    'num'   => 1
                 ]
             ]
         ],[
@@ -1631,19 +1631,19 @@ function sleep_ques()
             'answer'=> [
                 [
                     'name'  => '无',
-                    'num'   => 1
+                    'num'   => 5
                 ],[
                     'name'  => '偶尔（每月少于1或2次）',
-                    'num'   => 2
+                    'num'   => 4
                 ],[
                     'name'  => '有时（每月1-2次）',
                     'num'   => 3
                 ],[
                     'name'  => '经常（每月3或5次）',
-                    'num'   => 4
+                    'num'   => 2
                 ],[
                     'name'  => '总是（日常）',
-                    'num'   => 5
+                    'num'   => 1
                 ]
             ]
         ],[
@@ -1652,19 +1652,19 @@ function sleep_ques()
             'answer'=> [
                 [
                     'name'  => '无',
-                    'num'   => 1
+                    'num'   => 5
                 ],[
                     'name'  => '偶尔（每月少于1或2次）',
-                    'num'   => 2
+                    'num'   => 4
                 ],[
                     'name'  => '有时（每月1-2次）',
                     'num'   => 3
                 ],[
                     'name'  => '经常（每月3或5次）',
-                    'num'   => 4
+                    'num'   => 2
                 ],[
                     'name'  => '总是（日常）',
-                    'num'   => 5
+                    'num'   => 1
                 ]
             ]
         ],[
@@ -1673,19 +1673,19 @@ function sleep_ques()
             'answer'=> [
                 [
                     'name'  => '无',
-                    'num'   => 1
+                    'num'   => 5
                 ],[
                     'name'  => '偶尔（每月少于1或2次）',
-                    'num'   => 2
+                    'num'   => 4
                 ],[
                     'name'  => '有时（每月1-2次）',
                     'num'   => 3
                 ],[
                     'name'  => '经常（每月3或5次）',
-                    'num'   => 4
+                    'num'   => 2
                 ],[
                     'name'  => '总是（日常）',
-                    'num'   => 5
+                    'num'   => 1
                 ]
             ]
         ],[
@@ -1694,19 +1694,19 @@ function sleep_ques()
             'answer'=> [
                 [
                     'name'  => '无',
-                    'num'   => 1
+                    'num'   => 5
                 ],[
                     'name'  => '偶尔（每月少于1或2次）',
-                    'num'   => 2
+                    'num'   => 4
                 ],[
                     'name'  => '有时（每月1-2次）',
                     'num'   => 3
                 ],[
                     'name'  => '经常（每月3或5次）',
-                    'num'   => 4
+                    'num'   => 2
                 ],[
                     'name'  => '总是（日常）',
-                    'num'   => 5
+                    'num'   => 1
                 ]
             ]
         ],[
@@ -1715,19 +1715,19 @@ function sleep_ques()
             'answer'=> [
                 [
                     'name'  => '无',
-                    'num'   => 1
+                    'num'   => 5
                 ],[
                     'name'  => '偶尔（每月少于1或2次）',
-                    'num'   => 2
+                    'num'   => 4
                 ],[
                     'name'  => '有时（每月1-2次）',
                     'num'   => 3
                 ],[
                     'name'  => '经常（每月3或5次）',
-                    'num'   => 4
+                    'num'   => 2
                 ],[
                     'name'  => '总是（日常）',
-                    'num'   => 5
+                    'num'   => 1
                 ]
             ]
         ],[
@@ -1736,19 +1736,19 @@ function sleep_ques()
             'answer'=> [
                 [
                     'name'  => '无',
-                    'num'   => 1
+                    'num'   => 5
                 ],[
                     'name'  => '偶尔（每月少于1或2次）',
-                    'num'   => 2
+                    'num'   => 4
                 ],[
                     'name'  => '有时（每月1-2次）',
                     'num'   => 3
                 ],[
                     'name'  => '经常（每月3或5次）',
-                    'num'   => 4
+                    'num'   => 2
                 ],[
                     'name'  => '总是（日常）',
-                    'num'   => 5
+                    'num'   => 1
                 ]
             ]
         ],[
@@ -1757,19 +1757,19 @@ function sleep_ques()
             'answer'=> [
                 [
                     'name'  => '无',
-                    'num'   => 1
+                    'num'   => 5
                 ],[
                     'name'  => '偶尔（每月少于1或2次）',
-                    'num'   => 2
+                    'num'   => 4
                 ],[
                     'name'  => '有时（每月1-2次）',
                     'num'   => 3
                 ],[
                     'name'  => '经常（每月3或5次）',
-                    'num'   => 4
+                    'num'   => 2
                 ],[
                     'name'  => '总是（日常）',
-                    'num'   => 5
+                    'num'   => 1
                 ]
             ]
         ],[
@@ -1778,19 +1778,19 @@ function sleep_ques()
             'answer'=> [
                 [
                     'name'  => '无',
-                    'num'   => 1
+                    'num'   => 5
                 ],[
                     'name'  => '偶尔（每月少于1或2次）',
-                    'num'   => 2
+                    'num'   => 4
                 ],[
                     'name'  => '有时（每月1-2次）',
                     'num'   => 3
                 ],[
                     'name'  => '经常（每月3或5次）',
-                    'num'   => 4
+                    'num'   => 2
                 ],[
                     'name'  => '总是（日常）',
-                    'num'   => 5
+                    'num'   => 1
                 ]
             ]
         ],[
@@ -1799,19 +1799,19 @@ function sleep_ques()
             'answer'=> [
                 [
                     'name'  => '无',
-                    'num'   => 1
+                    'num'   => 5
                 ],[
                     'name'  => '偶尔（每月少于1或2次）',
-                    'num'   => 2
+                    'num'   => 4
                 ],[
                     'name'  => '有时（每月1-2次）',
                     'num'   => 3
                 ],[
                     'name'  => '经常（每月3或5次）',
-                    'num'   => 4
+                    'num'   => 2
                 ],[
                     'name'  => '总是（日常）',
-                    'num'   => 5
+                    'num'   => 1
                 ]
             ]
         ],[
@@ -1820,19 +1820,19 @@ function sleep_ques()
             'answer'=> [
                 [
                     'name'  => '无',
-                    'num'   => 1
+                    'num'   => 5
                 ],[
                     'name'  => '偶尔（每月少于1或2次）',
-                    'num'   => 2
+                    'num'   => 4
                 ],[
                     'name'  => '有时（每月1-2次）',
                     'num'   => 3
                 ],[
                     'name'  => '经常（每月3或5次）',
-                    'num'   => 4
+                    'num'   => 2
                 ],[
                     'name'  => '总是（日常）',
-                    'num'   => 5
+                    'num'   => 1
                 ]
             ]
         ],[
@@ -1841,19 +1841,19 @@ function sleep_ques()
             'answer'=> [
                 [
                     'name'  => '无',
-                    'num'   => 1
+                    'num'   => 5
                 ],[
                     'name'  => '偶尔（每月少于1或2次）',
-                    'num'   => 2
+                    'num'   => 4
                 ],[
                     'name'  => '有时（每月1-2次）',
                     'num'   => 3
                 ],[
                     'name'  => '经常（每月3或5次）',
-                    'num'   => 4
+                    'num'   => 2
                 ],[
                     'name'  => '总是（日常）',
-                    'num'   => 5
+                    'num'   => 1
                 ]
             ]
         ],[
@@ -1862,19 +1862,19 @@ function sleep_ques()
             'answer'=> [
                 [
                     'name'  => '无',
-                    'num'   => 1
+                    'num'   => 5
                 ],[
                     'name'  => '偶尔（每月少于1或2次）',
-                    'num'   => 2
+                    'num'   => 4
                 ],[
                     'name'  => '有时（每月1-2次）',
                     'num'   => 3
                 ],[
                     'name'  => '经常（每月3或5次）',
-                    'num'   => 4
+                    'num'   => 2
                 ],[
                     'name'  => '总是（日常）',
-                    'num'   => 5
+                    'num'   => 1
                 ]
             ]
         ],[
@@ -1883,19 +1883,19 @@ function sleep_ques()
             'answer'=> [
                 [
                     'name'  => '无',
-                    'num'   => 1
+                    'num'   => 5
                 ],[
                     'name'  => '偶尔（每月少于1或2次）',
-                    'num'   => 2
+                    'num'   => 4
                 ],[
                     'name'  => '有时（每月1-2次）',
                     'num'   => 3
                 ],[
                     'name'  => '经常（每月3或5次）',
-                    'num'   => 4
+                    'num'   => 2
                 ],[
                     'name'  => '总是（日常）',
-                    'num'   => 5
+                    'num'   => 1
                 ]
             ]
         ],[
@@ -1904,19 +1904,19 @@ function sleep_ques()
             'answer'=> [
                 [
                     'name'  => '无',
-                    'num'   => 1
+                    'num'   => 5
                 ],[
                     'name'  => '偶尔（每月少于1或2次）',
-                    'num'   => 2
+                    'num'   => 4
                 ],[
                     'name'  => '有时（每月1-2次）',
                     'num'   => 3
                 ],[
                     'name'  => '经常（每月3或5次）',
-                    'num'   => 4
+                    'num'   => 2
                 ],[
                     'name'  => '总是（日常）',
-                    'num'   => 5
+                    'num'   => 1
                 ]
             ]
         ],[
@@ -1925,19 +1925,19 @@ function sleep_ques()
             'answer'=> [
                 [
                     'name'  => '无',
-                    'num'   => 1
+                    'num'   => 5
                 ],[
                     'name'  => '偶尔（每月少于1或2次）',
-                    'num'   => 2
+                    'num'   => 4
                 ],[
                     'name'  => '有时（每月1-2次）',
                     'num'   => 3
                 ],[
                     'name'  => '经常（每月3或5次）',
-                    'num'   => 4
+                    'num'   => 2
                 ],[
                     'name'  => '总是（日常）',
-                    'num'   => 5
+                    'num'   => 1
                 ]
             ]
         ],[
@@ -1946,19 +1946,19 @@ function sleep_ques()
             'answer'=> [
                 [
                     'name'  => '无',
-                    'num'   => 1
+                    'num'   => 5
                 ],[
                     'name'  => '偶尔（每月少于1或2次）',
-                    'num'   => 2
+                    'num'   => 4
                 ],[
                     'name'  => '有时（每月1-2次）',
                     'num'   => 3
                 ],[
                     'name'  => '经常（每月3或5次）',
-                    'num'   => 4
+                    'num'   => 2
                 ],[
                     'name'  => '总是（日常）',
-                    'num'   => 5
+                    'num'   => 1
                 ]
             ]
         ]
@@ -1966,83 +1966,208 @@ function sleep_ques()
 }
 
 /**
- * * 注：入睡困难和睡眠维持障碍（将条目1，2，3，4，5，10，11得分求和）
- * * 睡眠呼吸障碍（将条目13，14，15得分求和）
- * * 觉醒障碍（将条目17，20，21得分求和）
- * * 睡眠觉醒转换障碍（将条目6，7，8，12，18，19得分求和）
- * * 过度嗜睡（将22，23，24，25，26得分求和）
- * * 夜间多汗（将9，16得分求和）
- * * 总分（将所有6类别的总分求和）
+ * * 注：
+ * * 睡眠总体情况分析：较差（77≤）、不佳（78-90）、正常（≥91）
+ * 26个题目总和
+ *
+ * 睡眠时长：较差（1）、不佳（2-3）、正常（4-5）
+ * 1题
+ *
+ * 入睡行为分析（入睡困难和睡眠维持障碍）：较差（20≤）、不佳（21-24）、正常（≥25）
+ * 1、2、3、4、5、10、11题
+ *
+ * 睡眠质量：较差（56≤）、不佳（57-66）、正常（≥67）
+ * 6、7、8、9、12、13、14、15、16、17、18、19、20、21、22、23、24、25、26题
+ *
+ * 呼吸状态分析（睡眠呼吸障碍）：较差（8≤）、正常（≥9）
+ * 13、14、15题
+ *
+ * 觉醒状态分析（觉醒障碍）：较差（8≤）、正常（≥9）
+ * 17、20、21题
+ *
+ * 睡醒转换状态分析（睡眠觉醒转换障碍）：较差（17≤）、正常（≥18）
+ * 6、7、8、12、18、19题
+ *
+ * 嗜睡状态分析（过度嗜睡）：较差（≤14）、正常（≥15）
+ * 22、23、24、25、26题
+ *
+ * 出汗状态分析（夜间多汗）：较差（≤5）、正常（≥6）
+ * 9、16题
  * */
 function sleep_check_com($arr){
     $res = [
         [
-            'name'      => '入睡困难和睡眠维持障碍',
+            'name'      => '睡眠总体情况分析',
             'num'       => 0,
             'result'    => '',
         ],
         [
-            'name'      => '睡眠呼吸障碍',
+            'name'      => '睡眠时长',
             'num'       => 0,
             'result'    => '',
         ],
         [
-            'name'      => '觉醒障碍',
+            'name'      => '入睡行为分析（入睡困难和睡眠维持障碍）',
             'num'       => 0,
             'result'    => '',
         ],
         [
-            'name'      => '睡眠觉醒转换障碍',
+            'name'      => '睡眠质量',
             'num'       => 0,
             'result'    => '',
         ],
         [
-            'name'      => '过度嗜睡',
+            'name'      => '呼吸状态分析（睡眠呼吸障碍）',
             'num'       => 0,
             'result'    => '',
         ],
         [
-            'name'      => '夜间多汗',
+            'name'      => '觉醒状态分析（觉醒障碍）',
             'num'       => 0,
             'result'    => '',
         ],
         [
-            'name'      => '总分',
+            'name'      => '睡醒转换状态分析（睡眠觉醒转换障碍）',
             'num'       => 0,
             'result'    => '',
-        ]
+        ],
+        [
+            'name'      => '嗜睡状态分析（过度嗜睡）',
+            'num'       => 0,
+            'result'    => '',
+        ],
+        [
+            'name'      => '出汗状态分析（夜间多汗）',
+            'num'       => 0,
+            'result'    => '',
+        ],
+
     ];
     foreach ($arr as $k => $v){
-        if(in_array($k,[1,2,3,4,5,10,11])){
-            $res[0]['num'] += $v;
-        }else if(in_array($k,[13,14,15])){
+        if(in_array($k,[1])){
             $res[1]['num'] += $v;
-        }else if(in_array($k,[17,20,21])){
+        }
+        if(in_array($k,[1,2,3,4,5,10,11])){
             $res[2]['num'] += $v;
-        }else if(in_array($k,[6,7,8,12,18,19])){
+        }
+        if(in_array($k,[6,7,8,9,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26])){
             $res[3]['num'] += $v;
-        }else if(in_array($k,[22,23,24,25,26])){
+        }
+        if(in_array($k,[13,14,15])){
             $res[4]['num'] += $v;
-        }else if(in_array($k,[9,16])){
+        }
+        if(in_array($k,[17,20,21])){
             $res[5]['num'] += $v;
         }
-        $res[6]['num'] += $v;
+        if(in_array($k,[6,7,8,12,18,19])){
+            $res[6]['num'] += $v;
+        }
+        if(in_array($k,[22,23,24,25,26])){
+            $res[7]['num'] += $v;
+        }
+        if(in_array($k,[9,16])){
+            $res[8]['num'] += $v;
+        }
+        $res[0]['num'] += $v;
     }
     foreach ($res as $ke => $re){
-        if($ke == 6) {
-            if($re['num'] > 39){
-                $key_name = 'result_total_up';
-            }else{
-                $key_name = 'result_total_down';
-            }
-        }else{
-            if($re['num'] > 39){
-                $key_name = 'result_'.$ke.'_up';
-            }else{
-                $key_name = 'result_'.$ke.'_down';
-            }
+        switch ($ke){
+            case 0:
+                if($re['num'] >= 91){
+                    $key_name = 'result_total_3';
+                    $res[$ke]['result_name'] = '正常';
+                }else if($re['num'] <= 77){
+                    $key_name = 'result_total_1';
+                    $res[$ke]['result_name'] = '较差';
+                }else{
+                    $key_name = 'result_total_2';
+                    $res[$ke]['result_name'] = '不佳';
+                }
+                break;
+            case 1:
+                if($re['num'] >= 4){
+                    $key_name = 'result_'.$ke.'_3';
+                    $res[$ke]['result_name'] = '正常';
+                }else if($re['num'] <= 1){
+                    $key_name = 'result_'.$ke.'_1';
+                    $res[$ke]['result_name'] = '较差';
+                }else{
+                    $key_name = 'result_'.$ke.'_2';
+                    $res[$ke]['result_name'] = '不佳';
+                }
+                break;
+            case 2:
+                if($re['num'] >= 25){
+                    $key_name = 'result_'.$ke.'_3';
+                    $res[$ke]['result_name'] = '正常';
+                }else if($re['num'] <= 20){
+                    $key_name = 'result_'.$ke.'_1';
+                    $res[$ke]['result_name'] = '较差';
+                }else{
+                    $key_name = 'result_'.$ke.'_2';
+                    $res[$ke]['result_name'] = '不佳';
+                }
+                break;
+            case 3:
+                if($re['num'] >= 67){
+                    $key_name = 'result_'.$ke.'_3';
+                    $res[$ke]['result_name'] = '正常';
+                }else if($re['num'] <= 56){
+                    $key_name = 'result_'.$ke.'_1';
+                    $res[$ke]['result_name'] = '较差';
+                }else{
+                    $key_name = 'result_'.$ke.'_2';
+                    $res[$ke]['result_name'] = '不佳';
+                }
+                break;
+            case 4:
+                if($re['num'] >= 9){
+                    $key_name = 'result_'.$ke.'_2';
+                    $res[$ke]['result_name'] = '正常';
+                }else{
+                    $key_name = 'result_'.$ke.'_1';
+                    $res[$ke]['result_name'] = '较差';
+                }
+                break;
+            case 5:
+                if($re['num'] >= 9){
+                    $key_name = 'result_'.$ke.'_2';
+                    $res[$ke]['result_name'] = '正常';
+                }else{
+                    $key_name = 'result_'.$ke.'_1';
+                    $res[$ke]['result_name'] = '较差';
+                }
+                break;
+            case 6:
+                if($re['num'] >= 18){
+                    $key_name = 'result_'.$ke.'_2';
+                    $res[$ke]['result_name'] = '正常';
+                }else{
+                    $key_name = 'result_'.$ke.'_1';
+                    $res[$ke]['result_name'] = '较差';
+                }
+                break;
+            case 7:
+                if($re['num'] >= 15){
+                    $key_name = 'result_'.$ke.'_2';
+                    $res[$ke]['result_name'] = '正常';
+                }else{
+                    $key_name = 'result_'.$ke.'_1';
+                    $res[$ke]['result_name'] = '较差';
+                }
+                break;
+            case 8:
+                if($re['num'] >= 6){
+                    $key_name = 'result_'.$ke.'_2';
+                    $res[$ke]['result_name'] = '正常';
+                }else{
+                    $key_name = 'result_'.$ke.'_1';
+                    $res[$ke]['result_name'] = '较差';
+                }
+                break;
         }
         $res[$ke]['result'] = ConfigServer::get('baby_sleep', $key_name);
+
     }
     return $res;
 }

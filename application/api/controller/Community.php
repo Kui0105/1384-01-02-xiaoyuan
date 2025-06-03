@@ -21,7 +21,7 @@ class Community extends ApiBase
         }
         $res = CommunityLogic::add($post, $this->user_id);
         if ($res === true) {
-            $this->_success('成功');
+            $this->_success('发布成功');
         }
         $this->_error($res);
     }

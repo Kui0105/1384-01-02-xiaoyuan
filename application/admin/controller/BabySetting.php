@@ -71,20 +71,28 @@ class BabySetting extends AdminBase
     public function sleep()
     {
         $config = [
-            'result_0_up' => ConfigServer::get('baby_sleep', 'result_0_up' ),
-            'result_0_down' => ConfigServer::get('baby_sleep', 'result_0_down' ),
-            'result_1_up' => ConfigServer::get('baby_sleep', 'result_1_up' ),
-            'result_1_down' => ConfigServer::get('baby_sleep', 'result_1_down' ),
-            'result_2_up' => ConfigServer::get('baby_sleep', 'result_2_up' ),
-            'result_2_down' => ConfigServer::get('baby_sleep', 'result_2_down' ),
-            'result_3_up' => ConfigServer::get('baby_sleep', 'result_3_up' ),
-            'result_3_down' => ConfigServer::get('baby_sleep', 'result_3_down' ),
-            'result_4_up' => ConfigServer::get('baby_sleep', 'result_4_up' ),
-            'result_4_down' => ConfigServer::get('baby_sleep', 'result_4_down' ),
-            'result_5_up' => ConfigServer::get('baby_sleep', 'result_5_up' ),
-            'result_5_down' => ConfigServer::get('baby_sleep', 'result_5_down' ),
-            'result_total_up' => ConfigServer::get('baby_sleep', 'result_total_up' ),
-            'result_total_down' => ConfigServer::get('baby_sleep', 'result_total_down' ),
+            'result_1_1' => ConfigServer::get('baby_sleep', 'result_1_1' ),
+            'result_1_2' => ConfigServer::get('baby_sleep', 'result_1_2' ),
+            'result_1_3' => ConfigServer::get('baby_sleep', 'result_1_3' ),
+            'result_2_1' => ConfigServer::get('baby_sleep', 'result_2_1' ),
+            'result_2_2' => ConfigServer::get('baby_sleep', 'result_2_2' ),
+            'result_2_3' => ConfigServer::get('baby_sleep', 'result_2_3' ),
+            'result_3_1' => ConfigServer::get('baby_sleep', 'result_3_1' ),
+            'result_3_2' => ConfigServer::get('baby_sleep', 'result_3_2' ),
+            'result_3_3' => ConfigServer::get('baby_sleep', 'result_3_3' ),
+            'result_4_1' => ConfigServer::get('baby_sleep', 'result_4_1' ),
+            'result_4_2' => ConfigServer::get('baby_sleep', 'result_4_2' ),
+            'result_5_1' => ConfigServer::get('baby_sleep', 'result_5_1' ),
+            'result_5_2' => ConfigServer::get('baby_sleep', 'result_5_2' ),
+            'result_6_1' => ConfigServer::get('baby_sleep', 'result_6_1' ),
+            'result_6_2' => ConfigServer::get('baby_sleep', 'result_6_2' ),
+            'result_7_1' => ConfigServer::get('baby_sleep', 'result_7_1' ),
+            'result_7_2' => ConfigServer::get('baby_sleep', 'result_7_2' ),
+            'result_8_1' => ConfigServer::get('baby_sleep', 'result_8_1' ),
+            'result_8_2' => ConfigServer::get('baby_sleep', 'result_8_2' ),
+            'result_total_1' => ConfigServer::get('baby_sleep', 'result_total_1' ),
+            'result_total_2' => ConfigServer::get('baby_sleep', 'result_total_2' ),
+            'result_total_3' => ConfigServer::get('baby_sleep', 'result_total_3' ),
         ];
         $this->assign('config', $config);
         return $this->fetch();
@@ -94,20 +102,28 @@ class BabySetting extends AdminBase
     {
         $post = $this->request->post();
         if ($post) {
-            ConfigServer::set('baby_sleep', 'result_0_up', $post['result_0_up']);
-            ConfigServer::set('baby_sleep', 'result_0_down', $post['result_0_down']);
-            ConfigServer::set('baby_sleep', 'result_1_up', $post['result_1_up']);
-            ConfigServer::set('baby_sleep', 'result_1_down', $post['result_1_down']);
-            ConfigServer::set('baby_sleep', 'result_2_up', $post['result_2_up']);
-            ConfigServer::set('baby_sleep', 'result_2_down', $post['result_2_down']);
-            ConfigServer::set('baby_sleep', 'result_3_up', $post['result_3_up']);
-            ConfigServer::set('baby_sleep', 'result_3_down', $post['result_3_down']);
-            ConfigServer::set('baby_sleep', 'result_4_up', $post['result_4_up']);
-            ConfigServer::set('baby_sleep', 'result_4_down', $post['result_4_down']);
-            ConfigServer::set('baby_sleep', 'result_5_up', $post['result_5_up']);
-            ConfigServer::set('baby_sleep', 'result_5_down', $post['result_5_down']);
-            ConfigServer::set('baby_sleep', 'result_total_up', $post['result_total_up']);
-            ConfigServer::set('baby_sleep', 'result_total_down', $post['result_total_down']);
+            ConfigServer::set('baby_sleep', 'result_1_1', $post['result_1_1']);
+            ConfigServer::set('baby_sleep', 'result_1_2', $post['result_1_2']);
+            ConfigServer::set('baby_sleep', 'result_1_3', $post['result_1_3']);
+            ConfigServer::set('baby_sleep', 'result_2_1', $post['result_2_1']);
+            ConfigServer::set('baby_sleep', 'result_2_2', $post['result_2_2']);
+            ConfigServer::set('baby_sleep', 'result_2_3', $post['result_2_3']);
+            ConfigServer::set('baby_sleep', 'result_3_1', $post['result_3_1']);
+            ConfigServer::set('baby_sleep', 'result_3_2', $post['result_3_2']);
+            ConfigServer::set('baby_sleep', 'result_3_3', $post['result_3_3']);
+            ConfigServer::set('baby_sleep', 'result_4_1', $post['result_4_1']);
+            ConfigServer::set('baby_sleep', 'result_4_2', $post['result_4_2']);
+            ConfigServer::set('baby_sleep', 'result_5_1', $post['result_5_1']);
+            ConfigServer::set('baby_sleep', 'result_5_2', $post['result_5_2']);
+            ConfigServer::set('baby_sleep', 'result_6_1', $post['result_6_1']);
+            ConfigServer::set('baby_sleep', 'result_6_2', $post['result_6_2']);
+            ConfigServer::set('baby_sleep', 'result_7_1', $post['result_7_1']);
+            ConfigServer::set('baby_sleep', 'result_7_2', $post['result_7_2']);
+            ConfigServer::set('baby_sleep', 'result_8_1', $post['result_8_1']);
+            ConfigServer::set('baby_sleep', 'result_8_2', $post['result_8_2']);
+            ConfigServer::set('baby_sleep', 'result_total_1', $post['result_total_1']);
+            ConfigServer::set('baby_sleep', 'result_total_2', $post['result_total_2']);
+            ConfigServer::set('baby_sleep', 'result_total_3', $post['result_total_3']);
             $this->_success('修改成功');
         }
     }

@@ -12,8 +12,41 @@
                 <div class="layui-colla-item">
                     <h2 class="layui-colla-title like-layui-colla-title" style="background-color: #fff">操作提示</h2>
                     <div class="layui-colla-content layui-show">
-                        <p>*身高测评结果建议。</p>
-                        <p>*小于等于39分为否;大于39分为是。</p>
+                        <p>*睡眠总体情况分析：较差（77≤）、不佳（78-90）、正常（≥91）
+<!--                            26个题目总和-->
+                        </p>
+                        <p>
+                            *睡眠时长：较差（1）、不佳（2-3）、正常（4-5）
+<!--                            1题-->
+                        </p>
+                        <p>
+                            *入睡行为分析（入睡困难和睡眠维持障碍）：较差（20≤）、不佳（21-24）、正常（≥25）
+<!--                            1、2、3、4、5、10、11题-->
+                        </p>
+                        <p>
+                            *睡眠质量：较差（56≤）、不佳（57-66）、正常（≥67）
+<!--                            6、7、8、9、12、13、14、15、16、17、18、19、20、21、22、23、24、25、26题-->
+                        </p>
+                        <p>
+                            *呼吸状态分析（睡眠呼吸障碍）：较差（8≤）、正常（≥9）
+<!--                            13、14、15题-->
+                        </p>
+                        <p>
+                            *觉醒状态分析（觉醒障碍）：较差（8≤）、正常（≥9）
+<!--                            17、20、21题-->
+                        </p>
+                        <p>
+                            *睡醒转换状态分析（睡眠觉醒转换障碍）：较差（17≤）、正常（≥18）
+<!--                            6、7、8、12、18、19题-->
+                        </p>
+                        <p>
+                            *嗜睡状态分析（过度嗜睡）：较差（≤14）、正常（≥15）
+<!--                            22、23、24、25、26题-->
+                        </p>
+                        <p>
+                            *出汗状态分析（夜间多汗）：较差（≤5）、正常（≥6）
+<!--                            9、16题-->
+                        </p>
                     </div>
                 </div>
             </div>
@@ -24,126 +57,199 @@
 
                 <div class="layui-form-item sigh">
                     <div class="layui-card">
-                        <label class="layui-form-label" style="margin-left: 20px;width: 200px">入睡困难和睡眠维持障碍（是）:</label>
+                        <label class="layui-form-label" style="width: 330px">睡眠时长（较差）:</label>
                         <div class="layui-input-inline" style="width: 500px">
-                            <textarea name="result_0_up" id="result_0_up" placeholder="请输入入睡困难和睡眠维持障碍（是）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_0_up| default=''}</textarea>
+                            <textarea name="result_1_1" id="result_1_1" placeholder="请输入睡眠时长（较差）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_1_1| default=''}</textarea>
                         </div>
                     </div>
                 </div>
 
                 <div class="layui-form-item sigh">
                     <div class="layui-card">
-                        <label class="layui-form-label" style="margin-left: 20px;width: 200px">入睡困难和睡眠维持障碍（否）:</label>
+                        <label class="layui-form-label" style="width: 330px">睡眠时长（不佳）:</label>
                         <div class="layui-input-inline" style="width: 500px">
-                            <textarea name="result_0_down" id="result_0_down" placeholder="请输入入睡困难和睡眠维持障碍（否）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_0_down| default=''}</textarea>
+                            <textarea name="result_1_2" id="result_1_2" placeholder="请输入睡眠时长（不佳）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_1_2| default=''}</textarea>
                         </div>
                     </div>
                 </div>
 
                 <div class="layui-form-item sigh">
                     <div class="layui-card">
-                        <label class="layui-form-label" style="margin-left: 20px;width: 200px">睡眠呼吸障碍（是）:</label>
+                        <label class="layui-form-label" style="width: 330px">睡眠时长（正常）:</label>
                         <div class="layui-input-inline" style="width: 500px">
-                            <textarea name="result_1_up" id="result_1_up" placeholder="请输入睡眠呼吸障碍（是）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_1_up| default=''}</textarea>
+                            <textarea name="result_1_3" id="result_1_3" placeholder="请输入睡眠时长（正常）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_1_3| default=''}</textarea>
                         </div>
                     </div>
                 </div>
 
                 <div class="layui-form-item sigh">
                     <div class="layui-card">
-                        <label class="layui-form-label" style="margin-left: 20px;width: 200px">睡眠呼吸障碍（否）:</label>
+                        <label class="layui-form-label" style="width: 330px">入睡行为分析（入睡困难和睡眠维持障碍）（较差）:</label>
                         <div class="layui-input-inline" style="width: 500px">
-                            <textarea name="result_1_down" id="result_1_down" placeholder="请输入睡眠呼吸障碍（否）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_1_down| default=''}</textarea>
+                            <textarea name="result_2_1" id="result_2_1" placeholder="请输入入睡行为分析（入睡困难和睡眠维持障碍）（较差）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_2_1| default=''}</textarea>
                         </div>
                     </div>
                 </div>
 
                 <div class="layui-form-item sigh">
                     <div class="layui-card">
-                        <label class="layui-form-label" style="margin-left: 20px;width: 200px">觉醒障碍（是）:</label>
+                        <label class="layui-form-label" style="width: 330px">入睡行为分析（入睡困难和睡眠维持障碍）（不佳）:</label>
                         <div class="layui-input-inline" style="width: 500px">
-                            <textarea name="result_2_up" id="result_2_up" placeholder="请输入觉醒障碍（是）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_2_up| default=''}</textarea>
+                            <textarea name="result_2_2" id="result_2_2" placeholder="请输入入睡行为分析（入睡困难和睡眠维持障碍）（不佳）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_2_2| default=''}</textarea>
                         </div>
                     </div>
                 </div>
 
                 <div class="layui-form-item sigh">
                     <div class="layui-card">
-                        <label class="layui-form-label" style="margin-left: 20px;width: 200px">觉醒障碍（否）:</label>
+                        <label class="layui-form-label" style="width: 330px">入睡行为分析（入睡困难和睡眠维持障碍）（正常）:</label>
                         <div class="layui-input-inline" style="width: 500px">
-                            <textarea name="result_2_down" id="result_2_down" placeholder="请输入觉醒障碍（否）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_2_down| default=''}</textarea>
+                            <textarea name="result_2_3" id="result_2_3" placeholder="请输入入睡行为分析（入睡困难和睡眠维持障碍）（正常）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_2_3| default=''}</textarea>
                         </div>
                     </div>
                 </div>
 
                 <div class="layui-form-item sigh">
                     <div class="layui-card">
-                        <label class="layui-form-label" style="margin-left: 20px;width: 200px">睡眠觉醒转换障碍（是）:</label>
+                        <label class="layui-form-label" style="width: 330px">睡眠质量（较差）:</label>
                         <div class="layui-input-inline" style="width: 500px">
-                            <textarea name="result_3_up" id="result_3_up" placeholder="请输入睡眠觉醒转换障碍（是）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_3_up| default=''}</textarea>
+                            <textarea name="result_3_1" id="result_3_1" placeholder="请输入睡眠质量（较差）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_3_1| default=''}</textarea>
                         </div>
                     </div>
                 </div>
 
                 <div class="layui-form-item sigh">
                     <div class="layui-card">
-                        <label class="layui-form-label" style="margin-left: 20px;width: 200px">睡眠觉醒转换障碍（否）:</label>
+                        <label class="layui-form-label" style="width: 330px">睡眠质量（不佳）:</label>
                         <div class="layui-input-inline" style="width: 500px">
-                            <textarea name="result_3_down" id="result_3_down" placeholder="请输入睡眠觉醒转换障碍（否）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_3_down| default=''}</textarea>
+                            <textarea name="result_3_2" id="result_3_2" placeholder="请输入睡眠质量（不佳）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_3_2| default=''}</textarea>
                         </div>
                     </div>
                 </div>
 
                 <div class="layui-form-item sigh">
                     <div class="layui-card">
-                        <label class="layui-form-label" style="margin-left: 20px;width: 200px">过度嗜睡（是）:</label>
+                        <label class="layui-form-label" style="width: 330px">睡眠质量（正常）:</label>
                         <div class="layui-input-inline" style="width: 500px">
-                            <textarea name="result_4_up" id="result_4_up" placeholder="请输入过度嗜睡（是）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_4_up| default=''}</textarea>
+                            <textarea name="result_3_3" id="result_3_3" placeholder="请输入睡眠质量（正常）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_3_3| default=''}</textarea>
                         </div>
                     </div>
                 </div>
 
                 <div class="layui-form-item sigh">
                     <div class="layui-card">
-                        <label class="layui-form-label" style="margin-left: 20px;width: 200px">过度嗜睡（否）:</label>
+                        <label class="layui-form-label" style="width: 330px">呼吸状态分析（睡眠呼吸障碍）（较差）:</label>
                         <div class="layui-input-inline" style="width: 500px">
-                            <textarea name="result_4_down" id="result_4_down" placeholder="请输入过度嗜睡（否）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_4_down| default=''}</textarea>
+                            <textarea name="result_4_1" id="result_4_1" placeholder="请输入呼吸状态分析（睡眠呼吸障碍）（较差）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_4_1| default=''}</textarea>
                         </div>
                     </div>
                 </div>
 
                 <div class="layui-form-item sigh">
                     <div class="layui-card">
-                        <label class="layui-form-label" style="margin-left: 20px;width: 200px">夜间多汗（是）:</label>
+                        <label class="layui-form-label" style="width: 330px">呼吸状态分析（睡眠呼吸障碍）（正常）:</label>
                         <div class="layui-input-inline" style="width: 500px">
-                            <textarea name="result_5_up" id="result_5_up" placeholder="请输入夜间多汗（是）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_5_up| default=''}</textarea>
+                            <textarea name="result_4_2" id="result_4_2" placeholder="请输入呼吸状态分析（睡眠呼吸障碍）（正常）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_4_2| default=''}</textarea>
                         </div>
                     </div>
                 </div>
 
                 <div class="layui-form-item sigh">
                     <div class="layui-card">
-                        <label class="layui-form-label" style="margin-left: 20px;width: 200px">夜间多汗（否）:</label>
+                        <label class="layui-form-label" style="width: 330px">觉醒状态分析（觉醒障碍）（较差）:</label>
                         <div class="layui-input-inline" style="width: 500px">
-                            <textarea name="result_5_down" id="result_5_down" placeholder="请输入夜间多汗（否）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_5_down| default=''}</textarea>
+                            <textarea name="result_5_1" id="result_5_1" placeholder="请输入觉醒状态分析（觉醒障碍）（较差）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_5_1| default=''}</textarea>
                         </div>
                     </div>
                 </div>
 
                 <div class="layui-form-item sigh">
                     <div class="layui-card">
-                        <label class="layui-form-label" style="margin-left: 20px;width: 200px">总分（是）:</label>
+                        <label class="layui-form-label" style="width: 330px">觉醒状态分析（觉醒障碍）（正常）:</label>
                         <div class="layui-input-inline" style="width: 500px">
-                            <textarea name="result_total_up" id="result_total_up" placeholder="请输入总分（是）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_total_up| default=''}</textarea>
+                            <textarea name="result_5_2" id="result_5_2" placeholder="请输入觉醒状态分析（觉醒障碍）（正常）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_5_2| default=''}</textarea>
                         </div>
                     </div>
                 </div>
 
                 <div class="layui-form-item sigh">
                     <div class="layui-card">
-                        <label class="layui-form-label" style="margin-left: 20px;width: 200px">总分（否）:</label>
+                        <label class="layui-form-label" style="width: 330px">睡醒转换状态分析（睡眠觉醒转换障碍）（较差）:</label>
                         <div class="layui-input-inline" style="width: 500px">
-                            <textarea name="result_total_down" id="result_total_down" placeholder="请输入总分（否）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_total_down| default=''}</textarea>
+                            <textarea name="result_6_1" id="result_6_1" placeholder="请输入睡醒转换状态分析（睡眠觉醒转换障碍）（较差）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_6_1| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="width: 330px">睡醒转换状态分析（睡眠觉醒转换障碍）（正常）:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="result_6_2" id="result_6_2" placeholder="请输入睡醒转换状态分析（睡眠觉醒转换障碍）（正常）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_6_2| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="width: 330px"> 嗜睡状态分析（过度嗜睡）（较差）:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="result_7_1" id="result_7_1" placeholder="请输入嗜睡状态分析（过度嗜睡）（较差）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_7_1| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="width: 330px"> 嗜睡状态分析（过度嗜睡）（正常）:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="result_7_2" id="result_7_2" placeholder="请输入嗜睡状态分析（过度嗜睡）（正常）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_7_2| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="width: 330px"> 出汗状态分析（夜间多汗）（较差）:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="result_8_1" id="result_8_1" placeholder="请输入出汗状态分析（夜间多汗）（较差）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_8_1| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="width: 330px"> 出汗状态分析（夜间多汗）（正常）:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="result_8_2" id="result_8_2" placeholder="请输入出汗状态分析（夜间多汗）（正常）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_8_2| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="width: 330px">睡眠总体情况分析（较差）:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="result_total_1" id="result_total_1" placeholder="请输入睡眠总体情况分析（较差）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_total_1| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="width: 330px">睡眠总体情况分析（不佳）:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="result_total_2" id="result_total_2" placeholder="请输入睡眠总体情况分析（不佳）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_total_2| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="width: 330px">睡眠总体情况分析（正常）:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="result_total_3" id="result_total_3" placeholder="请输入睡眠总体情况分析（正常）建议" class="layui-textarea" style="width: 500px;height: 150px">{$config.result_total_3| default=''}</textarea>
                         </div>
                     </div>
                 </div>

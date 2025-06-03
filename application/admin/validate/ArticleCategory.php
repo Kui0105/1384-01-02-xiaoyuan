@@ -84,7 +84,13 @@ class ArticleCategory extends Validate
 
     protected  function checkName($value,$rule,$data)
     {
-        $if_name = Db::name('article_category')->where(['name'=>$value,'type'=>$data['type'],'del'=>0])->count();
+        if($data['id']){
+            $if_name = Db::name('article_category')->where(['name'=>$value,'type'=>$data['type'],'del'=>0])->where('id','<>',$data['id'])->count();
+        }else{
+            $if_name = Db::name('article_category')->where(['name'=>$value,'type'=>$data['type'],'del'=>0])->count();
+        }
+
+
         if($if_name){
             return '分类名称已存在';
         }

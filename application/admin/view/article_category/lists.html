@@ -78,7 +78,6 @@
         var like = layui.like;
 
         var data ={$category_tree|raw};
-        console.log(data);
         var insTb = treeTable.render({
             elem: '#goods_category-lists',
             data: data,
@@ -131,7 +130,7 @@
                     var ids = [id];
                     $.ajax({
                         url: '{:url("article_category/del")}',
-                        data: {ids: id},
+                        data: {id: id},
                         type: 'post',
                         dataType: 'json',
                         success: function (res) {
@@ -183,9 +182,10 @@
                                             offset: '15px'
                                             , icon: 1
                                             , time: 1000
+                                        },function () {
+                                            layer.close(index); //关闭弹层
+                                            location.reload();//刷新
                                         });
-                                        layer.close(index); //关闭弹层
-                                        location.reload();//刷新
                                     }else{
                                         iframeWindow.layer.msg(res.msg, {
                                             offset: '15px'
@@ -241,9 +241,10 @@
                                         offset: '15px'
                                         , icon: 1
                                         , time: 1000
+                                    },function () {
+                                        layer.close(index); //关闭弹层
+                                        location.reload();//刷新
                                     });
-                                    layer.close(index); //关闭弹层
-                                    location.reload();//刷新
                                 }else{
                                     iframeWindow.layer.msg(res.msg, {
                                         offset: '15px'

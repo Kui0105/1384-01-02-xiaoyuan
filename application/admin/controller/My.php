@@ -6,6 +6,7 @@ namespace app\admin\controller;
 
 
 use app\admin\logic\MyLogic;
+use app\admin\server\LoginServer;
 use yx\admin\builderClass;
 
 class My extends AdminBase
@@ -24,6 +25,11 @@ class My extends AdminBase
             $result = $this->validate($post, 'app\admin\validate\Password');
             if ($result === true) {
                 MyLogic::updatePassword($post['password'], $this->admin_id);
+                if ($this->admin_id) {
+                    //清除登录标识
+                    LoginServer::setState($this->admin_id, false);
+                }
+                session(null);
                 $this->_success('修改密码成功');
             }
             $this->_error($result);
