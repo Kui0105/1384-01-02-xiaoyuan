@@ -1,0 +1,520 @@
+{layout name="layout1" /}
+<style>
+    .layui-form-label{
+        width: 100px;
+    }
+    .text-left{
+        text-align: left;
+    }
+</style>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-body" >
+            <div class="layui-collapse like-layui-collapse" lay-accordion="" style="border:1px dashed #c4c4c4">
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title like-layui-colla-title" style="background-color: #fff">操作提示</h2>
+                    <div class="layui-colla-content layui-show">
+                        <p>*小于正常值为不足。</p>
+                        <p>*大于等于正常值且小于良好值为正常。</p>
+                        <p>*大于等于良好值为良好。</p>
+                        <p>*3-6岁为 大于等于3岁且小于6岁。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-card-body" >
+            <div class="layui-form" lay-filter="">
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; " >蛋白质/赖氨酸(0-3岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >正常值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="protein_lysine_3_1"   lay-verType="tips" autocomplete="off" value="{$config.protein_lysine_3_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >良好值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="protein_lysine_3_2"   lay-verType="tips" autocomplete="off" value="{$config.protein_lysine_3_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; " >蛋白质/赖氨酸(3-6岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >正常值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="protein_lysine_6_1"   lay-verType="tips" autocomplete="off" value="{$config.protein_lysine_6_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >良好值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="protein_lysine_6_2"   lay-verType="tips" autocomplete="off" value="{$config.protein_lysine_6_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; " >蛋白质/赖氨酸(6-12岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >正常值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="protein_lysine_12_1"   lay-verType="tips" autocomplete="off" value="{$config.protein_lysine_12_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >良好值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="protein_lysine_12_2"   lay-verType="tips" autocomplete="off" value="{$config.protein_lysine_12_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; " >蛋白质/赖氨酸(12-18岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >正常值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="protein_lysine_18_1"   lay-verType="tips" autocomplete="off" value="{$config.protein_lysine_18_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >良好值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="protein_lysine_18_2"   lay-verType="tips" autocomplete="off" value="{$config.protein_lysine_18_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; " >B族维生素(0-3岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >正常值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vb_3_1"   lay-verType="tips" autocomplete="off" value="{$config.vb_3_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >良好值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vb_3_2"   lay-verType="tips" autocomplete="off" value="{$config.vb_3_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; " >B族维生素(3-6岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >正常值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vb_6_1"   lay-verType="tips" autocomplete="off" value="{$config.vb_6_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >良好值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vb_6_2"   lay-verType="tips" autocomplete="off" value="{$config.vb_6_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; " >B族维生素(6-12岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >正常值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vb_12_1"   lay-verType="tips" autocomplete="off" value="{$config.vb_12_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >良好值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vb_12_2"   lay-verType="tips" autocomplete="off" value="{$config.vb_12_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; " >B族维生素(12-18岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >正常值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vb_18_1"   lay-verType="tips" autocomplete="off" value="{$config.vb_18_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >良好值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vb_18_2"   lay-verType="tips" autocomplete="off" value="{$config.vb_18_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; " >维生素D(0-3岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >正常值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vd_3_1"   lay-verType="tips" autocomplete="off" value="{$config.vd_3_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >良好值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vd_3_2"   lay-verType="tips" autocomplete="off" value="{$config.vd_3_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; " >维生素D(3-6岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >正常值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vd_6_1"   lay-verType="tips" autocomplete="off" value="{$config.vd_6_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >良好值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vd_6_2"   lay-verType="tips" autocomplete="off" value="{$config.vd_6_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; " >维生素D(6-12岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >正常值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vd_12_1"   lay-verType="tips" autocomplete="off" value="{$config.vd_12_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >良好值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vd_12_2"   lay-verType="tips" autocomplete="off" value="{$config.vd_12_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; " >维生素D(12-18岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >正常值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vd_18_1"   lay-verType="tips" autocomplete="off" value="{$config.vd_18_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >良好值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vd_18_2"   lay-verType="tips" autocomplete="off" value="{$config.vd_18_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; " >铁(0-3岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >正常值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="iron_3_1"   lay-verType="tips" autocomplete="off" value="{$config.iron_3_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >良好值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="iron_3_2"   lay-verType="tips" autocomplete="off" value="{$config.iron_3_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; " >铁(3-6岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >正常值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="iron_6_1"   lay-verType="tips" autocomplete="off" value="{$config.iron_6_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >良好值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="iron_6_2"   lay-verType="tips" autocomplete="off" value="{$config.iron_6_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; " >铁(6-12岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >正常值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="iron_12_1"   lay-verType="tips" autocomplete="off" value="{$config.iron_12_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >良好值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="iron_12_2"   lay-verType="tips" autocomplete="off" value="{$config.iron_12_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; " >铁(12-18岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >正常值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="iron_18_1"   lay-verType="tips" autocomplete="off" value="{$config.iron_18_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >良好值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="iron_18_2"   lay-verType="tips" autocomplete="off" value="{$config.iron_18_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; " >锌(0-3岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >正常值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="zinc_3_1"   lay-verType="tips" autocomplete="off" value="{$config.zinc_3_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >良好值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="zinc_3_2"   lay-verType="tips" autocomplete="off" value="{$config.zinc_3_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; " >锌(3-6岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >正常值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="zinc_6_1"   lay-verType="tips" autocomplete="off" value="{$config.zinc_6_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >良好值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="zinc_6_2"   lay-verType="tips" autocomplete="off" value="{$config.zinc_6_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; " >锌(6-12岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >正常值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="zinc_12_1"   lay-verType="tips" autocomplete="off" value="{$config.zinc_12_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >良好值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="zinc_12_2"   lay-verType="tips" autocomplete="off" value="{$config.zinc_12_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; " >锌(12-18岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >正常值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="zinc_18_1"   lay-verType="tips" autocomplete="off" value="{$config.zinc_18_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >良好值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="zinc_18_2"   lay-verType="tips" autocomplete="off" value="{$config.zinc_18_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; " >维生素A(0-3岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >正常值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="va_3_1"   lay-verType="tips" autocomplete="off" value="{$config.va_3_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >良好值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="va_3_2"   lay-verType="tips" autocomplete="off" value="{$config.va_3_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; " >维生素A(3-6岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >正常值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="va_6_1"   lay-verType="tips" autocomplete="off" value="{$config.va_6_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >良好值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="va_6_2"   lay-verType="tips" autocomplete="off" value="{$config.va_6_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; " >维生素A(6-12岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >正常值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="va_12_1"   lay-verType="tips" autocomplete="off" value="{$config.va_12_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >良好值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="va_12_2"   lay-verType="tips" autocomplete="off" value="{$config.va_12_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; " >维生素A(12-18岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >正常值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="va_18_1"   lay-verType="tips" autocomplete="off" value="{$config.va_18_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >良好值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="va_18_2"   lay-verType="tips" autocomplete="off" value="{$config.va_18_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; " >钙(0-3岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >正常值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="calcium_3_1"   lay-verType="tips" autocomplete="off" value="{$config.calcium_3_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >良好值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="calcium_3_2"   lay-verType="tips" autocomplete="off" value="{$config.calcium_3_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; " >钙(3-6岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >正常值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="calcium_6_1"   lay-verType="tips" autocomplete="off" value="{$config.calcium_6_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >良好值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="calcium_6_2"   lay-verType="tips" autocomplete="off" value="{$config.calcium_6_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; " >钙(6-12岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >正常值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="calcium_12_1"   lay-verType="tips" autocomplete="off" value="{$config.calcium_12_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >良好值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="calcium_12_2"   lay-verType="tips" autocomplete="off" value="{$config.calcium_12_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; " >钙(12-18岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >正常值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="calcium_18_1"   lay-verType="tips" autocomplete="off" value="{$config.calcium_18_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >良好值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="calcium_18_2"   lay-verType="tips" autocomplete="off" value="{$config.calcium_18_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; " >膳食纤维(0-3岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >正常值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="dietary_fiber_3_1"   lay-verType="tips" autocomplete="off" value="{$config.dietary_fiber_3_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >良好值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="dietary_fiber_3_2"   lay-verType="tips" autocomplete="off" value="{$config.dietary_fiber_3_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; " >膳食纤维(3-6岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >正常值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="dietary_fiber_6_1"   lay-verType="tips" autocomplete="off" value="{$config.dietary_fiber_6_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >良好值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="dietary_fiber_6_2"   lay-verType="tips" autocomplete="off" value="{$config.dietary_fiber_6_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; " >膳食纤维(6-12岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >正常值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="dietary_fiber_12_1"   lay-verType="tips" autocomplete="off" value="{$config.dietary_fiber_12_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >良好值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="dietary_fiber_12_2"   lay-verType="tips" autocomplete="off" value="{$config.dietary_fiber_12_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; " >膳食纤维(12-18岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >正常值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="dietary_fiber_18_1"   lay-verType="tips" autocomplete="off" value="{$config.dietary_fiber_18_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >良好值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="dietary_fiber_18_2"   lay-verType="tips" autocomplete="off" value="{$config.dietary_fiber_18_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn layui-btn-sm {$view_theme_color}" lay-submit lay-filter="setPoint">确认</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+
+    layui.config({
+        version:"{$front_version}",
+        base: '/static/plug/layui-admin/dist/layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index','table','like'], function(){
+        var $ = layui.$
+            ,form = layui.form
+            ,like = layui.like;
+
+        form.on('submit(setPoint)',function (data) {
+            like.ajax({
+                url: '{:url("nutrition/setSetting")}'
+                ,data: data.field
+                ,type: 'post'
+                ,success: function(res){
+                    if(res.code == 1) {
+                        layer.msg(res.msg, {
+                            offset: '15px'
+                            ,icon: 1
+                            ,time: 1500
+                        });
+                    }
+                },
+            });
+        });
+
+    });
+
+</script>

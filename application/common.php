@@ -1097,6 +1097,11 @@ function abIntval($num)
     return abs(intval($num));
 }
 
+function abFloatval($num)
+{
+    return abs(floatval($num));
+}
+
 //获取当前年龄
 function now_age($birthdayTimestamp,$currentTimestamp,$str = true){
     // 创建生日的DateTime对象
