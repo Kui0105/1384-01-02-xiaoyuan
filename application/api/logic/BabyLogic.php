@@ -609,6 +609,9 @@ class BabyLogic extends LogicBase{
                 case 5:
                     $log['img'] = addImgDomain('api_img/sleep.png');
                     break;
+                case 6:
+                    $log['img'] = addImgDomain('api_img/sleep.png');
+                    break;
                 default:
                     $log['img'] = addImgDomain('api_img/sleep.png');
                     break;
@@ -786,6 +789,9 @@ class BabyLogic extends LogicBase{
             case 3://睡眠
                 $result_data = json_decode($check_result['check_result'],true);
                 foreach ($result_data as $k => &$r){
+                    if(!isset($r['num'])){
+                        $r['num'] = 0;
+                    }
                     // $r['status'] = false;
                     // if($r['num'] > 39){
                     //     $r['status'] = true;
@@ -837,6 +843,9 @@ class BabyLogic extends LogicBase{
                 $return_data = addImgDomain($check_result['check_result']);
                 break;
             case 5://运动
+                $return_data['check_result'] = json_decode($check_result['check_result'],true);
+                break;
+            case 6://运动
                 $return_data['check_result'] = json_decode($check_result['check_result'],true);
                 break;
         }
@@ -1091,7 +1100,199 @@ class BabyLogic extends LogicBase{
         if($sport_id){
             $return['sport_check'] = self::check_result($user_id, $sport_id);
         }
+        $nutrition_id = $model->where(['user_id'=>$user_id,'type'=>6])->max('id');
+        if($nutrition_id){
+            $return['nutrition_check'] = self::check_result($user_id, $nutrition_id);
+        }
         $return['baby_info'] = self::baby_info($user_id);
         return $return;
+    }
+
+    public static function nutrition_check($user_id,$data)
+    {
+        $baby_data = Db::name('baby')->where(['user_id'=>$user_id,'del'=>0,'is_default'=>1])->find();
+        if(!$baby_data){
+            self::$error =  '宝贝错误';
+            return  false;
+        }
+        $baby_id = $baby_data['id'];
+        $post_time = strtotime(date('Y-m-d'));
+
+        if(empty($data)){
+            self::$error =  '错误';
+            return  false;
+        }
+
+        $time = time();
+        $check_data = json_encode($data);
+
+        $all_child = array_merge(...array_column($data, 'child'));
+
+        $all_id = array_column(array_filter($all_child, function($child) {
+            return $child['value'] > 0;
+        }), 'id');
+
+        $all_food = [];
+
+        if(!empty($all_id)){
+            $all_food = Db::name('nutrition_food')->where('id','in',$all_id)->column('*','id');
+        }
+
+
+        $check_result = [
+            'protein_lysine' => [
+                'name'  => '蛋白质/赖氨酸',
+                'num'   => 0,
+                'points' => 0,
+                'value' => '摄入不足',
+                'value_img' => 1,
+                'key'   => 'protein_lysine',
+            ],
+            'vb' => [
+                'name'  => 'B族维生素',
+                'num'   => 0,
+                'points' => 0,
+                'value' => '摄入不足',
+                'value_img' => 1,
+                'key'   => 'vb',
+            ],
+            'vd' => [
+                'name'  => '维生素D',
+                'num'   => 0,
+                'points' => 0,
+                'value' => '摄入不足',
+                'value_img' => 1,
+                'key'   => 'vd',
+            ],
+            'iron' => [
+                'name'  => '铁',
+                'num'   => 0,
+                'points' => 0,
+                'value' => '摄入不足',
+                'value_img' => 1,
+                'key'   => 'iron',
+            ],
+            'zinc' => [
+                'name'  => '锌',
+                'num'   => 0,
+                'points' => 0,
+                'value' => '摄入不足',
+                'value_img' => 1,
+                'key'   => 'zinc',
+            ],
+            'va' => [
+                'name'  => '维生素A',
+                'num'   => 0,
+                'points' => 0,
+                'value' => '摄入不足',
+                'value_img' => 1,
+                'key'   => 'va',
+            ],
+            'calcium' => [
+                'name'  => '钙',
+                'num'   => 0,
+                'points' => 0,
+                'value' => '摄入不足',
+                'value_img' => 1,
+                'key'   => 'calcium',
+            ],
+            'dietary_fiber' => [
+                'name'  => '膳食纤维',
+                'num'   => 0,
+                'points' => 0,
+                'value' => '摄入不足',
+                'value_img' => 1,
+                'key'   => 'dietary_fiber',
+            ],
+        ];
+        $sug_arr = [];
+        if(!empty($all_food)){
+            foreach ($all_food as $fd){
+                $check_result['protein_lysine']['num'] += $fd['protein_lysine'];
+                $check_result['vb']['num'] += $fd['vb'];
+                $check_result['vd']['num'] += $fd['vd'];
+                $check_result['iron']['num'] += $fd['iron'];
+                $check_result['zinc']['num'] += $fd['zinc'];
+                $check_result['va']['num'] += $fd['va'];
+                $check_result['calcium']['num'] += $fd['calcium'];
+                $check_result['dietary_fiber']['num'] += $fd['dietary_fiber'];
+            }
+        }
+
+        $now_age_arr = now_age($baby_data['birthday'],$post_time,false);
+        $now_year = $now_age_arr['year'];
+        if($now_year <= 3){
+            $key = 3;
+        }else if($now_year > 3 && $now_year <= 6){
+            $key = 6;
+        }else if($now_year > 6 && $now_year <= 12){
+            $key = 12;
+        }else{
+            $key = 18;
+        }
+        foreach ($check_result as &$cr){
+            $zc = ConfigServer::get('nutrition', $cr['key'].'_'.$key.'_1');
+            $lh = ConfigServer::get('nutrition', $cr['key'].'_'.$key.'_2');
+            if($cr['num'] < $zc){
+                $sug_arr[] = [
+                    'name'  => $cr['name'].'摄入不足',
+                    'value' => ConfigServer::get('baby_nutrition', $cr['key'])
+                ];
+                $cr['value_img'] = 1;
+                $cr['value'] = '摄入不足';
+            }else if($cr['num'] >= $lh){
+                $cr['value_img'] = 2;
+                $cr['value'] = '摄入良好';
+            }else{
+                $cr['value_img'] = 3;
+                $cr['value'] = '摄入正常';
+            }
+            $num1 = ConfigServer::get('nutrition', $cr['key'].'_points_'.$key.'_1');
+            $num2 = ConfigServer::get('nutrition', $cr['key'].'_points_'.$key.'_2');
+            $num3 = ConfigServer::get('nutrition', $cr['key'].'_points_'.$key.'_3');
+            $num4 = ConfigServer::get('nutrition', $cr['key'].'_points_'.$key.'_4');
+            $num5 = ConfigServer::get('nutrition', $cr['key'].'_points_'.$key.'_5');
+            $num6 = ConfigServer::get('nutrition', $cr['key'].'_points_'.$key.'_6');
+            $num7 = ConfigServer::get('nutrition', $cr['key'].'_points_'.$key.'_7');
+            if($cr['num'] < $num1){
+                $cr['points'] = 0;
+            }else if($cr['num'] >= $num1 && $cr['num'] < $num2){
+                $cr['points'] = 1;
+            }else if($cr['num'] >= $num2 && $cr['num'] < $num3){
+                $cr['points'] = 2;
+            }else if($cr['num'] >= $num3 && $cr['num'] < $num4){
+                $cr['points'] = 3;
+            }else if($cr['num'] >= $num4 && $cr['num'] < $num5){
+                $cr['points'] = 4;
+            }else if($cr['num'] >= $num5 && $cr['num'] < $num6){
+                $cr['points'] = 5;
+            }else if($cr['num'] >= $num6 && $cr['num'] < $num7){
+                $cr['points'] = 6;
+            }else{
+                $cr['points'] = 7;
+            }
+        }
+
+        $check_result = array_values($check_result);
+        $result = compact('sug_arr','check_result');
+        $check_result = json_encode($result);
+        // $result_key = spleen_key($total_num);
+        // $result_name = 'result_'.$result_key;
+        // $check_result = ConfigServer::get('baby_spleen', $result_name);
+        $baby_data = json_encode($baby_data);
+        $insert_id = Db::name('baby_check')->insertGetId([
+            'user_id'       => $user_id,
+            'baby_id'       => $baby_id,
+            'type'          => 6,
+            'check_data'    => $check_data,
+            'check_date'    => $post_time,
+            'create_time'   => $time,
+            'check_result'  => $check_result,
+            'baby_data'     => $baby_data,
+        ]);
+        return [
+            'id'    => $insert_id,
+            'type'  => 6
+        ];
     }
 }

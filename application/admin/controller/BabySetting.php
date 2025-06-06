@@ -210,4 +210,39 @@ class BabySetting extends AdminBase
             $this->_success('修改成功');
         }
     }
+
+    /**
+     * 营养设置
+     */
+    public function nutrition()
+    {
+        $config = [
+            'protein_lysine' => ConfigServer::get('baby_nutrition', 'protein_lysine' ),
+            'vb' => ConfigServer::get('baby_nutrition', 'vb' ),
+            'vd' => ConfigServer::get('baby_nutrition', 'vd' ),
+            'iron' => ConfigServer::get('baby_nutrition', 'iron' ),
+            'zinc' => ConfigServer::get('baby_nutrition', 'zinc' ),
+            'va' => ConfigServer::get('baby_nutrition', 'va' ),
+            'calcium' => ConfigServer::get('baby_nutrition', 'calcium' ),
+            'dietary_fiber' => ConfigServer::get('baby_nutrition', 'dietary_fiber' ),
+        ];
+        $this->assign('config', $config);
+        return $this->fetch();
+    }
+
+    public function setNutrition()
+    {
+        $post = $this->request->post();
+        if ($post) {
+            ConfigServer::set('baby_nutrition', 'protein_lysine', $post['protein_lysine']);
+            ConfigServer::set('baby_nutrition', 'vb', $post['vb']);
+            ConfigServer::set('baby_nutrition', 'vd', $post['vd']);
+            ConfigServer::set('baby_nutrition', 'iron', $post['iron']);
+            ConfigServer::set('baby_nutrition', 'zinc', $post['zinc']);
+            ConfigServer::set('baby_nutrition', 'va', $post['va']);
+            ConfigServer::set('baby_nutrition', 'calcium', $post['calcium']);
+            ConfigServer::set('baby_nutrition', 'dietary_fiber', $post['dietary_fiber']);
+            $this->_success('修改成功');
+        }
+    }
 }

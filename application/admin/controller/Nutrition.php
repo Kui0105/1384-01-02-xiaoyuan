@@ -230,12 +230,476 @@ class Nutrition extends AdminBase
 
     public function points()
     {
-        if ($this->request->isAjax()) {
-            $get = $this->request->get();
-            $this->_success('', HelpCategoryLogic::lists($get));
-        }
+        $config = [
+            'protein_lysine_points_3_1'      => ConfigServer::get('nutrition', 'protein_lysine_points_3_1'),
+            'protein_lysine_points_3_2'      => ConfigServer::get('nutrition', 'protein_lysine_points_3_2'),
+            'protein_lysine_points_3_3'      => ConfigServer::get('nutrition', 'protein_lysine_points_3_3'),
+            'protein_lysine_points_3_4'      => ConfigServer::get('nutrition', 'protein_lysine_points_3_4'),
+            'protein_lysine_points_3_5'      => ConfigServer::get('nutrition', 'protein_lysine_points_3_5'),
+            'protein_lysine_points_3_6'      => ConfigServer::get('nutrition', 'protein_lysine_points_3_6'),
+            'protein_lysine_points_3_7'      => ConfigServer::get('nutrition', 'protein_lysine_points_3_7'),
+            'protein_lysine_points_6_1'      => ConfigServer::get('nutrition', 'protein_lysine_points_6_1'),
+            'protein_lysine_points_6_2'      => ConfigServer::get('nutrition', 'protein_lysine_points_6_2'),
+            'protein_lysine_points_6_3'      => ConfigServer::get('nutrition', 'protein_lysine_points_6_3'),
+            'protein_lysine_points_6_4'      => ConfigServer::get('nutrition', 'protein_lysine_points_6_4'),
+            'protein_lysine_points_6_5'      => ConfigServer::get('nutrition', 'protein_lysine_points_6_5'),
+            'protein_lysine_points_6_6'      => ConfigServer::get('nutrition', 'protein_lysine_points_6_6'),
+            'protein_lysine_points_6_7'      => ConfigServer::get('nutrition', 'protein_lysine_points_6_7'),
+            'protein_lysine_points_12_1'     => ConfigServer::get('nutrition', 'protein_lysine_points_12_1'),
+            'protein_lysine_points_12_2'     => ConfigServer::get('nutrition', 'protein_lysine_points_12_2'),
+            'protein_lysine_points_12_3'     => ConfigServer::get('nutrition', 'protein_lysine_points_12_3'),
+            'protein_lysine_points_12_4'     => ConfigServer::get('nutrition', 'protein_lysine_points_12_4'),
+            'protein_lysine_points_12_5'     => ConfigServer::get('nutrition', 'protein_lysine_points_12_5'),
+            'protein_lysine_points_12_6'     => ConfigServer::get('nutrition', 'protein_lysine_points_12_6'),
+            'protein_lysine_points_12_7'     => ConfigServer::get('nutrition', 'protein_lysine_points_12_7'),
+            'protein_lysine_points_18_1'     => ConfigServer::get('nutrition', 'protein_lysine_points_18_1'),
+            'protein_lysine_points_18_2'     => ConfigServer::get('nutrition', 'protein_lysine_points_18_2'),
+            'protein_lysine_points_18_3'     => ConfigServer::get('nutrition', 'protein_lysine_points_18_3'),
+            'protein_lysine_points_18_4'     => ConfigServer::get('nutrition', 'protein_lysine_points_18_4'),
+            'protein_lysine_points_18_5'     => ConfigServer::get('nutrition', 'protein_lysine_points_18_5'),
+            'protein_lysine_points_18_6'     => ConfigServer::get('nutrition', 'protein_lysine_points_18_6'),
+            'protein_lysine_points_18_7'     => ConfigServer::get('nutrition', 'protein_lysine_points_18_7'),
+
+            'vb_points_3_1'          => ConfigServer::get('nutrition', 'vb_points_3_1'),
+            'vb_points_3_2'          => ConfigServer::get('nutrition', 'vb_points_3_2'),
+            'vb_points_3_3'          => ConfigServer::get('nutrition', 'vb_points_3_3'),
+            'vb_points_3_4'          => ConfigServer::get('nutrition', 'vb_points_3_4'),
+            'vb_points_3_5'          => ConfigServer::get('nutrition', 'vb_points_3_5'),
+            'vb_points_3_6'          => ConfigServer::get('nutrition', 'vb_points_3_6'),
+            'vb_points_3_7'          => ConfigServer::get('nutrition', 'vb_points_3_7'),
+            'vb_points_6_1'          => ConfigServer::get('nutrition', 'vb_points_6_1'),
+            'vb_points_6_2'          => ConfigServer::get('nutrition', 'vb_points_6_2'),
+            'vb_points_6_3'          => ConfigServer::get('nutrition', 'vb_points_6_3'),
+            'vb_points_6_4'          => ConfigServer::get('nutrition', 'vb_points_6_4'),
+            'vb_points_6_5'          => ConfigServer::get('nutrition', 'vb_points_6_5'),
+            'vb_points_6_6'          => ConfigServer::get('nutrition', 'vb_points_6_6'),
+            'vb_points_6_7'          => ConfigServer::get('nutrition', 'vb_points_6_7'),
+            'vb_points_12_1'         => ConfigServer::get('nutrition', 'vb_points_12_1'),
+            'vb_points_12_2'         => ConfigServer::get('nutrition', 'vb_points_12_2'),
+            'vb_points_12_3'         => ConfigServer::get('nutrition', 'vb_points_12_3'),
+            'vb_points_12_4'         => ConfigServer::get('nutrition', 'vb_points_12_4'),
+            'vb_points_12_5'         => ConfigServer::get('nutrition', 'vb_points_12_5'),
+            'vb_points_12_6'         => ConfigServer::get('nutrition', 'vb_points_12_6'),
+            'vb_points_12_7'         => ConfigServer::get('nutrition', 'vb_points_12_7'),
+            'vb_points_18_1'         => ConfigServer::get('nutrition', 'vb_points_18_1'),
+            'vb_points_18_2'         => ConfigServer::get('nutrition', 'vb_points_18_2'),
+            'vb_points_18_3'         => ConfigServer::get('nutrition', 'vb_points_18_3'),
+            'vb_points_18_4'         => ConfigServer::get('nutrition', 'vb_points_18_4'),
+            'vb_points_18_5'         => ConfigServer::get('nutrition', 'vb_points_18_5'),
+            'vb_points_18_6'         => ConfigServer::get('nutrition', 'vb_points_18_6'),
+            'vb_points_18_7'         => ConfigServer::get('nutrition', 'vb_points_18_7'),
+
+            'vd_points_3_1'          => ConfigServer::get('nutrition', 'vd_points_3_1'),
+            'vd_points_3_2'          => ConfigServer::get('nutrition', 'vd_points_3_2'),
+            'vd_points_3_3'          => ConfigServer::get('nutrition', 'vd_points_3_3'),
+            'vd_points_3_4'          => ConfigServer::get('nutrition', 'vd_points_3_4'),
+            'vd_points_3_5'          => ConfigServer::get('nutrition', 'vd_points_3_5'),
+            'vd_points_3_6'          => ConfigServer::get('nutrition', 'vd_points_3_6'),
+            'vd_points_3_7'          => ConfigServer::get('nutrition', 'vd_points_3_7'),
+            'vd_points_6_1'          => ConfigServer::get('nutrition', 'vd_points_6_1'),
+            'vd_points_6_2'          => ConfigServer::get('nutrition', 'vd_points_6_2'),
+            'vd_points_6_3'          => ConfigServer::get('nutrition', 'vd_points_6_3'),
+            'vd_points_6_4'          => ConfigServer::get('nutrition', 'vd_points_6_4'),
+            'vd_points_6_5'          => ConfigServer::get('nutrition', 'vd_points_6_5'),
+            'vd_points_6_6'          => ConfigServer::get('nutrition', 'vd_points_6_6'),
+            'vd_points_6_7'          => ConfigServer::get('nutrition', 'vd_points_6_7'),
+            'vd_points_12_1'         => ConfigServer::get('nutrition', 'vd_points_12_1'),
+            'vd_points_12_2'         => ConfigServer::get('nutrition', 'vd_points_12_2'),
+            'vd_points_12_3'         => ConfigServer::get('nutrition', 'vd_points_12_3'),
+            'vd_points_12_4'         => ConfigServer::get('nutrition', 'vd_points_12_4'),
+            'vd_points_12_5'         => ConfigServer::get('nutrition', 'vd_points_12_5'),
+            'vd_points_12_6'         => ConfigServer::get('nutrition', 'vd_points_12_6'),
+            'vd_points_12_7'         => ConfigServer::get('nutrition', 'vd_points_12_7'),
+            'vd_points_18_1'         => ConfigServer::get('nutrition', 'vd_points_18_1'),
+            'vd_points_18_2'         => ConfigServer::get('nutrition', 'vd_points_18_2'),
+            'vd_points_18_3'         => ConfigServer::get('nutrition', 'vd_points_18_3'),
+            'vd_points_18_4'         => ConfigServer::get('nutrition', 'vd_points_18_4'),
+            'vd_points_18_5'         => ConfigServer::get('nutrition', 'vd_points_18_5'),
+            'vd_points_18_6'         => ConfigServer::get('nutrition', 'vd_points_18_6'),
+            'vd_points_18_7'         => ConfigServer::get('nutrition', 'vd_points_18_7'),
+
+            'iron_points_3_1'          => ConfigServer::get('nutrition', 'iron_points_3_1'),
+            'iron_points_3_2'          => ConfigServer::get('nutrition', 'iron_points_3_2'),
+            'iron_points_3_3'          => ConfigServer::get('nutrition', 'iron_points_3_3'),
+            'iron_points_3_4'          => ConfigServer::get('nutrition', 'iron_points_3_4'),
+            'iron_points_3_5'          => ConfigServer::get('nutrition', 'iron_points_3_5'),
+            'iron_points_3_6'          => ConfigServer::get('nutrition', 'iron_points_3_6'),
+            'iron_points_3_7'          => ConfigServer::get('nutrition', 'iron_points_3_7'),
+            'iron_points_6_1'          => ConfigServer::get('nutrition', 'iron_points_6_1'),
+            'iron_points_6_2'          => ConfigServer::get('nutrition', 'iron_points_6_2'),
+            'iron_points_6_3'          => ConfigServer::get('nutrition', 'iron_points_6_3'),
+            'iron_points_6_4'          => ConfigServer::get('nutrition', 'iron_points_6_4'),
+            'iron_points_6_5'          => ConfigServer::get('nutrition', 'iron_points_6_5'),
+            'iron_points_6_6'          => ConfigServer::get('nutrition', 'iron_points_6_6'),
+            'iron_points_6_7'          => ConfigServer::get('nutrition', 'iron_points_6_7'),
+            'iron_points_12_1'         => ConfigServer::get('nutrition', 'iron_points_12_1'),
+            'iron_points_12_2'         => ConfigServer::get('nutrition', 'iron_points_12_2'),
+            'iron_points_12_3'         => ConfigServer::get('nutrition', 'iron_points_12_3'),
+            'iron_points_12_4'         => ConfigServer::get('nutrition', 'iron_points_12_4'),
+            'iron_points_12_5'         => ConfigServer::get('nutrition', 'iron_points_12_5'),
+            'iron_points_12_6'         => ConfigServer::get('nutrition', 'iron_points_12_6'),
+            'iron_points_12_7'         => ConfigServer::get('nutrition', 'iron_points_12_7'),
+            'iron_points_18_1'         => ConfigServer::get('nutrition', 'iron_points_18_1'),
+            'iron_points_18_2'         => ConfigServer::get('nutrition', 'iron_points_18_2'),
+            'iron_points_18_3'         => ConfigServer::get('nutrition', 'iron_points_18_3'),
+            'iron_points_18_4'         => ConfigServer::get('nutrition', 'iron_points_18_4'),
+            'iron_points_18_5'         => ConfigServer::get('nutrition', 'iron_points_18_5'),
+            'iron_points_18_6'         => ConfigServer::get('nutrition', 'iron_points_18_6'),
+            'iron_points_18_7'         => ConfigServer::get('nutrition', 'iron_points_18_7'),
+
+            'zinc_points_3_1'          => ConfigServer::get('nutrition', 'zinc_points_3_1'),
+            'zinc_points_3_2'          => ConfigServer::get('nutrition', 'zinc_points_3_2'),
+            'zinc_points_3_3'          => ConfigServer::get('nutrition', 'zinc_points_3_3'),
+            'zinc_points_3_4'          => ConfigServer::get('nutrition', 'zinc_points_3_4'),
+            'zinc_points_3_5'          => ConfigServer::get('nutrition', 'zinc_points_3_5'),
+            'zinc_points_3_6'          => ConfigServer::get('nutrition', 'zinc_points_3_6'),
+            'zinc_points_3_7'          => ConfigServer::get('nutrition', 'zinc_points_3_7'),
+            'zinc_points_6_1'          => ConfigServer::get('nutrition', 'zinc_points_6_1'),
+            'zinc_points_6_2'          => ConfigServer::get('nutrition', 'zinc_points_6_2'),
+            'zinc_points_6_3'          => ConfigServer::get('nutrition', 'zinc_points_6_3'),
+            'zinc_points_6_4'          => ConfigServer::get('nutrition', 'zinc_points_6_4'),
+            'zinc_points_6_5'          => ConfigServer::get('nutrition', 'zinc_points_6_5'),
+            'zinc_points_6_6'          => ConfigServer::get('nutrition', 'zinc_points_6_6'),
+            'zinc_points_6_7'          => ConfigServer::get('nutrition', 'zinc_points_6_7'),
+            'zinc_points_12_1'         => ConfigServer::get('nutrition', 'zinc_points_12_1'),
+            'zinc_points_12_2'         => ConfigServer::get('nutrition', 'zinc_points_12_2'),
+            'zinc_points_12_3'         => ConfigServer::get('nutrition', 'zinc_points_12_3'),
+            'zinc_points_12_4'         => ConfigServer::get('nutrition', 'zinc_points_12_4'),
+            'zinc_points_12_5'         => ConfigServer::get('nutrition', 'zinc_points_12_5'),
+            'zinc_points_12_6'         => ConfigServer::get('nutrition', 'zinc_points_12_6'),
+            'zinc_points_12_7'         => ConfigServer::get('nutrition', 'zinc_points_12_7'),
+            'zinc_points_18_1'         => ConfigServer::get('nutrition', 'zinc_points_18_1'),
+            'zinc_points_18_2'         => ConfigServer::get('nutrition', 'zinc_points_18_2'),
+            'zinc_points_18_3'         => ConfigServer::get('nutrition', 'zinc_points_18_3'),
+            'zinc_points_18_4'         => ConfigServer::get('nutrition', 'zinc_points_18_4'),
+            'zinc_points_18_5'         => ConfigServer::get('nutrition', 'zinc_points_18_5'),
+            'zinc_points_18_6'         => ConfigServer::get('nutrition', 'zinc_points_18_6'),
+            'zinc_points_18_7'         => ConfigServer::get('nutrition', 'zinc_points_18_7'),
+
+            'va_points_3_1'          => ConfigServer::get('nutrition', 'va_points_3_1'),
+            'va_points_3_2'          => ConfigServer::get('nutrition', 'va_points_3_2'),
+            'va_points_3_3'          => ConfigServer::get('nutrition', 'va_points_3_3'),
+            'va_points_3_4'          => ConfigServer::get('nutrition', 'va_points_3_4'),
+            'va_points_3_5'          => ConfigServer::get('nutrition', 'va_points_3_5'),
+            'va_points_3_6'          => ConfigServer::get('nutrition', 'va_points_3_6'),
+            'va_points_3_7'          => ConfigServer::get('nutrition', 'va_points_3_7'),
+            'va_points_6_1'          => ConfigServer::get('nutrition', 'va_points_6_1'),
+            'va_points_6_2'          => ConfigServer::get('nutrition', 'va_points_6_2'),
+            'va_points_6_3'          => ConfigServer::get('nutrition', 'va_points_6_3'),
+            'va_points_6_4'          => ConfigServer::get('nutrition', 'va_points_6_4'),
+            'va_points_6_5'          => ConfigServer::get('nutrition', 'va_points_6_5'),
+            'va_points_6_6'          => ConfigServer::get('nutrition', 'va_points_6_6'),
+            'va_points_6_7'          => ConfigServer::get('nutrition', 'va_points_6_7'),
+            'va_points_12_1'         => ConfigServer::get('nutrition', 'va_points_12_1'),
+            'va_points_12_2'         => ConfigServer::get('nutrition', 'va_points_12_2'),
+            'va_points_12_3'         => ConfigServer::get('nutrition', 'va_points_12_3'),
+            'va_points_12_4'         => ConfigServer::get('nutrition', 'va_points_12_4'),
+            'va_points_12_5'         => ConfigServer::get('nutrition', 'va_points_12_5'),
+            'va_points_12_6'         => ConfigServer::get('nutrition', 'va_points_12_6'),
+            'va_points_12_7'         => ConfigServer::get('nutrition', 'va_points_12_7'),
+            'va_points_18_1'         => ConfigServer::get('nutrition', 'va_points_18_1'),
+            'va_points_18_2'         => ConfigServer::get('nutrition', 'va_points_18_2'),
+            'va_points_18_3'         => ConfigServer::get('nutrition', 'va_points_18_3'),
+            'va_points_18_4'         => ConfigServer::get('nutrition', 'va_points_18_4'),
+            'va_points_18_5'         => ConfigServer::get('nutrition', 'va_points_18_5'),
+            'va_points_18_6'         => ConfigServer::get('nutrition', 'va_points_18_6'),
+            'va_points_18_7'         => ConfigServer::get('nutrition', 'va_points_18_7'),
+
+            'calcium_points_3_1'          => ConfigServer::get('nutrition', 'calcium_points_3_1'),
+            'calcium_points_3_2'          => ConfigServer::get('nutrition', 'calcium_points_3_2'),
+            'calcium_points_3_3'          => ConfigServer::get('nutrition', 'calcium_points_3_3'),
+            'calcium_points_3_4'          => ConfigServer::get('nutrition', 'calcium_points_3_4'),
+            'calcium_points_3_5'          => ConfigServer::get('nutrition', 'calcium_points_3_5'),
+            'calcium_points_3_6'          => ConfigServer::get('nutrition', 'calcium_points_3_6'),
+            'calcium_points_3_7'          => ConfigServer::get('nutrition', 'calcium_points_3_7'),
+            'calcium_points_6_1'          => ConfigServer::get('nutrition', 'calcium_points_6_1'),
+            'calcium_points_6_2'          => ConfigServer::get('nutrition', 'calcium_points_6_2'),
+            'calcium_points_6_3'          => ConfigServer::get('nutrition', 'calcium_points_6_3'),
+            'calcium_points_6_4'          => ConfigServer::get('nutrition', 'calcium_points_6_4'),
+            'calcium_points_6_5'          => ConfigServer::get('nutrition', 'calcium_points_6_5'),
+            'calcium_points_6_6'          => ConfigServer::get('nutrition', 'calcium_points_6_6'),
+            'calcium_points_6_7'          => ConfigServer::get('nutrition', 'calcium_points_6_7'),
+            'calcium_points_12_1'         => ConfigServer::get('nutrition', 'calcium_points_12_1'),
+            'calcium_points_12_2'         => ConfigServer::get('nutrition', 'calcium_points_12_2'),
+            'calcium_points_12_3'         => ConfigServer::get('nutrition', 'calcium_points_12_3'),
+            'calcium_points_12_4'         => ConfigServer::get('nutrition', 'calcium_points_12_4'),
+            'calcium_points_12_5'         => ConfigServer::get('nutrition', 'calcium_points_12_5'),
+            'calcium_points_12_6'         => ConfigServer::get('nutrition', 'calcium_points_12_6'),
+            'calcium_points_12_7'         => ConfigServer::get('nutrition', 'calcium_points_12_7'),
+            'calcium_points_18_1'         => ConfigServer::get('nutrition', 'calcium_points_18_1'),
+            'calcium_points_18_2'         => ConfigServer::get('nutrition', 'calcium_points_18_2'),
+            'calcium_points_18_3'         => ConfigServer::get('nutrition', 'calcium_points_18_3'),
+            'calcium_points_18_4'         => ConfigServer::get('nutrition', 'calcium_points_18_4'),
+            'calcium_points_18_5'         => ConfigServer::get('nutrition', 'calcium_points_18_5'),
+            'calcium_points_18_6'         => ConfigServer::get('nutrition', 'calcium_points_18_6'),
+            'calcium_points_18_7'         => ConfigServer::get('nutrition', 'calcium_points_18_7'),
+
+            'dietary_fiber_points_3_1'          => ConfigServer::get('nutrition', 'dietary_fiber_points_3_1'),
+            'dietary_fiber_points_3_2'          => ConfigServer::get('nutrition', 'dietary_fiber_points_3_2'),
+            'dietary_fiber_points_3_3'          => ConfigServer::get('nutrition', 'dietary_fiber_points_3_3'),
+            'dietary_fiber_points_3_4'          => ConfigServer::get('nutrition', 'dietary_fiber_points_3_4'),
+            'dietary_fiber_points_3_5'          => ConfigServer::get('nutrition', 'dietary_fiber_points_3_5'),
+            'dietary_fiber_points_3_6'          => ConfigServer::get('nutrition', 'dietary_fiber_points_3_6'),
+            'dietary_fiber_points_3_7'          => ConfigServer::get('nutrition', 'dietary_fiber_points_3_7'),
+            'dietary_fiber_points_6_1'          => ConfigServer::get('nutrition', 'dietary_fiber_points_6_1'),
+            'dietary_fiber_points_6_2'          => ConfigServer::get('nutrition', 'dietary_fiber_points_6_2'),
+            'dietary_fiber_points_6_3'          => ConfigServer::get('nutrition', 'dietary_fiber_points_6_3'),
+            'dietary_fiber_points_6_4'          => ConfigServer::get('nutrition', 'dietary_fiber_points_6_4'),
+            'dietary_fiber_points_6_5'          => ConfigServer::get('nutrition', 'dietary_fiber_points_6_5'),
+            'dietary_fiber_points_6_6'          => ConfigServer::get('nutrition', 'dietary_fiber_points_6_6'),
+            'dietary_fiber_points_6_7'          => ConfigServer::get('nutrition', 'dietary_fiber_points_6_7'),
+            'dietary_fiber_points_12_1'         => ConfigServer::get('nutrition', 'dietary_fiber_points_12_1'),
+            'dietary_fiber_points_12_2'         => ConfigServer::get('nutrition', 'dietary_fiber_points_12_2'),
+            'dietary_fiber_points_12_3'         => ConfigServer::get('nutrition', 'dietary_fiber_points_12_3'),
+            'dietary_fiber_points_12_4'         => ConfigServer::get('nutrition', 'dietary_fiber_points_12_4'),
+            'dietary_fiber_points_12_5'         => ConfigServer::get('nutrition', 'dietary_fiber_points_12_5'),
+            'dietary_fiber_points_12_6'         => ConfigServer::get('nutrition', 'dietary_fiber_points_12_6'),
+            'dietary_fiber_points_12_7'         => ConfigServer::get('nutrition', 'dietary_fiber_points_12_7'),
+            'dietary_fiber_points_18_1'         => ConfigServer::get('nutrition', 'dietary_fiber_points_18_1'),
+            'dietary_fiber_points_18_2'         => ConfigServer::get('nutrition', 'dietary_fiber_points_18_2'),
+            'dietary_fiber_points_18_3'         => ConfigServer::get('nutrition', 'dietary_fiber_points_18_3'),
+            'dietary_fiber_points_18_4'         => ConfigServer::get('nutrition', 'dietary_fiber_points_18_4'),
+            'dietary_fiber_points_18_5'         => ConfigServer::get('nutrition', 'dietary_fiber_points_18_5'),
+            'dietary_fiber_points_18_6'         => ConfigServer::get('nutrition', 'dietary_fiber_points_18_6'),
+            'dietary_fiber_points_18_7'         => ConfigServer::get('nutrition', 'dietary_fiber_points_18_7'),
+
+        ];
+        $this->assign('config', $config);
         return $this->fetch();
     }
+
+    public function setPoints()
+    {
+        $post = $this->request->post();
+        if ($post) {
+            ConfigServer::set('nutrition', 'protein_lysine_points_3_1', abFloatval($post['protein_lysine_points_3_1']));//蛋白质/赖氨酸
+            ConfigServer::set('nutrition', 'protein_lysine_points_3_2', abFloatval($post['protein_lysine_points_3_2']));
+            ConfigServer::set('nutrition', 'protein_lysine_points_3_3', abFloatval($post['protein_lysine_points_3_3']));
+            ConfigServer::set('nutrition', 'protein_lysine_points_3_4', abFloatval($post['protein_lysine_points_3_4']));
+            ConfigServer::set('nutrition', 'protein_lysine_points_3_5', abFloatval($post['protein_lysine_points_3_5']));
+            ConfigServer::set('nutrition', 'protein_lysine_points_3_6', abFloatval($post['protein_lysine_points_3_6']));
+            ConfigServer::set('nutrition', 'protein_lysine_points_3_7', abFloatval($post['protein_lysine_points_3_7']));
+            ConfigServer::set('nutrition', 'protein_lysine_points_6_1', abFloatval($post['protein_lysine_points_6_1']));//蛋白质/赖氨酸
+            ConfigServer::set('nutrition', 'protein_lysine_points_6_2', abFloatval($post['protein_lysine_points_6_2']));
+            ConfigServer::set('nutrition', 'protein_lysine_points_6_3', abFloatval($post['protein_lysine_points_6_3']));
+            ConfigServer::set('nutrition', 'protein_lysine_points_6_4', abFloatval($post['protein_lysine_points_6_4']));
+            ConfigServer::set('nutrition', 'protein_lysine_points_6_5', abFloatval($post['protein_lysine_points_6_5']));
+            ConfigServer::set('nutrition', 'protein_lysine_points_6_6', abFloatval($post['protein_lysine_points_6_6']));
+            ConfigServer::set('nutrition', 'protein_lysine_points_6_7', abFloatval($post['protein_lysine_points_6_7']));
+            ConfigServer::set('nutrition', 'protein_lysine_points_12_1', abFloatval($post['protein_lysine_points_12_1']));//蛋白质/赖氨酸
+            ConfigServer::set('nutrition', 'protein_lysine_points_12_2', abFloatval($post['protein_lysine_points_12_2']));
+            ConfigServer::set('nutrition', 'protein_lysine_points_12_3', abFloatval($post['protein_lysine_points_12_3']));
+            ConfigServer::set('nutrition', 'protein_lysine_points_12_4', abFloatval($post['protein_lysine_points_12_4']));
+            ConfigServer::set('nutrition', 'protein_lysine_points_12_5', abFloatval($post['protein_lysine_points_12_5']));
+            ConfigServer::set('nutrition', 'protein_lysine_points_12_6', abFloatval($post['protein_lysine_points_12_6']));
+            ConfigServer::set('nutrition', 'protein_lysine_points_12_7', abFloatval($post['protein_lysine_points_12_7']));
+            ConfigServer::set('nutrition', 'protein_lysine_points_18_1', abFloatval($post['protein_lysine_points_18_1']));//蛋白质/赖氨酸
+            ConfigServer::set('nutrition', 'protein_lysine_points_18_2', abFloatval($post['protein_lysine_points_18_2']));
+            ConfigServer::set('nutrition', 'protein_lysine_points_18_3', abFloatval($post['protein_lysine_points_18_3']));
+            ConfigServer::set('nutrition', 'protein_lysine_points_18_4', abFloatval($post['protein_lysine_points_18_4']));
+            ConfigServer::set('nutrition', 'protein_lysine_points_18_5', abFloatval($post['protein_lysine_points_18_5']));
+            ConfigServer::set('nutrition', 'protein_lysine_points_18_6', abFloatval($post['protein_lysine_points_18_6']));
+            ConfigServer::set('nutrition', 'protein_lysine_points_18_7', abFloatval($post['protein_lysine_points_18_7']));
+            ConfigServer::set('nutrition', 'vb_points_3_1', abFloatval($post['vb_points_3_1']));//B族维生素
+            ConfigServer::set('nutrition', 'vb_points_3_2', abFloatval($post['vb_points_3_2']));
+            ConfigServer::set('nutrition', 'vb_points_3_3', abFloatval($post['vb_points_3_3']));
+            ConfigServer::set('nutrition', 'vb_points_3_4', abFloatval($post['vb_points_3_4']));
+            ConfigServer::set('nutrition', 'vb_points_3_5', abFloatval($post['vb_points_3_5']));
+            ConfigServer::set('nutrition', 'vb_points_3_6', abFloatval($post['vb_points_3_6']));
+            ConfigServer::set('nutrition', 'vb_points_3_7', abFloatval($post['vb_points_3_7']));
+            ConfigServer::set('nutrition', 'vb_points_6_1', abFloatval($post['vb_points_6_1']));//B族维生素
+            ConfigServer::set('nutrition', 'vb_points_6_2', abFloatval($post['vb_points_6_2']));
+            ConfigServer::set('nutrition', 'vb_points_6_3', abFloatval($post['vb_points_6_3']));
+            ConfigServer::set('nutrition', 'vb_points_6_4', abFloatval($post['vb_points_6_4']));
+            ConfigServer::set('nutrition', 'vb_points_6_5', abFloatval($post['vb_points_6_5']));
+            ConfigServer::set('nutrition', 'vb_points_6_6', abFloatval($post['vb_points_6_6']));
+            ConfigServer::set('nutrition', 'vb_points_6_7', abFloatval($post['vb_points_6_7']));
+            ConfigServer::set('nutrition', 'vb_points_12_1', abFloatval($post['vb_points_12_1']));//B族维生素
+            ConfigServer::set('nutrition', 'vb_points_12_2', abFloatval($post['vb_points_12_2']));
+            ConfigServer::set('nutrition', 'vb_points_12_3', abFloatval($post['vb_points_12_3']));
+            ConfigServer::set('nutrition', 'vb_points_12_4', abFloatval($post['vb_points_12_4']));
+            ConfigServer::set('nutrition', 'vb_points_12_5', abFloatval($post['vb_points_12_5']));
+            ConfigServer::set('nutrition', 'vb_points_12_6', abFloatval($post['vb_points_12_6']));
+            ConfigServer::set('nutrition', 'vb_points_12_7', abFloatval($post['vb_points_12_7']));
+            ConfigServer::set('nutrition', 'vb_points_18_1', abFloatval($post['vb_points_18_1']));//B族维生素
+            ConfigServer::set('nutrition', 'vb_points_18_2', abFloatval($post['vb_points_18_2']));
+            ConfigServer::set('nutrition', 'vb_points_18_3', abFloatval($post['vb_points_18_3']));
+            ConfigServer::set('nutrition', 'vb_points_18_4', abFloatval($post['vb_points_18_4']));
+            ConfigServer::set('nutrition', 'vb_points_18_5', abFloatval($post['vb_points_18_5']));
+            ConfigServer::set('nutrition', 'vb_points_18_6', abFloatval($post['vb_points_18_6']));
+            ConfigServer::set('nutrition', 'vb_points_18_7', abFloatval($post['vb_points_18_7']));
+            ConfigServer::set('nutrition', 'vd_points_3_1', abFloatval($post['vd_points_3_1']));//维生素D
+            ConfigServer::set('nutrition', 'vd_points_3_2', abFloatval($post['vd_points_3_2']));
+            ConfigServer::set('nutrition', 'vd_points_3_3', abFloatval($post['vd_points_3_3']));
+            ConfigServer::set('nutrition', 'vd_points_3_4', abFloatval($post['vd_points_3_4']));
+            ConfigServer::set('nutrition', 'vd_points_3_5', abFloatval($post['vd_points_3_5']));
+            ConfigServer::set('nutrition', 'vd_points_3_6', abFloatval($post['vd_points_3_6']));
+            ConfigServer::set('nutrition', 'vd_points_3_7', abFloatval($post['vd_points_3_7']));
+            ConfigServer::set('nutrition', 'vd_points_6_1', abFloatval($post['vd_points_6_1']));//维生素D
+            ConfigServer::set('nutrition', 'vd_points_6_2', abFloatval($post['vd_points_6_2']));
+            ConfigServer::set('nutrition', 'vd_points_6_3', abFloatval($post['vd_points_6_3']));
+            ConfigServer::set('nutrition', 'vd_points_6_4', abFloatval($post['vd_points_6_4']));
+            ConfigServer::set('nutrition', 'vd_points_6_5', abFloatval($post['vd_points_6_5']));
+            ConfigServer::set('nutrition', 'vd_points_6_6', abFloatval($post['vd_points_6_6']));
+            ConfigServer::set('nutrition', 'vd_points_6_7', abFloatval($post['vd_points_6_7']));
+            ConfigServer::set('nutrition', 'vd_points_12_1', abFloatval($post['vd_points_12_1']));//维生素D
+            ConfigServer::set('nutrition', 'vd_points_12_2', abFloatval($post['vd_points_12_2']));
+            ConfigServer::set('nutrition', 'vd_points_12_3', abFloatval($post['vd_points_12_3']));
+            ConfigServer::set('nutrition', 'vd_points_12_4', abFloatval($post['vd_points_12_4']));
+            ConfigServer::set('nutrition', 'vd_points_12_5', abFloatval($post['vd_points_12_5']));
+            ConfigServer::set('nutrition', 'vd_points_12_6', abFloatval($post['vd_points_12_6']));
+            ConfigServer::set('nutrition', 'vd_points_12_7', abFloatval($post['vd_points_12_7']));
+            ConfigServer::set('nutrition', 'vd_points_18_1', abFloatval($post['vd_points_18_1']));//维生素D
+            ConfigServer::set('nutrition', 'vd_points_18_2', abFloatval($post['vd_points_18_2']));
+            ConfigServer::set('nutrition', 'vd_points_18_3', abFloatval($post['vd_points_18_3']));
+            ConfigServer::set('nutrition', 'vd_points_18_4', abFloatval($post['vd_points_18_4']));
+            ConfigServer::set('nutrition', 'vd_points_18_5', abFloatval($post['vd_points_18_5']));
+            ConfigServer::set('nutrition', 'vd_points_18_6', abFloatval($post['vd_points_18_6']));
+            ConfigServer::set('nutrition', 'vd_points_18_7', abFloatval($post['vd_points_18_7']));
+            ConfigServer::set('nutrition', 'iron_points_3_1', abFloatval($post['iron_points_3_1']));//铁
+            ConfigServer::set('nutrition', 'iron_points_3_2', abFloatval($post['iron_points_3_2']));
+            ConfigServer::set('nutrition', 'iron_points_3_3', abFloatval($post['iron_points_3_3']));
+            ConfigServer::set('nutrition', 'iron_points_3_4', abFloatval($post['iron_points_3_4']));
+            ConfigServer::set('nutrition', 'iron_points_3_5', abFloatval($post['iron_points_3_5']));
+            ConfigServer::set('nutrition', 'iron_points_3_6', abFloatval($post['iron_points_3_6']));
+            ConfigServer::set('nutrition', 'iron_points_3_7', abFloatval($post['iron_points_3_7']));
+            ConfigServer::set('nutrition', 'iron_points_6_1', abFloatval($post['iron_points_6_1']));//铁
+            ConfigServer::set('nutrition', 'iron_points_6_2', abFloatval($post['iron_points_6_2']));
+            ConfigServer::set('nutrition', 'iron_points_6_3', abFloatval($post['iron_points_6_3']));
+            ConfigServer::set('nutrition', 'iron_points_6_4', abFloatval($post['iron_points_6_4']));
+            ConfigServer::set('nutrition', 'iron_points_6_5', abFloatval($post['iron_points_6_5']));
+            ConfigServer::set('nutrition', 'iron_points_6_6', abFloatval($post['iron_points_6_6']));
+            ConfigServer::set('nutrition', 'iron_points_6_7', abFloatval($post['iron_points_6_7']));
+            ConfigServer::set('nutrition', 'iron_points_12_1', abFloatval($post['iron_points_12_1']));//铁
+            ConfigServer::set('nutrition', 'iron_points_12_2', abFloatval($post['iron_points_12_2']));
+            ConfigServer::set('nutrition', 'iron_points_12_3', abFloatval($post['iron_points_12_3']));
+            ConfigServer::set('nutrition', 'iron_points_12_4', abFloatval($post['iron_points_12_4']));
+            ConfigServer::set('nutrition', 'iron_points_12_5', abFloatval($post['iron_points_12_5']));
+            ConfigServer::set('nutrition', 'iron_points_12_6', abFloatval($post['iron_points_12_6']));
+            ConfigServer::set('nutrition', 'iron_points_12_7', abFloatval($post['iron_points_12_7']));
+            ConfigServer::set('nutrition', 'iron_points_18_1', abFloatval($post['iron_points_18_1']));//铁
+            ConfigServer::set('nutrition', 'iron_points_18_2', abFloatval($post['iron_points_18_2']));
+            ConfigServer::set('nutrition', 'iron_points_18_3', abFloatval($post['iron_points_18_3']));
+            ConfigServer::set('nutrition', 'iron_points_18_4', abFloatval($post['iron_points_18_4']));
+            ConfigServer::set('nutrition', 'iron_points_18_5', abFloatval($post['iron_points_18_5']));
+            ConfigServer::set('nutrition', 'iron_points_18_6', abFloatval($post['iron_points_18_6']));
+            ConfigServer::set('nutrition', 'iron_points_18_7', abFloatval($post['iron_points_18_7']));
+            ConfigServer::set('nutrition', 'zinc_points_3_1', abFloatval($post['zinc_points_3_1']));//锌
+            ConfigServer::set('nutrition', 'zinc_points_3_2', abFloatval($post['zinc_points_3_2']));
+            ConfigServer::set('nutrition', 'zinc_points_3_3', abFloatval($post['zinc_points_3_3']));
+            ConfigServer::set('nutrition', 'zinc_points_3_4', abFloatval($post['zinc_points_3_4']));
+            ConfigServer::set('nutrition', 'zinc_points_3_5', abFloatval($post['zinc_points_3_5']));
+            ConfigServer::set('nutrition', 'zinc_points_3_6', abFloatval($post['zinc_points_3_6']));
+            ConfigServer::set('nutrition', 'zinc_points_3_7', abFloatval($post['zinc_points_3_7']));
+            ConfigServer::set('nutrition', 'zinc_points_6_1', abFloatval($post['zinc_points_6_1']));//锌
+            ConfigServer::set('nutrition', 'zinc_points_6_2', abFloatval($post['zinc_points_6_2']));
+            ConfigServer::set('nutrition', 'zinc_points_6_3', abFloatval($post['zinc_points_6_3']));
+            ConfigServer::set('nutrition', 'zinc_points_6_4', abFloatval($post['zinc_points_6_4']));
+            ConfigServer::set('nutrition', 'zinc_points_6_5', abFloatval($post['zinc_points_6_5']));
+            ConfigServer::set('nutrition', 'zinc_points_6_6', abFloatval($post['zinc_points_6_6']));
+            ConfigServer::set('nutrition', 'zinc_points_6_7', abFloatval($post['zinc_points_6_7']));
+            ConfigServer::set('nutrition', 'zinc_points_12_1', abFloatval($post['zinc_points_12_1']));//锌
+            ConfigServer::set('nutrition', 'zinc_points_12_2', abFloatval($post['zinc_points_12_2']));
+            ConfigServer::set('nutrition', 'zinc_points_12_3', abFloatval($post['zinc_points_12_3']));
+            ConfigServer::set('nutrition', 'zinc_points_12_4', abFloatval($post['zinc_points_12_4']));
+            ConfigServer::set('nutrition', 'zinc_points_12_5', abFloatval($post['zinc_points_12_5']));
+            ConfigServer::set('nutrition', 'zinc_points_12_6', abFloatval($post['zinc_points_12_6']));
+            ConfigServer::set('nutrition', 'zinc_points_12_7', abFloatval($post['zinc_points_12_7']));
+            ConfigServer::set('nutrition', 'zinc_points_18_1', abFloatval($post['zinc_points_18_1']));//锌
+            ConfigServer::set('nutrition', 'zinc_points_18_2', abFloatval($post['zinc_points_18_2']));
+            ConfigServer::set('nutrition', 'zinc_points_18_3', abFloatval($post['zinc_points_18_3']));
+            ConfigServer::set('nutrition', 'zinc_points_18_4', abFloatval($post['zinc_points_18_4']));
+            ConfigServer::set('nutrition', 'zinc_points_18_5', abFloatval($post['zinc_points_18_5']));
+            ConfigServer::set('nutrition', 'zinc_points_18_6', abFloatval($post['zinc_points_18_6']));
+            ConfigServer::set('nutrition', 'zinc_points_18_7', abFloatval($post['zinc_points_18_7']));
+            ConfigServer::set('nutrition', 'va_points_3_1', abFloatval($post['va_points_3_1']));//维生素A
+            ConfigServer::set('nutrition', 'va_points_3_2', abFloatval($post['va_points_3_2']));
+            ConfigServer::set('nutrition', 'va_points_3_3', abFloatval($post['va_points_3_3']));
+            ConfigServer::set('nutrition', 'va_points_3_4', abFloatval($post['va_points_3_4']));
+            ConfigServer::set('nutrition', 'va_points_3_5', abFloatval($post['va_points_3_5']));
+            ConfigServer::set('nutrition', 'va_points_3_6', abFloatval($post['va_points_3_6']));
+            ConfigServer::set('nutrition', 'va_points_3_7', abFloatval($post['va_points_3_7']));
+            ConfigServer::set('nutrition', 'va_points_6_1', abFloatval($post['va_points_6_1']));//维生素A
+            ConfigServer::set('nutrition', 'va_points_6_2', abFloatval($post['va_points_6_2']));
+            ConfigServer::set('nutrition', 'va_points_6_3', abFloatval($post['va_points_6_3']));
+            ConfigServer::set('nutrition', 'va_points_6_4', abFloatval($post['va_points_6_4']));
+            ConfigServer::set('nutrition', 'va_points_6_5', abFloatval($post['va_points_6_5']));
+            ConfigServer::set('nutrition', 'va_points_6_6', abFloatval($post['va_points_6_6']));
+            ConfigServer::set('nutrition', 'va_points_6_7', abFloatval($post['va_points_6_7']));
+            ConfigServer::set('nutrition', 'va_points_12_1', abFloatval($post['va_points_12_1']));//维生素A
+            ConfigServer::set('nutrition', 'va_points_12_2', abFloatval($post['va_points_12_2']));
+            ConfigServer::set('nutrition', 'va_points_12_3', abFloatval($post['va_points_12_3']));
+            ConfigServer::set('nutrition', 'va_points_12_4', abFloatval($post['va_points_12_4']));
+            ConfigServer::set('nutrition', 'va_points_12_5', abFloatval($post['va_points_12_5']));
+            ConfigServer::set('nutrition', 'va_points_12_6', abFloatval($post['va_points_12_6']));
+            ConfigServer::set('nutrition', 'va_points_12_7', abFloatval($post['va_points_12_7']));
+            ConfigServer::set('nutrition', 'va_points_18_1', abFloatval($post['va_points_18_1']));//维生素A
+            ConfigServer::set('nutrition', 'va_points_18_2', abFloatval($post['va_points_18_2']));
+            ConfigServer::set('nutrition', 'va_points_18_3', abFloatval($post['va_points_18_3']));
+            ConfigServer::set('nutrition', 'va_points_18_4', abFloatval($post['va_points_18_4']));
+            ConfigServer::set('nutrition', 'va_points_18_5', abFloatval($post['va_points_18_5']));
+            ConfigServer::set('nutrition', 'va_points_18_6', abFloatval($post['va_points_18_6']));
+            ConfigServer::set('nutrition', 'va_points_18_7', abFloatval($post['va_points_18_7']));
+            ConfigServer::set('nutrition', 'calcium_points_3_1', abFloatval($post['calcium_points_3_1']));//钙
+            ConfigServer::set('nutrition', 'calcium_points_3_2', abFloatval($post['calcium_points_3_2']));
+            ConfigServer::set('nutrition', 'calcium_points_3_3', abFloatval($post['calcium_points_3_3']));
+            ConfigServer::set('nutrition', 'calcium_points_3_4', abFloatval($post['calcium_points_3_4']));
+            ConfigServer::set('nutrition', 'calcium_points_3_5', abFloatval($post['calcium_points_3_5']));
+            ConfigServer::set('nutrition', 'calcium_points_3_6', abFloatval($post['calcium_points_3_6']));
+            ConfigServer::set('nutrition', 'calcium_points_3_7', abFloatval($post['calcium_points_3_7']));
+            ConfigServer::set('nutrition', 'calcium_points_6_1', abFloatval($post['calcium_points_6_1']));//钙
+            ConfigServer::set('nutrition', 'calcium_points_6_2', abFloatval($post['calcium_points_6_2']));
+            ConfigServer::set('nutrition', 'calcium_points_6_3', abFloatval($post['calcium_points_6_3']));
+            ConfigServer::set('nutrition', 'calcium_points_6_4', abFloatval($post['calcium_points_6_4']));
+            ConfigServer::set('nutrition', 'calcium_points_6_5', abFloatval($post['calcium_points_6_5']));
+            ConfigServer::set('nutrition', 'calcium_points_6_6', abFloatval($post['calcium_points_6_6']));
+            ConfigServer::set('nutrition', 'calcium_points_6_7', abFloatval($post['calcium_points_6_7']));
+            ConfigServer::set('nutrition', 'calcium_points_12_1', abFloatval($post['calcium_points_12_1']));//钙
+            ConfigServer::set('nutrition', 'calcium_points_12_2', abFloatval($post['calcium_points_12_2']));
+            ConfigServer::set('nutrition', 'calcium_points_12_3', abFloatval($post['calcium_points_12_3']));
+            ConfigServer::set('nutrition', 'calcium_points_12_4', abFloatval($post['calcium_points_12_4']));
+            ConfigServer::set('nutrition', 'calcium_points_12_5', abFloatval($post['calcium_points_12_5']));
+            ConfigServer::set('nutrition', 'calcium_points_12_6', abFloatval($post['calcium_points_12_6']));
+            ConfigServer::set('nutrition', 'calcium_points_12_7', abFloatval($post['calcium_points_12_7']));
+            ConfigServer::set('nutrition', 'calcium_points_18_1', abFloatval($post['calcium_points_18_1']));//钙
+            ConfigServer::set('nutrition', 'calcium_points_18_2', abFloatval($post['calcium_points_18_2']));
+            ConfigServer::set('nutrition', 'calcium_points_18_3', abFloatval($post['calcium_points_18_3']));
+            ConfigServer::set('nutrition', 'calcium_points_18_4', abFloatval($post['calcium_points_18_4']));
+            ConfigServer::set('nutrition', 'calcium_points_18_5', abFloatval($post['calcium_points_18_5']));
+            ConfigServer::set('nutrition', 'calcium_points_18_6', abFloatval($post['calcium_points_18_6']));
+            ConfigServer::set('nutrition', 'calcium_points_18_7', abFloatval($post['calcium_points_18_7']));
+            ConfigServer::set('nutrition', 'dietary_fiber_points_3_1', abFloatval($post['dietary_fiber_points_3_1']));//膳食纤维
+            ConfigServer::set('nutrition', 'dietary_fiber_points_3_2', abFloatval($post['dietary_fiber_points_3_2']));
+            ConfigServer::set('nutrition', 'dietary_fiber_points_3_3', abFloatval($post['dietary_fiber_points_3_3']));
+            ConfigServer::set('nutrition', 'dietary_fiber_points_3_4', abFloatval($post['dietary_fiber_points_3_4']));
+            ConfigServer::set('nutrition', 'dietary_fiber_points_3_5', abFloatval($post['dietary_fiber_points_3_5']));
+            ConfigServer::set('nutrition', 'dietary_fiber_points_3_6', abFloatval($post['dietary_fiber_points_3_6']));
+            ConfigServer::set('nutrition', 'dietary_fiber_points_3_7', abFloatval($post['dietary_fiber_points_3_7']));
+            ConfigServer::set('nutrition', 'dietary_fiber_points_6_1', abFloatval($post['dietary_fiber_points_6_1']));//膳食纤维
+            ConfigServer::set('nutrition', 'dietary_fiber_points_6_2', abFloatval($post['dietary_fiber_points_6_2']));
+            ConfigServer::set('nutrition', 'dietary_fiber_points_6_3', abFloatval($post['dietary_fiber_points_6_3']));
+            ConfigServer::set('nutrition', 'dietary_fiber_points_6_4', abFloatval($post['dietary_fiber_points_6_4']));
+            ConfigServer::set('nutrition', 'dietary_fiber_points_6_5', abFloatval($post['dietary_fiber_points_6_5']));
+            ConfigServer::set('nutrition', 'dietary_fiber_points_6_6', abFloatval($post['dietary_fiber_points_6_6']));
+            ConfigServer::set('nutrition', 'dietary_fiber_points_6_7', abFloatval($post['dietary_fiber_points_6_7']));
+            ConfigServer::set('nutrition', 'dietary_fiber_points_12_1', abFloatval($post['dietary_fiber_points_12_1']));//膳食纤维
+            ConfigServer::set('nutrition', 'dietary_fiber_points_12_2', abFloatval($post['dietary_fiber_points_12_2']));
+            ConfigServer::set('nutrition', 'dietary_fiber_points_12_3', abFloatval($post['dietary_fiber_points_12_3']));
+            ConfigServer::set('nutrition', 'dietary_fiber_points_12_4', abFloatval($post['dietary_fiber_points_12_4']));
+            ConfigServer::set('nutrition', 'dietary_fiber_points_12_5', abFloatval($post['dietary_fiber_points_12_5']));
+            ConfigServer::set('nutrition', 'dietary_fiber_points_12_6', abFloatval($post['dietary_fiber_points_12_6']));
+            ConfigServer::set('nutrition', 'dietary_fiber_points_12_7', abFloatval($post['dietary_fiber_points_12_7']));
+            ConfigServer::set('nutrition', 'dietary_fiber_points_18_1', abFloatval($post['dietary_fiber_points_18_1']));//膳食纤维
+            ConfigServer::set('nutrition', 'dietary_fiber_points_18_2', abFloatval($post['dietary_fiber_points_18_2']));
+            ConfigServer::set('nutrition', 'dietary_fiber_points_18_3', abFloatval($post['dietary_fiber_points_18_3']));
+            ConfigServer::set('nutrition', 'dietary_fiber_points_18_4', abFloatval($post['dietary_fiber_points_18_4']));
+            ConfigServer::set('nutrition', 'dietary_fiber_points_18_5', abFloatval($post['dietary_fiber_points_18_5']));
+            ConfigServer::set('nutrition', 'dietary_fiber_points_18_6', abFloatval($post['dietary_fiber_points_18_6']));
+            ConfigServer::set('nutrition', 'dietary_fiber_points_18_7', abFloatval($post['dietary_fiber_points_18_7']));
+            $this->_success('操作成功');
+        }
+    }
+
     /**
      * 添加帮助分类
      */

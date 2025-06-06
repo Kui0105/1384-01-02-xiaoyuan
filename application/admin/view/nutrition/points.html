@@ -1,0 +1,1325 @@
+{layout name="layout1" /}
+<style>
+    .layui-form-label{
+        width: 60px;
+    }
+    .text-left{
+        text-align: left;
+        font-weight: bold;
+    }
+    .layui-form-item .layui-input-inline {
+        width: 70px;
+    }
+</style>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-body" >
+            <div class="layui-collapse like-layui-collapse" lay-accordion="" style="border:1px dashed #c4c4c4">
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title like-layui-colla-title" style="background-color: #fff">操作提示</h2>
+                    <div class="layui-colla-content layui-show">
+                        <p>*每周的量。</p>
+                        <p>*0分 为  < 1分。</p>
+                        <p>*1分 为  >= 1分 并且 < 2分。</p>
+                        <p>*3456分 为  >= 3456分 并且 < 4567分。</p>
+                        <p>*7分 为 >= 7分。</p>
+                        <p>*3-6岁为 大于等于3岁且小于6岁。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-card-body" >
+            <div class="layui-form" lay-filter="">
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; width: 120px" >蛋白质/赖氨酸(0-3岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >1分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="protein_lysine_points_3_1"   lay-verType="tips" autocomplete="off" value="{$config.protein_lysine_points_3_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >2分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="protein_lysine_points_3_2"   lay-verType="tips" autocomplete="off" value="{$config.protein_lysine_points_3_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >3分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="protein_lysine_points_3_3"   lay-verType="tips" autocomplete="off" value="{$config.protein_lysine_points_3_3}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >4分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="protein_lysine_points_3_4"   lay-verType="tips" autocomplete="off" value="{$config.protein_lysine_points_3_4}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >5分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="protein_lysine_points_3_5"   lay-verType="tips" autocomplete="off" value="{$config.protein_lysine_points_3_5}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >6分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="protein_lysine_points_3_6"   lay-verType="tips" autocomplete="off" value="{$config.protein_lysine_points_3_6}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >7分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="protein_lysine_points_3_7"   lay-verType="tips" autocomplete="off" value="{$config.protein_lysine_points_3_7}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; width: 120px" >蛋白质/赖氨酸(3-6岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >1分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="protein_lysine_points_6_1"   lay-verType="tips" autocomplete="off" value="{$config.protein_lysine_points_6_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >2分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="protein_lysine_points_6_2"   lay-verType="tips" autocomplete="off" value="{$config.protein_lysine_points_6_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >3分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="protein_lysine_points_6_3"   lay-verType="tips" autocomplete="off" value="{$config.protein_lysine_points_6_3}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >4分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="protein_lysine_points_6_4"   lay-verType="tips" autocomplete="off" value="{$config.protein_lysine_points_6_4}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >5分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="protein_lysine_points_6_5"   lay-verType="tips" autocomplete="off" value="{$config.protein_lysine_points_6_5}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >6分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="protein_lysine_points_6_6"   lay-verType="tips" autocomplete="off" value="{$config.protein_lysine_points_6_6}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >7分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="protein_lysine_points_6_7"   lay-verType="tips" autocomplete="off" value="{$config.protein_lysine_points_6_7}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; width: 120px" >蛋白质/赖氨酸(6-12岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >1分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="protein_lysine_points_12_1"   lay-verType="tips" autocomplete="off" value="{$config.protein_lysine_points_12_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >2分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="protein_lysine_points_12_2"   lay-verType="tips" autocomplete="off" value="{$config.protein_lysine_points_12_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >3分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="protein_lysine_points_12_3"   lay-verType="tips" autocomplete="off" value="{$config.protein_lysine_points_12_3}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >4分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="protein_lysine_points_12_4"   lay-verType="tips" autocomplete="off" value="{$config.protein_lysine_points_12_4}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >5分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="protein_lysine_points_12_5"   lay-verType="tips" autocomplete="off" value="{$config.protein_lysine_points_12_5}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >6分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="protein_lysine_points_12_6"   lay-verType="tips" autocomplete="off" value="{$config.protein_lysine_points_12_6}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >7分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="protein_lysine_points_12_7"   lay-verType="tips" autocomplete="off" value="{$config.protein_lysine_points_12_7}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; width: 120px" >蛋白质/赖氨酸(12-18岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >1分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="protein_lysine_points_18_1"   lay-verType="tips" autocomplete="off" value="{$config.protein_lysine_points_18_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >2分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="protein_lysine_points_18_2"   lay-verType="tips" autocomplete="off" value="{$config.protein_lysine_points_18_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >3分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="protein_lysine_points_18_3"   lay-verType="tips" autocomplete="off" value="{$config.protein_lysine_points_18_3}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >4分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="protein_lysine_points_18_4"   lay-verType="tips" autocomplete="off" value="{$config.protein_lysine_points_18_4}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >5分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="protein_lysine_points_18_5"   lay-verType="tips" autocomplete="off" value="{$config.protein_lysine_points_18_5}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >6分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="protein_lysine_points_18_6"   lay-verType="tips" autocomplete="off" value="{$config.protein_lysine_points_18_6}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >7分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="protein_lysine_points_18_7"   lay-verType="tips" autocomplete="off" value="{$config.protein_lysine_points_18_7}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; width: 120px" >B族维生素(0-3岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >1分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vb_points_3_1"   lay-verType="tips" autocomplete="off" value="{$config.vb_points_3_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >2分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vb_points_3_2"   lay-verType="tips" autocomplete="off" value="{$config.vb_points_3_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >3分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vb_points_3_3"   lay-verType="tips" autocomplete="off" value="{$config.vb_points_3_3}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >4分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vb_points_3_4"   lay-verType="tips" autocomplete="off" value="{$config.vb_points_3_4}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >5分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vb_points_3_5"   lay-verType="tips" autocomplete="off" value="{$config.vb_points_3_5}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >6分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vb_points_3_6"   lay-verType="tips" autocomplete="off" value="{$config.vb_points_3_6}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >7分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vb_points_3_7"   lay-verType="tips" autocomplete="off" value="{$config.vb_points_3_7}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; width: 120px" >B族维生素(3-6岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >1分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vb_points_6_1"   lay-verType="tips" autocomplete="off" value="{$config.vb_points_6_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >2分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vb_points_6_2"   lay-verType="tips" autocomplete="off" value="{$config.vb_points_6_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >3分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vb_points_6_3"   lay-verType="tips" autocomplete="off" value="{$config.vb_points_6_3}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >4分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vb_points_6_4"   lay-verType="tips" autocomplete="off" value="{$config.vb_points_6_4}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >5分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vb_points_6_5"   lay-verType="tips" autocomplete="off" value="{$config.vb_points_6_5}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >6分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vb_points_6_6"   lay-verType="tips" autocomplete="off" value="{$config.vb_points_6_6}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >7分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vb_points_6_7"   lay-verType="tips" autocomplete="off" value="{$config.vb_points_6_7}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; width: 120px" >B族维生素(6-12岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >1分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vb_points_12_1"   lay-verType="tips" autocomplete="off" value="{$config.vb_points_12_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >2分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vb_points_12_2"   lay-verType="tips" autocomplete="off" value="{$config.vb_points_12_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >3分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vb_points_12_3"   lay-verType="tips" autocomplete="off" value="{$config.vb_points_12_3}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >4分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vb_points_12_4"   lay-verType="tips" autocomplete="off" value="{$config.vb_points_12_4}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >5分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vb_points_12_5"   lay-verType="tips" autocomplete="off" value="{$config.vb_points_12_5}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >6分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vb_points_12_6"   lay-verType="tips" autocomplete="off" value="{$config.vb_points_12_6}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >7分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vb_points_12_7"   lay-verType="tips" autocomplete="off" value="{$config.vb_points_12_7}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; width: 120px" >B族维生素(12-18岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >1分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vb_points_18_1"   lay-verType="tips" autocomplete="off" value="{$config.vb_points_18_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >2分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vb_points_18_2"   lay-verType="tips" autocomplete="off" value="{$config.vb_points_18_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >3分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vb_points_18_3"   lay-verType="tips" autocomplete="off" value="{$config.vb_points_18_3}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >4分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vb_points_18_4"   lay-verType="tips" autocomplete="off" value="{$config.vb_points_18_4}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >5分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vb_points_18_5"   lay-verType="tips" autocomplete="off" value="{$config.vb_points_18_5}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >6分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vb_points_18_6"   lay-verType="tips" autocomplete="off" value="{$config.vb_points_18_6}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >7分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vb_points_18_7"   lay-verType="tips" autocomplete="off" value="{$config.vb_points_18_7}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; width: 120px" >维生素D(0-3岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >1分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vd_points_3_1"   lay-verType="tips" autocomplete="off" value="{$config.vd_points_3_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >2分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vd_points_3_2"   lay-verType="tips" autocomplete="off" value="{$config.vd_points_3_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >3分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vd_points_3_3"   lay-verType="tips" autocomplete="off" value="{$config.vd_points_3_3}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >4分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vd_points_3_4"   lay-verType="tips" autocomplete="off" value="{$config.vd_points_3_4}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >5分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vd_points_3_5"   lay-verType="tips" autocomplete="off" value="{$config.vd_points_3_5}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >6分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vd_points_3_6"   lay-verType="tips" autocomplete="off" value="{$config.vd_points_3_6}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >7分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vd_points_3_7"   lay-verType="tips" autocomplete="off" value="{$config.vd_points_3_7}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; width: 120px" >维生素D(3-6岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >1分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vd_points_6_1"   lay-verType="tips" autocomplete="off" value="{$config.vd_points_6_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >2分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vd_points_6_2"   lay-verType="tips" autocomplete="off" value="{$config.vd_points_6_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >3分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vd_points_6_3"   lay-verType="tips" autocomplete="off" value="{$config.vd_points_6_3}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >4分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vd_points_6_4"   lay-verType="tips" autocomplete="off" value="{$config.vd_points_6_4}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >5分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vd_points_6_5"   lay-verType="tips" autocomplete="off" value="{$config.vd_points_6_5}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >6分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vd_points_6_6"   lay-verType="tips" autocomplete="off" value="{$config.vd_points_6_6}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >7分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vd_points_6_7"   lay-verType="tips" autocomplete="off" value="{$config.vd_points_6_7}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; width: 120px" >维生素D(6-12岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >1分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vd_points_12_1"   lay-verType="tips" autocomplete="off" value="{$config.vd_points_12_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >2分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vd_points_12_2"   lay-verType="tips" autocomplete="off" value="{$config.vd_points_12_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >3分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vd_points_12_3"   lay-verType="tips" autocomplete="off" value="{$config.vd_points_12_3}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >4分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vd_points_12_4"   lay-verType="tips" autocomplete="off" value="{$config.vd_points_12_4}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >5分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vd_points_12_5"   lay-verType="tips" autocomplete="off" value="{$config.vd_points_12_5}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >6分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vd_points_12_6"   lay-verType="tips" autocomplete="off" value="{$config.vd_points_12_6}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >7分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vd_points_12_7"   lay-verType="tips" autocomplete="off" value="{$config.vd_points_12_7}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; width: 120px" >维生素D(12-18岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >1分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vd_points_18_1"   lay-verType="tips" autocomplete="off" value="{$config.vd_points_18_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >2分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vd_points_18_2"   lay-verType="tips" autocomplete="off" value="{$config.vd_points_18_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >3分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vd_points_18_3"   lay-verType="tips" autocomplete="off" value="{$config.vd_points_18_3}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >4分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vd_points_18_4"   lay-verType="tips" autocomplete="off" value="{$config.vd_points_18_4}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >5分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vd_points_18_5"   lay-verType="tips" autocomplete="off" value="{$config.vd_points_18_5}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >6分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vd_points_18_6"   lay-verType="tips" autocomplete="off" value="{$config.vd_points_18_6}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >7分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="vd_points_18_7"   lay-verType="tips" autocomplete="off" value="{$config.vd_points_18_7}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; width: 120px" >铁(0-3岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >1分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="iron_points_3_1"   lay-verType="tips" autocomplete="off" value="{$config.iron_points_3_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >2分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="iron_points_3_2"   lay-verType="tips" autocomplete="off" value="{$config.iron_points_3_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >3分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="iron_points_3_3"   lay-verType="tips" autocomplete="off" value="{$config.iron_points_3_3}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >4分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="iron_points_3_4"   lay-verType="tips" autocomplete="off" value="{$config.iron_points_3_4}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >5分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="iron_points_3_5"   lay-verType="tips" autocomplete="off" value="{$config.iron_points_3_5}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >6分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="iron_points_3_6"   lay-verType="tips" autocomplete="off" value="{$config.iron_points_3_6}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >7分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="iron_points_3_7"   lay-verType="tips" autocomplete="off" value="{$config.iron_points_3_7}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; width: 120px" >铁(3-6岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >1分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="iron_points_6_1"   lay-verType="tips" autocomplete="off" value="{$config.iron_points_6_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >2分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="iron_points_6_2"   lay-verType="tips" autocomplete="off" value="{$config.iron_points_6_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >3分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="iron_points_6_3"   lay-verType="tips" autocomplete="off" value="{$config.iron_points_6_3}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >4分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="iron_points_6_4"   lay-verType="tips" autocomplete="off" value="{$config.iron_points_6_4}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >5分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="iron_points_6_5"   lay-verType="tips" autocomplete="off" value="{$config.iron_points_6_5}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >6分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="iron_points_6_6"   lay-verType="tips" autocomplete="off" value="{$config.iron_points_6_6}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >7分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="iron_points_6_7"   lay-verType="tips" autocomplete="off" value="{$config.iron_points_6_7}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; width: 120px" >铁(6-12岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >1分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="iron_points_12_1"   lay-verType="tips" autocomplete="off" value="{$config.iron_points_12_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >2分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="iron_points_12_2"   lay-verType="tips" autocomplete="off" value="{$config.iron_points_12_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >3分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="iron_points_12_3"   lay-verType="tips" autocomplete="off" value="{$config.iron_points_12_3}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >4分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="iron_points_12_4"   lay-verType="tips" autocomplete="off" value="{$config.iron_points_12_4}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >5分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="iron_points_12_5"   lay-verType="tips" autocomplete="off" value="{$config.iron_points_12_5}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >6分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="iron_points_12_6"   lay-verType="tips" autocomplete="off" value="{$config.iron_points_12_6}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >7分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="iron_points_12_7"   lay-verType="tips" autocomplete="off" value="{$config.iron_points_12_7}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; width: 120px" >铁(12-18岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >1分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="iron_points_18_1"   lay-verType="tips" autocomplete="off" value="{$config.iron_points_18_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >2分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="iron_points_18_2"   lay-verType="tips" autocomplete="off" value="{$config.iron_points_18_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >3分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="iron_points_18_3"   lay-verType="tips" autocomplete="off" value="{$config.iron_points_18_3}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >4分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="iron_points_18_4"   lay-verType="tips" autocomplete="off" value="{$config.iron_points_18_4}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >5分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="iron_points_18_5"   lay-verType="tips" autocomplete="off" value="{$config.iron_points_18_5}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >6分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="iron_points_18_6"   lay-verType="tips" autocomplete="off" value="{$config.iron_points_18_6}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >7分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="iron_points_18_7"   lay-verType="tips" autocomplete="off" value="{$config.iron_points_18_7}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; width: 120px" >锌(0-3岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >1分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="zinc_points_3_1"   lay-verType="tips" autocomplete="off" value="{$config.zinc_points_3_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >2分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="zinc_points_3_2"   lay-verType="tips" autocomplete="off" value="{$config.zinc_points_3_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >3分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="zinc_points_3_3"   lay-verType="tips" autocomplete="off" value="{$config.zinc_points_3_3}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >4分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="zinc_points_3_4"   lay-verType="tips" autocomplete="off" value="{$config.zinc_points_3_4}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >5分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="zinc_points_3_5"   lay-verType="tips" autocomplete="off" value="{$config.zinc_points_3_5}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >6分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="zinc_points_3_6"   lay-verType="tips" autocomplete="off" value="{$config.zinc_points_3_6}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >7分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="zinc_points_3_7"   lay-verType="tips" autocomplete="off" value="{$config.zinc_points_3_7}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; width: 120px" >锌(3-6岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >1分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="zinc_points_6_1"   lay-verType="tips" autocomplete="off" value="{$config.zinc_points_6_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >2分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="zinc_points_6_2"   lay-verType="tips" autocomplete="off" value="{$config.zinc_points_6_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >3分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="zinc_points_6_3"   lay-verType="tips" autocomplete="off" value="{$config.zinc_points_6_3}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >4分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="zinc_points_6_4"   lay-verType="tips" autocomplete="off" value="{$config.zinc_points_6_4}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >5分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="zinc_points_6_5"   lay-verType="tips" autocomplete="off" value="{$config.zinc_points_6_5}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >6分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="zinc_points_6_6"   lay-verType="tips" autocomplete="off" value="{$config.zinc_points_6_6}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >7分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="zinc_points_6_7"   lay-verType="tips" autocomplete="off" value="{$config.zinc_points_6_7}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; width: 120px" >锌(6-12岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >1分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="zinc_points_12_1"   lay-verType="tips" autocomplete="off" value="{$config.zinc_points_12_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >2分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="zinc_points_12_2"   lay-verType="tips" autocomplete="off" value="{$config.zinc_points_12_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >3分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="zinc_points_12_3"   lay-verType="tips" autocomplete="off" value="{$config.zinc_points_12_3}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >4分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="zinc_points_12_4"   lay-verType="tips" autocomplete="off" value="{$config.zinc_points_12_4}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >5分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="zinc_points_12_5"   lay-verType="tips" autocomplete="off" value="{$config.zinc_points_12_5}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >6分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="zinc_points_12_6"   lay-verType="tips" autocomplete="off" value="{$config.zinc_points_12_6}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >7分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="zinc_points_12_7"   lay-verType="tips" autocomplete="off" value="{$config.zinc_points_12_7}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; width: 120px" >锌(12-18岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >1分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="zinc_points_18_1"   lay-verType="tips" autocomplete="off" value="{$config.zinc_points_18_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >2分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="zinc_points_18_2"   lay-verType="tips" autocomplete="off" value="{$config.zinc_points_18_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >3分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="zinc_points_18_3"   lay-verType="tips" autocomplete="off" value="{$config.zinc_points_18_3}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >4分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="zinc_points_18_4"   lay-verType="tips" autocomplete="off" value="{$config.zinc_points_18_4}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >5分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="zinc_points_18_5"   lay-verType="tips" autocomplete="off" value="{$config.zinc_points_18_5}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >6分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="zinc_points_18_6"   lay-verType="tips" autocomplete="off" value="{$config.zinc_points_18_6}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >7分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="zinc_points_18_7"   lay-verType="tips" autocomplete="off" value="{$config.zinc_points_18_7}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; width: 120px" >维生素A(0-3岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >1分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="va_points_3_1"   lay-verType="tips" autocomplete="off" value="{$config.va_points_3_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >2分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="va_points_3_2"   lay-verType="tips" autocomplete="off" value="{$config.va_points_3_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >3分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="va_points_3_3"   lay-verType="tips" autocomplete="off" value="{$config.va_points_3_3}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >4分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="va_points_3_4"   lay-verType="tips" autocomplete="off" value="{$config.va_points_3_4}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >5分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="va_points_3_5"   lay-verType="tips" autocomplete="off" value="{$config.va_points_3_5}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >6分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="va_points_3_6"   lay-verType="tips" autocomplete="off" value="{$config.va_points_3_6}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >7分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="va_points_3_7"   lay-verType="tips" autocomplete="off" value="{$config.va_points_3_7}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; width: 120px" >维生素A(3-6岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >1分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="va_points_6_1"   lay-verType="tips" autocomplete="off" value="{$config.va_points_6_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >2分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="va_points_6_2"   lay-verType="tips" autocomplete="off" value="{$config.va_points_6_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >3分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="va_points_6_3"   lay-verType="tips" autocomplete="off" value="{$config.va_points_6_3}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >4分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="va_points_6_4"   lay-verType="tips" autocomplete="off" value="{$config.va_points_6_4}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >5分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="va_points_6_5"   lay-verType="tips" autocomplete="off" value="{$config.va_points_6_5}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >6分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="va_points_6_6"   lay-verType="tips" autocomplete="off" value="{$config.va_points_6_6}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >7分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="va_points_6_7"   lay-verType="tips" autocomplete="off" value="{$config.va_points_6_7}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; width: 120px" >维生素A(6-12岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >1分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="va_points_12_1"   lay-verType="tips" autocomplete="off" value="{$config.va_points_12_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >2分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="va_points_12_2"   lay-verType="tips" autocomplete="off" value="{$config.va_points_12_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >3分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="va_points_12_3"   lay-verType="tips" autocomplete="off" value="{$config.va_points_12_3}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >4分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="va_points_12_4"   lay-verType="tips" autocomplete="off" value="{$config.va_points_12_4}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >5分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="va_points_12_5"   lay-verType="tips" autocomplete="off" value="{$config.va_points_12_5}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >6分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="va_points_12_6"   lay-verType="tips" autocomplete="off" value="{$config.va_points_12_6}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >7分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="va_points_12_7"   lay-verType="tips" autocomplete="off" value="{$config.va_points_12_7}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; width: 120px" >维生素A(12-18岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >1分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="va_points_18_1"   lay-verType="tips" autocomplete="off" value="{$config.va_points_18_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >2分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="va_points_18_2"   lay-verType="tips" autocomplete="off" value="{$config.va_points_18_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >3分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="va_points_18_3"   lay-verType="tips" autocomplete="off" value="{$config.va_points_18_3}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >4分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="va_points_18_4"   lay-verType="tips" autocomplete="off" value="{$config.va_points_18_4}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >5分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="va_points_18_5"   lay-verType="tips" autocomplete="off" value="{$config.va_points_18_5}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >6分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="va_points_18_6"   lay-verType="tips" autocomplete="off" value="{$config.va_points_18_6}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >7分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="va_points_18_7"   lay-verType="tips" autocomplete="off" value="{$config.va_points_18_7}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > ug</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; width: 120px" >钙(0-3岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >1分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="calcium_points_3_1"   lay-verType="tips" autocomplete="off" value="{$config.calcium_points_3_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >2分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="calcium_points_3_2"   lay-verType="tips" autocomplete="off" value="{$config.calcium_points_3_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >3分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="calcium_points_3_3"   lay-verType="tips" autocomplete="off" value="{$config.calcium_points_3_3}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >4分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="calcium_points_3_4"   lay-verType="tips" autocomplete="off" value="{$config.calcium_points_3_4}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >5分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="calcium_points_3_5"   lay-verType="tips" autocomplete="off" value="{$config.calcium_points_3_5}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >6分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="calcium_points_3_6"   lay-verType="tips" autocomplete="off" value="{$config.calcium_points_3_6}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >7分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="calcium_points_3_7"   lay-verType="tips" autocomplete="off" value="{$config.calcium_points_3_7}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; width: 120px" >钙(3-6岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >1分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="calcium_points_6_1"   lay-verType="tips" autocomplete="off" value="{$config.calcium_points_6_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >2分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="calcium_points_6_2"   lay-verType="tips" autocomplete="off" value="{$config.calcium_points_6_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >3分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="calcium_points_6_3"   lay-verType="tips" autocomplete="off" value="{$config.calcium_points_6_3}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >4分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="calcium_points_6_4"   lay-verType="tips" autocomplete="off" value="{$config.calcium_points_6_4}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >5分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="calcium_points_6_5"   lay-verType="tips" autocomplete="off" value="{$config.calcium_points_6_5}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >6分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="calcium_points_6_6"   lay-verType="tips" autocomplete="off" value="{$config.calcium_points_6_6}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >7分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="calcium_points_6_7"   lay-verType="tips" autocomplete="off" value="{$config.calcium_points_6_7}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; width: 120px" >钙(6-12岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >1分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="calcium_points_12_1"   lay-verType="tips" autocomplete="off" value="{$config.calcium_points_12_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >2分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="calcium_points_12_2"   lay-verType="tips" autocomplete="off" value="{$config.calcium_points_12_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >3分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="calcium_points_12_3"   lay-verType="tips" autocomplete="off" value="{$config.calcium_points_12_3}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >4分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="calcium_points_12_4"   lay-verType="tips" autocomplete="off" value="{$config.calcium_points_12_4}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >5分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="calcium_points_12_5"   lay-verType="tips" autocomplete="off" value="{$config.calcium_points_12_5}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >6分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="calcium_points_12_6"   lay-verType="tips" autocomplete="off" value="{$config.calcium_points_12_6}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >7分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="calcium_points_12_7"   lay-verType="tips" autocomplete="off" value="{$config.calcium_points_12_7}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; width: 120px" >钙(12-18岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >1分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="calcium_points_18_1"   lay-verType="tips" autocomplete="off" value="{$config.calcium_points_18_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >2分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="calcium_points_18_2"   lay-verType="tips" autocomplete="off" value="{$config.calcium_points_18_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >3分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="calcium_points_18_3"   lay-verType="tips" autocomplete="off" value="{$config.calcium_points_18_3}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >4分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="calcium_points_18_4"   lay-verType="tips" autocomplete="off" value="{$config.calcium_points_18_4}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >5分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="calcium_points_18_5"   lay-verType="tips" autocomplete="off" value="{$config.calcium_points_18_5}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >6分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="calcium_points_18_6"   lay-verType="tips" autocomplete="off" value="{$config.calcium_points_18_6}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >7分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="calcium_points_18_7"   lay-verType="tips" autocomplete="off" value="{$config.calcium_points_18_7}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > mg</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; width: 120px" >膳食纤维(0-3岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >1分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="dietary_fiber_points_3_1"   lay-verType="tips" autocomplete="off" value="{$config.dietary_fiber_points_3_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >2分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="dietary_fiber_points_3_2"   lay-verType="tips" autocomplete="off" value="{$config.dietary_fiber_points_3_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >3分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="dietary_fiber_points_3_3"   lay-verType="tips" autocomplete="off" value="{$config.dietary_fiber_points_3_3}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >4分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="dietary_fiber_points_3_4"   lay-verType="tips" autocomplete="off" value="{$config.dietary_fiber_points_3_4}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >5分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="dietary_fiber_points_3_5"   lay-verType="tips" autocomplete="off" value="{$config.dietary_fiber_points_3_5}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >6分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="dietary_fiber_points_3_6"   lay-verType="tips" autocomplete="off" value="{$config.dietary_fiber_points_3_6}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >7分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="dietary_fiber_points_3_7"   lay-verType="tips" autocomplete="off" value="{$config.dietary_fiber_points_3_7}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; width: 120px" >膳食纤维(3-6岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >1分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="dietary_fiber_points_6_1"   lay-verType="tips" autocomplete="off" value="{$config.dietary_fiber_points_6_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >2分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="dietary_fiber_points_6_2"   lay-verType="tips" autocomplete="off" value="{$config.dietary_fiber_points_6_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >3分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="dietary_fiber_points_6_3"   lay-verType="tips" autocomplete="off" value="{$config.dietary_fiber_points_6_3}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >4分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="dietary_fiber_points_6_4"   lay-verType="tips" autocomplete="off" value="{$config.dietary_fiber_points_6_4}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >5分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="dietary_fiber_points_6_5"   lay-verType="tips" autocomplete="off" value="{$config.dietary_fiber_points_6_5}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >6分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="dietary_fiber_points_6_6"   lay-verType="tips" autocomplete="off" value="{$config.dietary_fiber_points_6_6}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >7分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="dietary_fiber_points_6_7"   lay-verType="tips" autocomplete="off" value="{$config.dietary_fiber_points_6_7}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; width: 120px" >膳食纤维(6-12岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >1分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="dietary_fiber_points_12_1"   lay-verType="tips" autocomplete="off" value="{$config.dietary_fiber_points_12_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >2分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="dietary_fiber_points_12_2"   lay-verType="tips" autocomplete="off" value="{$config.dietary_fiber_points_12_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >3分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="dietary_fiber_points_12_3"   lay-verType="tips" autocomplete="off" value="{$config.dietary_fiber_points_12_3}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >4分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="dietary_fiber_points_12_4"   lay-verType="tips" autocomplete="off" value="{$config.dietary_fiber_points_12_4}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >5分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="dietary_fiber_points_12_5"   lay-verType="tips" autocomplete="off" value="{$config.dietary_fiber_points_12_5}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >6分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="dietary_fiber_points_12_6"   lay-verType="tips" autocomplete="off" value="{$config.dietary_fiber_points_12_6}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >7分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="dietary_fiber_points_12_7"   lay-verType="tips" autocomplete="off" value="{$config.dietary_fiber_points_12_7}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; width: 120px" >膳食纤维(12-18岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >1分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="dietary_fiber_points_18_1"   lay-verType="tips" autocomplete="off" value="{$config.dietary_fiber_points_18_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >2分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="dietary_fiber_points_18_2"   lay-verType="tips" autocomplete="off" value="{$config.dietary_fiber_points_18_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >3分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="dietary_fiber_points_18_3"   lay-verType="tips" autocomplete="off" value="{$config.dietary_fiber_points_18_3}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >4分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="dietary_fiber_points_18_4"   lay-verType="tips" autocomplete="off" value="{$config.dietary_fiber_points_18_4}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >5分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="dietary_fiber_points_18_5"   lay-verType="tips" autocomplete="off" value="{$config.dietary_fiber_points_18_5}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >6分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="dietary_fiber_points_18_6"   lay-verType="tips" autocomplete="off" value="{$config.dietary_fiber_points_18_6}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >7分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="dietary_fiber_points_18_7"   lay-verType="tips" autocomplete="off" value="{$config.dietary_fiber_points_18_7}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > g</div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn layui-btn-sm {$view_theme_color}" lay-submit lay-filter="setPoint">确认</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+
+    layui.config({
+        version:"{$front_version}",
+        base: '/static/plug/layui-admin/dist/layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index','table','like'], function(){
+        var $ = layui.$
+            ,form = layui.form
+            ,like = layui.like;
+
+        form.on('submit(setPoint)',function (data) {
+            like.ajax({
+                url: '{:url("nutrition/setPoints")}'
+                ,data: data.field
+                ,type: 'post'
+                ,success: function(res){
+                    if(res.code == 1) {
+                        layer.msg(res.msg, {
+                            offset: '15px'
+                            ,icon: 1
+                            ,time: 1500
+                        });
+                    }
+                },
+            });
+        });
+
+    });
+
+</script>

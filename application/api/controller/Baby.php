@@ -2,6 +2,7 @@
 
 namespace app\api\controller;
 
+use app\api\logic\NutritionLogic;
 use app\api\logic\BabyLogic;
 use think\facade\Cache;
 
@@ -290,6 +291,9 @@ class Baby extends ApiBase
         $this->_success('成功',$re);
     }
 
+    /**
+     * note 前端中转
+     */
     public function set_tmp()
     {
         $key = $this->request->post('key');
@@ -299,10 +303,34 @@ class Baby extends ApiBase
         $this->_success('成功',$res);
     }
 
+    /**
+     * note 前端中转
+     */
     public function get_tmp()
     {
         $key = $this->request->get('key');
         $res = Cache::get($key);
         $this->_success('成功',$res);
+    }
+
+    /**
+     * note 睡眠测评题目
+     */
+    public function nutrition_ques()
+    {
+        $this->_success('成功',NutritionLogic::nutrition_ques());
+    }
+
+    /**
+     * 睡眠测评
+     */
+    public function nutrition_check()
+    {
+        $data = $this->request->post();
+        $re = BabyLogic::nutrition_check($this->user_id, $data);
+        if($re === false){
+            $this->_error(BabyLogic::getError() ?? '失败');
+        }
+        $this->_success('成功',$re);
     }
 }

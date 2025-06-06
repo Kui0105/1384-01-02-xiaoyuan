@@ -19,7 +19,7 @@ class NutritionCategoryLogic
         $count = $cate->where($where)->count();
         $list = $cate->where($where)
             ->page($get['page'], $get['limit'])
-            ->order('sort asc,id desc')
+            ->order('sort asc,id asc')
             ->select();
 
         return ['count' => $count, 'list' => $list];
@@ -100,7 +100,7 @@ class NutritionCategoryLogic
     public static function getCategory()
     {
         $category = new NutritionCategory();
-        return $category->where('del',0)->field('id,name')->order('sort asc, id desc')->select();
+        return $category->where('del',0)->field('id,name')->order('sort asc, id asc')->select();
     }
 
 

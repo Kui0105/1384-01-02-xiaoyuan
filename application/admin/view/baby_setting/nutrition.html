@@ -1,0 +1,139 @@
+{layout name="layout1" /}
+<style>
+    .layui-form-label{
+
+        width: 220px;
+    }
+</style>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-body" >
+            <div class="layui-collapse like-layui-collapse" lay-accordion="" style="border:1px dashed #c4c4c4">
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title like-layui-colla-title" style="background-color: #fff">操作提示</h2>
+                    <div class="layui-colla-content layui-show">
+                        <p>*营养测评不足建议。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-card-body" >
+            <div class="layui-form" lay-filter="">
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="">蛋白质/赖氨酸:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="protein_lysine" id="protein_lysine" placeholder="请输入不足建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.protein_lysine| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="">B族维生素:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="vb" id="vb" placeholder="请输入不足建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.vb| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="">维生素D:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="vd" id="vd" placeholder="请输入不足建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.vd| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="">铁:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="iron" id="iron" placeholder="请输入不足建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.iron| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="">锌:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="zinc" id="zinc" placeholder="请输入不足建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.zinc| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="">维生素A:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="va" id="va" placeholder="请输入不足建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.va| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="">钙:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="calcium" id="calcium" placeholder="请输入不足建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.calcium| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item sigh">
+                    <div class="layui-card">
+                        <label class="layui-form-label" style="">膳食纤维:</label>
+                        <div class="layui-input-inline" style="width: 500px">
+                            <textarea name="dietary_fiber" id="dietary_fiber" placeholder="请输入不足建议" class="layui-textarea" style="width: 500px;height: 200px">{$config.dietary_fiber| default=''}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn layui-btn-sm {$view_theme_color}" lay-submit lay-filter="setSport">确认</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+
+    layui.config({
+        version:"{$front_version}",
+        base: '/static/plug/layui-admin/dist/layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index','table','like'], function(){
+        var $ = layui.$
+            ,form = layui.form
+            ,like = layui.like;
+
+        form.on('submit(setSport)',function (data) {
+            like.ajax({
+                url: '{:url("BabySetting/setNutrition")}'
+                ,data: data.field
+                ,type: 'post'
+                ,success: function(res){
+                    if(res.code == 1) {
+                        layer.msg(res.msg, {
+                            offset: '15px'
+                            ,icon: 1
+                            ,time: 1500
+                        });
+                    }
+                },
+            });
+        });
+
+    });
+
+</script>

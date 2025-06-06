@@ -20,7 +20,7 @@ class NutritionFoodLogic
         $list = $food->alias('f')->leftJoin('nutrition_category c','c.id = f.cid')->where($where)
             ->field('f.*,c.name as cate_name')
             ->page($get['page'], $get['limit'])
-            ->order('f.sort asc,f.id desc')
+            ->order('f.sort asc,f.id asc')
             ->select();
 
         return ['count' => $count, 'list' => $list];
