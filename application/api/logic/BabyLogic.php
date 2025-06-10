@@ -147,10 +147,10 @@ class BabyLogic extends LogicBase{
         $sum_month = $now_age_arr['year'] * 12 + $now_age_arr['month'];
 
         if($now_age_arr['day'] == 0){
-            $before_moban = Db::name('height_moban')->where('sex',$baby_data['sex'])->where('month','<',$sum_month)->order('month desc,height asc')->limit(7)->select();
+            $before_moban = Db::name('height_moban')->where('sex',$baby_data['sex'])->where('month','<=',$sum_month)->order('month desc,height asc')->limit(7)->select();
             // $after_moban = Db::name('height_moban')->where('sex',$baby_data['sex'])->where('month','>',$sum_month)->order('month asc,height asc')->limit(7)->select();
         }else{
-            $before_moban = Db::name('height_moban')->where('sex',$baby_data['sex'])->where('month','<',$sum_month)->order('month desc,height asc')->limit(7)->select();
+            $before_moban = Db::name('height_moban')->where('sex',$baby_data['sex'])->where('month','<=',$sum_month)->order('month desc,height asc')->limit(7)->select();
             // $after_moban = Db::name('height_moban')->where('sex',$baby_data['sex'])->where('month','>=',$sum_month)->order('month asc,height asc')->limit(7)->select();
         }
         if(empty($before_moban)){// || empty($after_moban)
@@ -164,7 +164,7 @@ class BabyLogic extends LogicBase{
         //标准差
         $cha_height = bcdiv($data_height - $arg_height,5.3,2);
         //体重BMI
-        $bmi = bcdiv($data_weight,($data_height/100)*($data_height/100),1);
+        $bmi = bcdiv($data_weight,($data_height/100)*($data_height/100),2);
         // $bmi_str = bmi_str($bmi);
         // 身高
         $height_str = height_str($data_height,$before_moban);
@@ -198,7 +198,10 @@ class BabyLogic extends LogicBase{
         $json_grow_level = json_encode($grow_level);
         foreach ($near_moban as $near_k => $near_v){
             if($near_v['height'] < $data_height){
-                unset($near_moban[$near_k]);
+                if(isset($near_moban[$near_k-1])){
+                    unset($near_moban[$near_k-1]);
+                }
+
             }
         }
         if(count($near_moban) < 2){
@@ -218,7 +221,7 @@ class BabyLogic extends LogicBase{
                 $height_pot = 50 - $height_pot;
             }
             //百分位预测身高
-            $bf_predicting_height = Db::name('height_moban')->where('month',216)->where('sex',$baby_data['sex'])->where('level',$near_moban[0]['level'])->value('height');
+            $bf_predicting_height = Db::name('height_moban')->where('month',216)->where('sex',$baby_data['sex'])->where('level',$near_moban[1]['level'])->value('height');
         }
 
         //AI预测身高
@@ -228,7 +231,7 @@ class BabyLogic extends LogicBase{
         $weight_key = 24;
         foreach ($weight_arr as $k=> $we){
             $mon = intval($we * 12);
-            if($sum_month < $mon){
+            if($sum_month <= $mon){
                 $weight_key = $k;
                 break;
             }

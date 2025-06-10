@@ -161,17 +161,35 @@ class ArticleCategoryLogic
         $arr = [];
         $article_category = new ArticleCategory();
         $one_level = $article_category->field('id,name,level')->where(['pid'=>0,'type'=>$type,'del'=>0])->select()->toArray();
-        $two_level = $article_category->where(['type'=>$type,'del'=>0])->where('pid','<>',0)->column('id,name,level','pid');
+        // $two_level = $article_category->where(['type'=>$type,'del'=>0])->where('pid','<>',0)->column('id,name,level','pid');
+        $two_level = $article_category->where(['type'=>$type,'del'=>0,'is_show'=>1])->where('pid','<>',0)->field('id,name,level,pid')->select()->toArray();
+
+        $son_arr = [];
+        foreach ($two_level as $t){
+            $son_arr[$t['pid']][] = $t;
+        }
         if(empty($one_level)){
             return $arr;
         }
         foreach ($one_level as $k => &$v){
-            if(empty($two_level[$v['id']])){
+            if(empty($son_arr[$v['id']])){
                 unset($one_level[$k]);
                 continue;
             }
-            $v['child'][] = array_merge($two_level[$v['id']]);
+            $v['child'] = $son_arr[$v['id']];
         }
         return array_merge($one_level);
+
+        // if(empty($one_level)){
+        //     return $arr;
+        // }
+        // foreach ($one_level as $k => &$v){
+        //     if(empty($two_level[$v['id']])){
+        //         unset($one_level[$k]);
+        //         continue;
+        //     }
+        //     $v['child'][] = array_merge($two_level[$v['id']]);
+        // }
+        // return array_merge($one_level);
     }
 }
