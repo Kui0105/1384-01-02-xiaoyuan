@@ -58,7 +58,9 @@
 
             <table id="article-lists" lay-filter="article-lists"></table>
             <script type="text/html" id="image">
+                {{#  if(d.imgs){ }}
                 <img src="{{d.imgs[0]}}" style="height:auto;width: auto" class="image-show">
+                {{#  } }}
             </script>
             <!--会员信息-->
             <script type="text/html" id="user">

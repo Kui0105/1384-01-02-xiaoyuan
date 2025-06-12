@@ -58,7 +58,7 @@ class GoodsLogic{
         }
         //价格排序
         if(isset($get['price']) && $get['price']){
-            $order['market_price'] = $get['price'];
+            $order['max_price'] = $get['price'];
         }
 
         $order['sort'] = 'desc';

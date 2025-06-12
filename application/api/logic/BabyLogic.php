@@ -961,7 +961,14 @@ class BabyLogic extends LogicBase{
                 self::$error =  $v.'错误';
                 return  false;
             }
-            $functionName = "sport_".$k."_result";
+
+            if($k == 'chinning'){
+                $functionName = "sport_sit_up_result";
+            }else if(in_array($k,['run_400','run_800','run_1000'])){
+                $functionName = "sport_run_else_result";
+            }else{
+                $functionName = "sport_".$k."_result";
+            }
             if (function_exists($functionName)) {
                 $result = $functionName($grade, $data[$k], $baby_data['sex']);
             } else {
