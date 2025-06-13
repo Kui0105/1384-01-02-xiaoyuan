@@ -225,6 +225,7 @@ class BabySetting extends AdminBase
             'va' => ConfigServer::get('baby_nutrition', 'va' ),
             'calcium' => ConfigServer::get('baby_nutrition', 'calcium' ),
             'dietary_fiber' => ConfigServer::get('baby_nutrition', 'dietary_fiber' ),
+            'unhealthy' => ConfigServer::get('baby_nutrition', 'unhealthy' ),
         ];
         $this->assign('config', $config);
         return $this->fetch();

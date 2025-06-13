@@ -72,4 +72,11 @@ class NutritionFood extends Model
         return '/';
     }
 
+    public function getUnhealthyAttr($value){
+        if($value > 0){
+            return floatval($value).' 次';
+        }
+        return '/';
+    }
+
 }

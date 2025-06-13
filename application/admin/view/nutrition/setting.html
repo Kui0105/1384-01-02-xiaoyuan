@@ -21,6 +21,7 @@
                         <p>*其他-为正常。</p>
 <!--                        <p>*大于等于正常值且小于良好值为正常。</p>-->
                         <p>*3-6岁为 大于等于3岁且小于6岁。</p>
+                        <p>*不健康食物小于等于正常为正常；大于正常为过量。</p>
                     </div>
                 </div>
             </div>
@@ -475,6 +476,42 @@
                         <input type="number" name="dietary_fiber_18_2"   lay-verType="tips" autocomplete="off" value="{$config.dietary_fiber_18_2}" class="layui-input">
                     </div>
                     <div  class="layui-form-mid" > g</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; " >不健康食物(0-3岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >正常值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="unhealthy_3_1"   lay-verType="tips" autocomplete="off" value="{$config.unhealthy_3_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > 次</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; " >不健康食物(3-6岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >正常值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="unhealthy_6_1"   lay-verType="tips" autocomplete="off" value="{$config.unhealthy_6_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > 次</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; " >不健康食物(6-12岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >正常值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="unhealthy_12_1"   lay-verType="tips" autocomplete="off" value="{$config.unhealthy_12_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > 次</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; " >不健康食物(12-18岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >正常值：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="unhealthy_18_1"   lay-verType="tips" autocomplete="off" value="{$config.unhealthy_18_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > 次</div>
                 </div>
 
                 <div class="layui-form-item">

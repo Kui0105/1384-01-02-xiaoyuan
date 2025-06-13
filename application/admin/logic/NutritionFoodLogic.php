@@ -48,6 +48,7 @@ class NutritionFoodLogic
             'va'   => abs($post['va']),
             'calcium'   => abs($post['calcium']),
             'dietary_fiber'   => abs($post['dietary_fiber']),
+            'unhealthy'   => abs($post['unhealthy']),
             'sort'      => $post['sort'],
             'create_time' => time(),
         ];
@@ -76,6 +77,7 @@ class NutritionFoodLogic
             'va'   => abs($post['va']),
             'calcium'   => abs($post['calcium']),
             'dietary_fiber'   => abs($post['dietary_fiber']),
+            'unhealthy'   => abs($post['unhealthy']),
             'sort'      => $post['sort'],
         ];
         return $food->save($data, ['id' => $post['id'], 'del' => 0]);
@@ -116,6 +118,7 @@ class NutritionFoodLogic
             $detail['va'] = $detail['va'] > 0?floatval($detail['va']):'';
             $detail['calcium'] = $detail['calcium'] > 0?floatval($detail['calcium']):'';
             $detail['dietary_fiber'] = $detail['dietary_fiber'] > 0?floatval($detail['dietary_fiber']):'';
+            $detail['unhealthy'] = $detail['unhealthy'] > 0?floatval($detail['unhealthy']):'';
         }
         return $detail;
     }

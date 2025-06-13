@@ -1214,6 +1214,14 @@ class BabyLogic extends LogicBase{
                 'value_img' => 1,
                 'key'   => 'dietary_fiber',
             ],
+            'unhealthy' => [
+                'name'  => '不健康食物',
+                'num'   => 0,
+                'points' => 0,
+                'value' => '摄入过量',
+                'value_img' => 1,
+                'key'   => 'unhealthy',
+            ],
         ];
         $sug_arr = [];
         if(!empty($all_food)){
@@ -1226,6 +1234,7 @@ class BabyLogic extends LogicBase{
                 $check_result['va']['num'] += $fd['va'];
                 $check_result['calcium']['num'] += $fd['calcium'];
                 $check_result['dietary_fiber']['num'] += $fd['dietary_fiber'];
+                $check_result['unhealthy']['num'] += $fd['unhealthy'];
             }
         }
 
@@ -1242,21 +1251,36 @@ class BabyLogic extends LogicBase{
         }
         foreach ($check_result as &$cr){
             $zc = ConfigServer::get('nutrition', $cr['key'].'_'.$key.'_1');
-            $lh = ConfigServer::get('nutrition', $cr['key'].'_'.$key.'_2');
-            if($cr['num'] < $zc){
-                $sug_arr[] = [
-                    'name'  => $cr['name'].'摄入不足',
-                    'value' => ConfigServer::get('baby_nutrition', $cr['key'])
-                ];
-                $cr['value_img'] = 1;
-                $cr['value'] = '摄入不足';
-            }else if($cr['num'] >= $lh){
-                $cr['value_img'] = 2;
-                $cr['value'] = '摄入良好';
+            if($cr['key'] == 'unhealthy'){
+                if($cr['num'] > $zc){
+                    $sug_arr[] = [
+                        'name'  => $cr['name'].'摄入过量',
+                        'value' => ConfigServer::get('baby_nutrition', $cr['key'])
+                    ];
+                    $cr['value_img'] = 1;
+                    $cr['value'] = '摄入过量';
+                }else{
+                    $cr['value_img'] = 3;
+                    $cr['value'] = '摄入正常';
+                }
             }else{
-                $cr['value_img'] = 3;
-                $cr['value'] = '摄入正常';
+                $lh = ConfigServer::get('nutrition', $cr['key'].'_'.$key.'_2');
+                if($cr['num'] < $zc){
+                    $sug_arr[] = [
+                        'name'  => $cr['name'].'摄入不足',
+                        'value' => ConfigServer::get('baby_nutrition', $cr['key'])
+                    ];
+                    $cr['value_img'] = 1;
+                    $cr['value'] = '摄入不足';
+                }else if($cr['num'] >= $lh){
+                    $cr['value_img'] = 2;
+                    $cr['value'] = '摄入良好';
+                }else{
+                    $cr['value_img'] = 3;
+                    $cr['value'] = '摄入正常';
+                }
             }
+
             $num1 = ConfigServer::get('nutrition', $cr['key'].'_points_'.$key.'_1');
             $num2 = ConfigServer::get('nutrition', $cr['key'].'_points_'.$key.'_2');
             $num3 = ConfigServer::get('nutrition', $cr['key'].'_points_'.$key.'_3');
@@ -1264,23 +1288,44 @@ class BabyLogic extends LogicBase{
             $num5 = ConfigServer::get('nutrition', $cr['key'].'_points_'.$key.'_5');
             $num6 = ConfigServer::get('nutrition', $cr['key'].'_points_'.$key.'_6');
             $num7 = ConfigServer::get('nutrition', $cr['key'].'_points_'.$key.'_7');
-            if($cr['num'] < $num1){
-                $cr['points'] = 0;
-            }else if($cr['num'] >= $num1 && $cr['num'] < $num2){
-                $cr['points'] = 1;
-            }else if($cr['num'] >= $num2 && $cr['num'] < $num3){
-                $cr['points'] = 2;
-            }else if($cr['num'] >= $num3 && $cr['num'] < $num4){
-                $cr['points'] = 3;
-            }else if($cr['num'] >= $num4 && $cr['num'] < $num5){
-                $cr['points'] = 4;
-            }else if($cr['num'] >= $num5 && $cr['num'] < $num6){
-                $cr['points'] = 5;
-            }else if($cr['num'] >= $num6 && $cr['num'] < $num7){
-                $cr['points'] = 6;
+            if($cr['key'] == 'unhealthy'){
+                if($cr['num'] > $num1){
+                    $cr['points'] = 0;
+                }else if($cr['num'] <= $num1 && $cr['num'] > $num2){
+                    $cr['points'] = 1;
+                }else if($cr['num'] <= $num2 && $cr['num'] > $num3){
+                    $cr['points'] = 2;
+                }else if($cr['num'] <= $num3 && $cr['num'] > $num4){
+                    $cr['points'] = 3;
+                }else if($cr['num'] <= $num4 && $cr['num'] > $num5){
+                    $cr['points'] = 4;
+                }else if($cr['num'] <= $num5 && $cr['num'] > $num6){
+                    $cr['points'] = 5;
+                }else if($cr['num'] <= $num6 && $cr['num'] > $num7){
+                    $cr['points'] = 6;
+                }else{
+                    $cr['points'] = 7;
+                }
             }else{
-                $cr['points'] = 7;
+                if($cr['num'] < $num1){
+                    $cr['points'] = 0;
+                }else if($cr['num'] >= $num1 && $cr['num'] < $num2){
+                    $cr['points'] = 1;
+                }else if($cr['num'] >= $num2 && $cr['num'] < $num3){
+                    $cr['points'] = 2;
+                }else if($cr['num'] >= $num3 && $cr['num'] < $num4){
+                    $cr['points'] = 3;
+                }else if($cr['num'] >= $num4 && $cr['num'] < $num5){
+                    $cr['points'] = 4;
+                }else if($cr['num'] >= $num5 && $cr['num'] < $num6){
+                    $cr['points'] = 5;
+                }else if($cr['num'] >= $num6 && $cr['num'] < $num7){
+                    $cr['points'] = 6;
+                }else{
+                    $cr['points'] = 7;
+                }
             }
+
         }
 
         $check_result = array_values($check_result);

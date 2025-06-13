@@ -25,6 +25,7 @@
                         <p>*3456分 为  >= 3456分 并且 < 4567分。</p>
                         <p>*7分 为 >= 7分。</p>
                         <p>*3-6岁为 大于等于3岁且小于6岁。</p>
+                        <p>*健康得分反之。</p>
                     </div>
                 </div>
             </div>
@@ -1280,6 +1281,163 @@
                     </div>
                     <div  class="layui-form-mid" > g</div>
                 </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; width: 120px" >不健康食物(0-3岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >1分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="unhealthy_points_3_1"   lay-verType="tips" autocomplete="off" value="{$config.unhealthy_points_3_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > 次</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >2分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="unhealthy_points_3_2"   lay-verType="tips" autocomplete="off" value="{$config.unhealthy_points_3_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > 次</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >3分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="unhealthy_points_3_3"   lay-verType="tips" autocomplete="off" value="{$config.unhealthy_points_3_3}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > 次</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >4分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="unhealthy_points_3_4"   lay-verType="tips" autocomplete="off" value="{$config.unhealthy_points_3_4}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > 次</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >5分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="unhealthy_points_3_5"   lay-verType="tips" autocomplete="off" value="{$config.unhealthy_points_3_5}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > 次</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >6分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="unhealthy_points_3_6"   lay-verType="tips" autocomplete="off" value="{$config.unhealthy_points_3_6}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > 次</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >7分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="unhealthy_points_3_7"   lay-verType="tips" autocomplete="off" value="{$config.unhealthy_points_3_7}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > 次</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; width: 120px" >不健康食物(3-6岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >1分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="unhealthy_points_6_1"   lay-verType="tips" autocomplete="off" value="{$config.unhealthy_points_6_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > 次</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >2分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="unhealthy_points_6_2"   lay-verType="tips" autocomplete="off" value="{$config.unhealthy_points_6_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > 次</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >3分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="unhealthy_points_6_3"   lay-verType="tips" autocomplete="off" value="{$config.unhealthy_points_6_3}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > 次</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >4分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="unhealthy_points_6_4"   lay-verType="tips" autocomplete="off" value="{$config.unhealthy_points_6_4}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > 次</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >5分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="unhealthy_points_6_5"   lay-verType="tips" autocomplete="off" value="{$config.unhealthy_points_6_5}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > 次</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >6分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="unhealthy_points_6_6"   lay-verType="tips" autocomplete="off" value="{$config.unhealthy_points_6_6}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > 次</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >7分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="unhealthy_points_6_7"   lay-verType="tips" autocomplete="off" value="{$config.unhealthy_points_6_7}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > 次</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; width: 120px" >不健康食物(6-12岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >1分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="unhealthy_points_12_1"   lay-verType="tips" autocomplete="off" value="{$config.unhealthy_points_12_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > 次</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >2分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="unhealthy_points_12_2"   lay-verType="tips" autocomplete="off" value="{$config.unhealthy_points_12_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > 次</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >3分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="unhealthy_points_12_3"   lay-verType="tips" autocomplete="off" value="{$config.unhealthy_points_12_3}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > 次</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >4分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="unhealthy_points_12_4"   lay-verType="tips" autocomplete="off" value="{$config.unhealthy_points_12_4}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > 次</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >5分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="unhealthy_points_12_5"   lay-verType="tips" autocomplete="off" value="{$config.unhealthy_points_12_5}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > 次</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >6分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="unhealthy_points_12_6"   lay-verType="tips" autocomplete="off" value="{$config.unhealthy_points_12_6}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > 次</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >7分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="unhealthy_points_12_7"   lay-verType="tips" autocomplete="off" value="{$config.unhealthy_points_12_7}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > 次</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label text-left"style="white-space: nowrap; width: 120px" >不健康食物(12-18岁)：</label>
+                    <label class="layui-form-label"style="white-space: nowrap; " >1分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="unhealthy_points_18_1"   lay-verType="tips" autocomplete="off" value="{$config.unhealthy_points_18_1}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > 次</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >2分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="unhealthy_points_18_2"   lay-verType="tips" autocomplete="off" value="{$config.unhealthy_points_18_2}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > 次</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >3分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="unhealthy_points_18_3"   lay-verType="tips" autocomplete="off" value="{$config.unhealthy_points_18_3}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > 次</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >4分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="unhealthy_points_18_4"   lay-verType="tips" autocomplete="off" value="{$config.unhealthy_points_18_4}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > 次</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >5分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="unhealthy_points_18_5"   lay-verType="tips" autocomplete="off" value="{$config.unhealthy_points_18_5}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > 次</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >6分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="unhealthy_points_18_6"   lay-verType="tips" autocomplete="off" value="{$config.unhealthy_points_18_6}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > 次</div>
+                    <label class="layui-form-label"style="white-space: nowrap; " >7分：</label>
+                    <div class="layui-input-inline" >
+                        <input type="number" name="unhealthy_points_18_7"   lay-verType="tips" autocomplete="off" value="{$config.unhealthy_points_18_7}" class="layui-input">
+                    </div>
+                    <div  class="layui-form-mid" > 次</div>
+                </div>
+
                 <div class="layui-form-item">
                     <div class="layui-input-block">
                         <button class="layui-btn layui-btn-sm {$view_theme_color}" lay-submit lay-filter="setPoint">确认</button>
