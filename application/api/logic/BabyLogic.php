@@ -417,7 +417,7 @@ class BabyLogic extends LogicBase{
 
     public static function user_baby($user_id)
     {
-        $baby_data = Db::name('baby')->field('id,name,head_img,sex,birthday,height,weight,height_pot,weight_pot,bone,grow_level')->where(['user_id'=>$user_id,'del'=>0,'is_default'=>1])->find();
+        $baby_data = Db::name('baby')->field('id,name,head_img,sex,birthday,height,weight,height_pot,weight_pot,bone,grow_level,sup_height,genetic_height')->where(['user_id'=>$user_id,'del'=>0,'is_default'=>1])->find();
         if(empty($baby_data)){
             return '';
         }
@@ -598,22 +598,22 @@ class BabyLogic extends LogicBase{
             unset($log['check_date']);
             switch ($log['type']){
                 case 1:
-                    $log['img'] = addImgDomain('api_img/sleep.png');
+                    $log['img'] = addImgDomain('api_img/1.png');
                     break;
                 case 2:
                     $log['img'] = addImgDomain('api_img/sleep.png');
                     break;
                 case 3:
-                    $log['img'] = addImgDomain('api_img/sleep.png');
+                    $log['img'] = addImgDomain('api_img/3.png');
                     break;
                 case 4:
                     $log['img'] = addImgDomain('api_img/sleep.png');
                     break;
                 case 5:
-                    $log['img'] = addImgDomain('api_img/sleep.png');
+                    $log['img'] = addImgDomain('api_img/5.png');
                     break;
                 case 6:
-                    $log['img'] = addImgDomain('api_img/sleep.png');
+                    $log['img'] = addImgDomain('api_img/6.png');
                     break;
                 default:
                     $log['img'] = addImgDomain('api_img/sleep.png');
@@ -848,7 +848,7 @@ class BabyLogic extends LogicBase{
             case 5://运动
                 $return_data['check_result'] = json_decode($check_result['check_result'],true);
                 break;
-            case 6://运动
+            case 6://营养
                 $return_data['check_result'] = json_decode($check_result['check_result'],true);
                 break;
         }
@@ -1094,23 +1094,23 @@ class BabyLogic extends LogicBase{
         }
         $model = new BabyCheck();
         $return = [];
-        $height_id = $model->where(['user_id'=>$user_id,'type'=>1])->max('id');
+        $height_id = $model->where(['baby_id'=>$baby_id,'type'=>1])->max('id');
         if($height_id){
             $return['height_check'] = self::check_result($user_id, $height_id);
         }
-        $sleep_id = $model->where(['user_id'=>$user_id,'type'=>3])->max('id');
+        $sleep_id = $model->where(['baby_id'=>$baby_id,'type'=>3])->max('id');
         if($sleep_id){
             $return['sleep_check'] = self::check_result($user_id, $sleep_id);
         }
-        $spleen_id = $model->where(['user_id'=>$user_id,'type'=>2])->max('id');
+        $spleen_id = $model->where(['baby_id'=>$baby_id,'type'=>2])->max('id');
         if($spleen_id){
             $return['spleen_check'] = self::check_result($user_id, $spleen_id);
         }
-        $sport_id = $model->where(['user_id'=>$user_id,'type'=>5])->max('id');
+        $sport_id = $model->where(['baby_id'=>$baby_id,'type'=>5])->max('id');
         if($sport_id){
             $return['sport_check'] = self::check_result($user_id, $sport_id);
         }
-        $nutrition_id = $model->where(['user_id'=>$user_id,'type'=>6])->max('id');
+        $nutrition_id = $model->where(['baby_id'=>$baby_id,'type'=>6])->max('id');
         if($nutrition_id){
             $return['nutrition_check'] = self::check_result($user_id, $nutrition_id);
         }
