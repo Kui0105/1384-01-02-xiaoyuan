@@ -383,7 +383,7 @@ class BabyLogic extends LogicBase{
             return  false;
         }
         $post_time = strtotime(date('Y-m-d'));
-        $pdf = clearDomain($pdf);
+        $pdf = implode(',',clearDomain(explode(',',$pdf)));
         $time = time();
         $baby_id = $baby_data['id'];
         $baby_data = json_encode($baby_data);
@@ -423,7 +423,14 @@ class BabyLogic extends LogicBase{
         }
         $baby_data['head_img'] = addImgDomain($baby_data['head_img']);
         $baby_data['birthday_str'] = now_age($baby_data['birthday'],time(),true);
-        $baby_data['grow_level'] = json_decode($baby_data['grow_level'],true);
+        // $baby_data['grow_level'] = json_decode($baby_data['grow_level'],true);
+        $grow_level = json_decode($baby_data['grow_level'],true);
+        if(!empty($grow_level)){
+            $grow_level['grow_level'] = 4 - $grow_level['grow_level'];
+            $grow_level['height'] = array_reverse($grow_level['height']);
+            $grow_level['level_name'] = array_reverse($grow_level['level_name']);
+        }
+        $baby_data['grow_level'] = $grow_level;
         $baby_data['count'] = Db::name('baby')->where(['user_id'=>$user_id,'del'=>0])->count();
         $baby_data['check_height_status'] = false;
         $baby_data['check_sleep_status'] = false;
@@ -694,13 +701,13 @@ class BabyLogic extends LogicBase{
                 $return_data['weight'] = $result_data['weight'];//体重
                 $return_data['bone'] = $result_data['bone']??'';//骨龄
                 $return_data['arg_height'] = floatval($result_data['arg_height']);//全国平均身高
-                $return_data['arg_height_str'] = (($result_data['arg_height'] > $result_data['height'])?'矮':'高').abs(floatval($result_data['arg_height'] - $result_data['height'])).'cm';//全国平均身高字符串
+                $return_data['arg_height_str'] = (($result_data['arg_height'] > $result_data['height'])?'矮':'高').abs(round($result_data['arg_height'] - $result_data['height'],2)).'cm';//全国平均身高字符串
                 $return_data['height_pot'] = $result_data['height_pot'];//身高百分位
                 $return_data['cha_height'] = $result_data['cha_height'];//标准差
                 $return_data['ai_predicting_height'] = $result_data['ai_predicting_height'];//AI测评身高
-                $return_data['ai_predicting_height_str'] = (($return_data['sup_height'] > $result_data['ai_predicting_height'])?'矮':'高').abs(floatval($result_data['ai_predicting_height'] - $return_data['sup_height'])).'cm';//AI测评身高字符串
+                $return_data['ai_predicting_height_str'] = (($return_data['sup_height'] > $result_data['ai_predicting_height'])?'矮':'高').abs(round($result_data['ai_predicting_height'] - $return_data['sup_height'],2)).'cm';//AI测评身高字符串
                 $return_data['bf_predicting_height'] = $result_data['bf_predicting_height'];//百分位测评身高
-                $return_data['bf_predicting_height_str'] = (($return_data['sup_height'] > $result_data['bf_predicting_height'])?'矮':'高').abs(floatval($result_data['bf_predicting_height'] - $return_data['sup_height'])).'cm';//百分位测评身高字符串
+                $return_data['bf_predicting_height_str'] = (($return_data['sup_height'] > $result_data['bf_predicting_height'])?'矮':'高').abs(round($result_data['bf_predicting_height'] - $return_data['sup_height'],2)).'cm';//百分位测评身高字符串
                 $return_data['arg_18_height'] = $return_data['sex']==1?'172.7':'160.6';//平均成年身高
                 $return_data['bmi'] = $result_data['bmi'];//BMI
                 $return_data['weight_key'] = $result_data['weight_key'];//体重区间

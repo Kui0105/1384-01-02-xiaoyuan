@@ -187,7 +187,7 @@ class ShopSetting extends AdminBase
         $post = $this->request->post();
         if ($post) {
             ConfigServer::set('point_way', 'height', abIntval($post['height']));//记身高
-            ConfigServer::set('point_way', 'height_limit', abIntval($post['height_limit']));//上限次数
+            // ConfigServer::set('point_way', 'height_limit', abIntval($post['height_limit']));//上限次数
             ConfigServer::set('point_way', 'weight', abIntval($post['weight']));//记体重
             ConfigServer::set('point_way', 'weight_limit', abIntval($post['weight_limit']));//上限次数
             ConfigServer::set('point_way', 'order', abIntval($post['order']));//支付订单

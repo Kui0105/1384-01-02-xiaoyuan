@@ -400,7 +400,8 @@ class DistributionLogic extends LogicBase
             ->where('i.id', 'in', $item_ids)
             ->column('g.name, g.image, i.image as spec_image, i.spec_value_str', 'i.id');
 
-        foreach ($lists as &$item) {
+        $new_arr = [];
+        foreach ($lists as $item) {
             $item_id = $item['item_id'];
             if (!isset($goods[$item_id])) {
                 continue;
@@ -410,11 +411,28 @@ class DistributionLogic extends LogicBase
             $item['spec_name'] = $info['spec_value_str'];
             $item['image'] = UrlServer::getFileUrl(empty($info['spec_image']) ? $info['image'] : $info['spec_image']);
             $item['status'] = DistributionOrder::getOrderStatus($item['status']);
+            $month = date('Y-m', $item['create_time']);
             $item['create_time'] = date('Y-m-d H:i:s', $item['create_time']);
+
+            if(isset($new_arr[$month])){
+                $new_arr[$month]['list'][] = $item;
+                $new_arr[$month]['money'] += $item['money'];
+                $new_arr[$month]['pay_price'] += $item['pay_price'];
+                $new_arr[$month]['num'] ++;
+            }else{
+                $new_arr[$month] = [
+                    'month' => $month,
+                    'list' => [$item],
+                    'money' => $item['money'],
+                    'pay_price' => $item['pay_price'],
+                    'num' => 1
+                ];
+            }
+
         }
 
         $data = [
-            'list' => $lists,
+            'list' => $new_arr,
             'page' => $page,
             'size' => $size,
             'count' => $count,

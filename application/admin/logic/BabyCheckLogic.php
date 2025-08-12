@@ -42,7 +42,7 @@ class BabyCheckLogic
             $item['age'] = now_age($baby_data['birthday'],$item['check_date']);
             $item['avatar'] = addImgDomain($item['avatar']);
             $item['head_img'] = addImgDomain($item['head_img']);
-            $item['user_pdf'] = addImgDomain(json_decode($item['check_data'],true)['url']);
+            $item['user_pdf'] = addImgDomain(explode(',',json_decode($item['check_data'],true)['url']));
             $item['check_result'] = addImgDomain($item['check_result']);
             $item['create_time'] = date('Y-m-d H:i:s', $item['create_time']);
             $item['check_date'] = date('Y-m-d', $item['check_date']);

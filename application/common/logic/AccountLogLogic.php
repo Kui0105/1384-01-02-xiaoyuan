@@ -39,13 +39,21 @@ class AccountLogLogic{
                     $source_type = AccountLog::watch_video;
                     break;
             }
-            $send_limit = ConfigServer::get('point_way',$type.'_limit',0);
-            if($send_limit){
-                $now_num = AccountLog::where(['source_type'=>$source_type,'user_id'=>$user_id])->whereTime('create_time', 'today')->count();
-                if($send_limit <= $now_num){
+            if($type == 'height'){
+                $month_num = AccountLog::where(['source_type'=>$source_type,'user_id'=>$user_id])->whereTime('create_time', 'month')->count();
+                if($month_num){
                     return true;
                 }
+            }else{
+                $send_limit = ConfigServer::get('point_way',$type.'_limit',0);
+                if($send_limit){
+                    $now_num = AccountLog::where(['source_type'=>$source_type,'user_id'=>$user_id])->whereTime('create_time', 'today')->count();
+                    if($send_limit <= $now_num){
+                        return true;
+                    }
+                }
             }
+
             Db::name('user')->where(['id'=>$user_id])->lock(true)->value('user_integral');
             Db::name('user')->where(['id'=>$user_id])->setInc('user_integral',$send_integral);
             self::AccountRecord($user_id,$send_integral,1, $source_type);

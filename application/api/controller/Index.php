@@ -163,11 +163,20 @@ class Index extends ApiBase
                 'clarity_app_id'    => ConfigServer::get('site_statistic', 'clarity_app_id', ''),
             ],
 
+            'boy_img' => UrlServer::getFileUrl(ConfigServer::get('website', 'boy_img', '')),
+            'girl_img' => UrlServer::getFileUrl(ConfigServer::get('website', 'girl_img', '')),
             'show_hb'   => true
         ];
         $this->_success('', $config);
     }
 
+
+    public function baby_img()
+    {
+        $boy_img    =  UrlServer::getFileUrl(ConfigServer::get('website', 'boy_img', ''));
+        $girl_img   =  UrlServer::getFileUrl(ConfigServer::get('website', 'girl_img', ''));
+        $this->_success('', compact('boy_img', 'girl_img'));
+    }
 
     /**
      * @notes 版权资质

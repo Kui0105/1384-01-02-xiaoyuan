@@ -108,12 +108,15 @@ class SignLogic
         $height_status = true;
         $height_p = ConfigServer::get('point_way','height_limit',0);
         $height_int = ConfigServer::get('point_way','height',0);
-        if($height_p){
-            $now_num = AccountLog::where(['source_type'=>'height','user_id'=>$user_id])->whereTime('create_time', 'today')->count();
-            if($height_p > $now_num){
+        // if($height_p){
+            $now_num = AccountLog::where(['source_type'=>'height','user_id'=>$user_id])->whereTime('create_time', 'month')->count();
+            if(!$now_num){
                 $height_status = false;
             }
-        }
+        //     if($height_p > $now_num){
+        //         $height_status = false;
+        //     }
+        // }
         $make_inegral[] = [
             'name'      => '记身高',
             'status'    => $height_status,
