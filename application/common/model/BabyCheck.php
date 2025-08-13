@@ -3,9 +3,16 @@
 namespace app\common\model;
 
 use think\Model;
+use think\model\concern\SoftDelete;
 
 class BabyCheck extends Model
 {
+
+    use SoftDelete;
+    protected $deleteTime = 'is_del';
+    protected $defaultSoftDelete = 0;
+
+
     public static function get_check_baby($baby)
     {
         $user_data  = json_decode($baby['baby_data'],true);

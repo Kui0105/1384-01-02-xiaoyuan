@@ -224,6 +224,19 @@ class Baby extends ApiBase
         $this->_success('获取成功', $baby_list);
     }
 
+    public function height_log_del()
+    {
+        $id = $this->request->get('id');
+        if(!$id){
+            $this->_error('缺少必要参数');
+        }
+        $re = BabyLogic::height_log_del($this->user_id,$id);//$this->user_id,
+        if($re === true){
+            $this->_success('成功');
+        }
+        $this->_error($re);
+    }
+
     /**
      * note 身高档案-身高曲线图
      */

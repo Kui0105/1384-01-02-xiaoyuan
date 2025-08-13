@@ -437,7 +437,7 @@ class BabyLogic extends LogicBase{
         $baby_data['check_spleen_status'] = false;
         $baby_data['check_bone_status'] = false;
         $baby_data['check_sport_status'] = false;
-        $baby_check_type_arr = Db::name('baby_check')->where('baby_id',$baby_data['id'])->group('type')->column('type');
+        $baby_check_type_arr = Db::name('baby_check')->where('baby_id',$baby_data['id'])->where('is_del',0)->group('type')->column('type');
         if(in_array(1,$baby_check_type_arr)){
             $baby_data['check_height_status'] = true;
         }
@@ -877,6 +877,16 @@ class BabyLogic extends LogicBase{
             return  false;
         }
         return self::check_result($user_id, $id);
+    }
+
+    public static function height_log_del($user_id,$id)
+    {
+        $model = new BabyCheck();
+        $res = $model->where(['id'=>$id,'user_id'=>$user_id])->update(['is_del'=>time()]);
+        if($res){
+            return true;
+        }
+        return '该记录不存在';
     }
 
     public static function height_log_list($user_id,$get,$page,$size)
