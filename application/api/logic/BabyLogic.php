@@ -922,9 +922,10 @@ class BabyLogic extends LogicBase{
             $age = now_age($birthday,$log['check_date'],true);
             $log['height'] = $check_data['height'];
             $log['weight'] = $check_data['weight'];
+            $log['create_time'] = date('Y-m-d',$log['create_time']);
             unset($log['baby_data']);
             unset($log['check_data']);
-            unset($log['create_time']);
+            // unset($log['create_time']);
 
             unset($log['check_date']);
             if (!isset($grouped_logs[$age])) {
