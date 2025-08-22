@@ -47,56 +47,86 @@ class SignLogic
                 ->update(['del'=> 1,'update_time'=>time()]);
         }
 
-        //签到规则
-        $sign_list = Db::name('sign_daily')
-                ->where(['del'=>0])
-                ->order('type asc,days asc')
-                ->column('*','days');
-        $sign_total_days = '';
-        $days_list = [];
-        if($sign_list){
-            $start_sign = current($sign_list);      //第一次签到规则
-            $end_sign = end($sign_list);     //最后一次签到规则
-            //每天赠送的积分
-            $everyday_send_integral = 0;
-            $start_sign['integral_status'] && $everyday_send_integral = $start_sign['integral'];
-            //累计签到的总天数
-            $sign_total_days = Db::name('user_sign')
-                ->where(['del'=>0,'user_id'=>$user_id])
-                ->order('id desc')
-                ->value('days');
+        // 获取当前月份的开始和结束时间戳
+        list($monthStart,$monthEnd) = Time::month();
+        // 查询当月的签到记录
+        $sign_all = Db::name('user_sign')
+            ->where(['del' => 0, 'user_id' => $user_id])
+            ->whereBetweenTime('sign_time', date('Y-m-d', $monthStart), date('Y-m-d', $monthEnd))
+            ->order('sign_time asc')
+            ->select();
 
-
-            for($days = 1; $days <= $end_sign['days'] ;$days++){
-                $send_integral = $everyday_send_integral;
-                //连接签到赠送的积分
-                if(isset($sign_list[$days]) && $sign_list[$days]['integral_status'] ){
-                    $send_integral = $everyday_send_integral + $sign_list[$days]['integral'];
-                }
-                //合并数据
-                $days_list[$days] = [
-                    'days'          => $days,
-                    'status'        => 0,
-                    'integral'      => $send_integral,
-                    'growth'        => 0,
-                ];
-                $total_sin_days = $end_sign['days'];  //可连续签到的最大天数
-                //更新签到天数之前的签到状态
-                if($days === $sign_total_days){
-                    $today_sign_integral = $send_integral;//今天签到获得的积分
-                    for ($sign_day = $days;$sign_day >= 1;$sign_day--){
-                        $days_list[$sign_day]['status'] = 1;
-                    }
-                }
-                //如果连续签到天数大于总天数，则全部标记为已签到状态
-                if($sign_total_days > $total_sin_days){
-                    $days_list[$days]['status'] = 1;
-                }
-            }
-
+        // 将签到日期转换为数组便于判断
+        $signedDays = [];
+        foreach ($sign_all as $sign) {
+            $day = date('j', $sign['sign_time']); // 获取日期中的天数（不补零）
+            $signedDays[$day] = 1;
         }
-        $user['days'] = $sign_total_days ?: 0;
 
+        // 获取当前月份的天数
+        $daysInMonth = date('t', $monthStart);
+
+        // 构建每月签到状态列表
+        $sign_list = [];
+        for ($i = 1; $i <= $daysInMonth; $i++) {
+            $sign_status = isset($signedDays[$i]) ? 1 : 0;
+            $sign_list[] = [
+                'days'   => $i,
+                'status' => $sign_status,
+            ];
+        }
+
+        //签到规则
+        // $sign_list = Db::name('sign_daily')
+        //         ->where(['del'=>0])
+        //         ->order('type asc,days asc')
+        //         ->column('*','days');
+        // $sign_total_days = '';
+        // $days_list = [];
+        // if($sign_list){
+        //     $start_sign = current($sign_list);      //第一次签到规则
+        //     $end_sign = end($sign_list);     //最后一次签到规则
+        //     //每天赠送的积分
+        //     $everyday_send_integral = 0;
+        //     $start_sign['integral_status'] && $everyday_send_integral = $start_sign['integral'];
+        //     //累计签到的总天数
+        //     $sign_total_days = Db::name('user_sign')
+        //         ->where(['del'=>0,'user_id'=>$user_id])
+        //         ->order('id desc')
+        //         ->value('days');
+        //
+        //
+        //     for($days = 1; $days <= $end_sign['days'] ;$days++){
+        //         $send_integral = $everyday_send_integral;
+        //         //连接签到赠送的积分
+        //         if(isset($sign_list[$days]) && $sign_list[$days]['integral_status'] ){
+        //             $send_integral = $everyday_send_integral + $sign_list[$days]['integral'];
+        //         }
+        //         //合并数据
+        //         $days_list[$days] = [
+        //             'days'          => $days,
+        //             'status'        => 0,
+        //             'integral'      => $send_integral,
+        //             'growth'        => 0,
+        //         ];
+        //         $total_sin_days = $end_sign['days'];  //可连续签到的最大天数
+        //         //更新签到天数之前的签到状态
+        //         if($days === $sign_total_days){
+        //             $today_sign_integral = $send_integral;//今天签到获得的积分
+        //             for ($sign_day = $days;$sign_day >= 1;$sign_day--){
+        //                 $days_list[$sign_day]['status'] = 1;
+        //             }
+        //         }
+        //         //如果连续签到天数大于总天数，则全部标记为已签到状态
+        //         if($sign_total_days > $total_sin_days){
+        //             $days_list[$days]['status'] = 1;
+        //         }
+        //     }
+        //
+        // }
+        // $user['days'] = $sign_total_days ?: 0;
+
+        $user['days'] = count($sign_all);
         //赚积分
         $make_inegral = [];
         $make_inegral[] = [
@@ -247,7 +277,8 @@ class SignLogic
 
         return [
             'user'          => $user,
-            'sign_list'     => array_values($days_list),
+            // 'sign_list'     => array_values($days_list),
+            'sign_list'     => $sign_list,
             'make_inegral'  => $make_inegral,
         ];
     }

@@ -282,6 +282,7 @@ class Baby extends ApiBase
     {
         $data = $this->request->post();
         $data['user_id'] = $this->user_id;
+        $data['bmi'] = round($data['weight'] / ($data['height'] / 100) ** 2,2);
         $re = BabyLogic::sport_check($this->user_id, $data);
         if($re === false){
             $this->_error(BabyLogic::getError() ?? '失败');

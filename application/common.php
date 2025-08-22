@@ -2257,24 +2257,37 @@ function sport_grade_arr()
  * @param $sex
  * @return array[]
  */
-function sport_grade_to_select($id,$sex = 1)
+function sport_grade_to_select($id,$sex = 1,$no_bmi = false)
 {
-    $arr = [
-        [
-            'key'   => 'bmi',
-            'name'  => '体重指数(BMI)',
-            'value' => 15,
-            'dw'    => 'kg/m²',
-            'pla'   => '请输入'
-        ],
-        [
-            'key'   => 'vital_capacity',
-            'name'  => '肺活量',
-            'value' => 15,
-            'dw'    => 'ml',
-            'pla'   => '请输入'
-        ]
-    ];
+    if($no_bmi){
+        $arr = [
+            [
+                'key'   => 'vital_capacity',
+                'name'  => '肺活量',
+                'value' => 15,
+                'dw'    => 'ml',
+                'pla'   => '请输入'
+            ]
+        ];
+    }else{
+        $arr = [
+            [
+                'key'   => 'bmi',
+                'name'  => '体重指数(BMI)',
+                'value' => 15,
+                'dw'    => 'kg/m²',
+                'pla'   => '请输入'
+            ],
+            [
+                'key'   => 'vital_capacity',
+                'name'  => '肺活量',
+                'value' => 15,
+                'dw'    => 'ml',
+                'pla'   => '请输入'
+            ]
+        ];
+    }
+
     switch ($id){
         case 1:
         case 2:

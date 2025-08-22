@@ -206,6 +206,7 @@ class BabyLogic extends LogicBase{
         }
         if(count($near_moban) < 2){
             $height_pot = 50;
+            $weight_pot = 50;
             if($baby_data['sex']==1){
                 $bf_predicting_height = 172.7;
             }else{
@@ -214,11 +215,14 @@ class BabyLogic extends LogicBase{
         }else{
             $near_moban = array_merge($near_moban);
             $height_pot = bcdiv($near_moban[1]['height'] -  $near_moban[0]['height'],(level_to_num($near_moban[1]['level']) - level_to_num($near_moban[0]['level'])),2) * 100;
+            $weight_pot = bcdiv($near_moban[1]['weight'] -  $near_moban[0]['weight'],(level_to_num($near_moban[1]['level']) - level_to_num($near_moban[0]['level'])),2) * 100;
             if($near_moban[0]['level'] >=4){
                 $height_pot = 50 + $height_pot;
+                $weight_pot = 50 + $weight_pot;
             }else{
                 //身高百分位
                 $height_pot = 50 - $height_pot;
+                $weight_pot = 50 - $weight_pot;
             }
             //百分位预测身高
             $bf_predicting_height = Db::name('height_moban')->where('month',216)->where('sex',$baby_data['sex'])->where('level',$near_moban[1]['level'])->value('height');
@@ -255,6 +259,7 @@ class BabyLogic extends LogicBase{
             'bf_predicting_height' => $bf_predicting_height,
             'ai_predicting_height' => $ai_predicting_height,
             'height_pot'    => $height_pot,
+            'weight_pot'    => $weight_pot,
             'weight_key'    => $weight_key,
             'moban_str'     => ['before_moban'=>$before_moban,'near_moban'=>$near_moban],//,'after_moban'=>$after_moban[3]
             'create_time'   => $time,
@@ -285,7 +290,7 @@ class BabyLogic extends LogicBase{
             'check_result'  => $check_result,
             'baby_data'     => $baby_data,
         ]);
-        Db::name('baby')->where('id',$data['id'])->update(['height'=>$data_height,'weight'=>$data_weight,'grow_level'=>$json_grow_level,'height_pot'=>$height_pot,'bone'=>$bone]);
+        Db::name('baby')->where('id',$data['id'])->update(['height'=>$data_height,'weight'=>$data_weight,'grow_level'=>$json_grow_level,'height_pot'=>$height_pot,'weight_pot'=>$weight_pot,'bone'=>$bone]);
         AccountLogLogic::sendPoint($user_id, 'height');
         $res['status'] = true;
         $res['data'] = $insert_id;
@@ -406,7 +411,7 @@ class BabyLogic extends LogicBase{
 
     public static function index_baby($user_id)
     {
-        $baby_data = Db::name('baby')->field('id,name,head_img,sex,birthday')->where(['user_id'=>$user_id,'del'=>0,'is_default'=>1])->find();
+        $baby_data = Db::name('baby')->field('id,name,head_img,sex,birthday,height,weight')->where(['user_id'=>$user_id,'del'=>0,'is_default'=>1])->find();
         if(empty($baby_data)){
             return '';
         }
@@ -907,6 +912,7 @@ class BabyLogic extends LogicBase{
         $list = $model->where($where)
             ->field("id,check_date,create_time,baby_data,check_data,check_result")
             ->order('check_date asc,id asc')
+            ->group('check_date')
             ->page($page,$size)
             ->select()->toArray();
 
@@ -915,7 +921,7 @@ class BabyLogic extends LogicBase{
             ->count();
 
         $grouped_logs = [];
-        foreach ($list as $log) {
+        foreach ($list as &$log) {
             $baby_data     = json_decode($log['baby_data'],true);
             $check_data     = json_decode($log['check_data'],true);
             $birthday = $baby_data['birthday'];
@@ -923,19 +929,22 @@ class BabyLogic extends LogicBase{
             $log['height'] = $check_data['height'];
             $log['weight'] = $check_data['weight'];
             $log['create_time'] = date('Y-m-d',$log['create_time']);
+            $log['check_date'] = date('Y-m-d',$log['check_date']);
+            $log['age'] = $age;
             unset($log['baby_data']);
             unset($log['check_data']);
-            // unset($log['create_time']);
-
-            unset($log['check_date']);
-            if (!isset($grouped_logs[$age])) {
-                $grouped_logs[$age] = [];
-            }
-            $grouped_logs[$age][] = $log;
+            // // unset($log['create_time']);
+            //
+            // unset($log['check_date']);
+            // if (!isset($grouped_logs[$age])) {
+            //     $grouped_logs[$age] = [];
+            // }
+            // $grouped_logs[$age][] = $log;
         }
 
         $data = [
-            'lists' => $grouped_logs,
+            // 'lists' => $grouped_logs,
+            'lists' => $list,
             'page'  => $page,
             'size'  => $size,
             'count' => $count,
@@ -952,7 +961,7 @@ class BabyLogic extends LogicBase{
             self::$error = '暂无默认宝宝';
             return  false;
         }
-        return sport_grade_to_select($grade_id,$sex);
+        return sport_grade_to_select($grade_id,$sex,true);
     }
 
     public static function sport_check($user_id,$data)
