@@ -290,7 +290,11 @@ class BabyLogic extends LogicBase{
             'check_result'  => $check_result,
             'baby_data'     => $baby_data,
         ]);
-        Db::name('baby')->where('id',$data['id'])->update(['height'=>$data_height,'weight'=>$data_weight,'grow_level'=>$json_grow_level,'height_pot'=>$height_pot,'weight_pot'=>$weight_pot,'bone'=>$bone]);
+        $max_check_date = Db::name('baby_check')->where('baby_id',$data['id'])->where('type',1)->max('check_date');
+        if($post_time >= $max_check_date){
+            Db::name('baby')->where('id',$data['id'])->update(['height'=>$data_height,'weight'=>$data_weight,'grow_level'=>$json_grow_level,'height_pot'=>$height_pot,'weight_pot'=>$weight_pot,'bone'=>$bone]);
+        }
+
         AccountLogLogic::sendPoint($user_id, 'height');
         $res['status'] = true;
         $res['data'] = $insert_id;
@@ -525,6 +529,7 @@ class BabyLogic extends LogicBase{
         if(empty($baby_data)){
             return '';
         }
+        $baby_data['age'] = now_age($baby_data['birthday'],time());
         $baby_data['head_img'] = addImgDomain($baby_data['head_img']);
         $baby_data['birthday'] = date('Y-m-d',$baby_data['birthday']);
         $baby_data['province'] = DevRegion::getArea($baby_data['province_id']);
@@ -702,6 +707,14 @@ class BabyLogic extends LogicBase{
                         $return_data['height_str'] = '身高超高（身高百分位高于97%）';
                         break;
                 }
+                $grow_level = $result_data['grow_level'];
+                if(!empty($grow_level)){
+                    $grow_level['grow_level'] = 4 - $grow_level['grow_level'];
+                    $grow_level['height'] = array_reverse($grow_level['height']);
+                    $grow_level['level_name'] = array_reverse($grow_level['level_name']);
+                }
+                $return_data['grow_level'] = $grow_level;
+
                 $return_data['height'] = floatval($result_data['height']);//身高
                 $return_data['weight'] = $result_data['weight'];//体重
                 $return_data['bone'] = $result_data['bone']??'';//骨龄
@@ -911,13 +924,13 @@ class BabyLogic extends LogicBase{
 
         $list = $model->where($where)
             ->field("id,check_date,create_time,baby_data,check_data,check_result")
-            ->order('check_date asc,id asc')
+            ->order('check_date desc,id desc')
             ->group('check_date')
             ->page($page,$size)
             ->select()->toArray();
 
         $count = $model->where($where)
-            ->order('check_date asc,id asc')
+            ->order('check_date desc,id desc')
             ->count();
 
         $grouped_logs = [];
@@ -1121,6 +1134,28 @@ class BabyLogic extends LogicBase{
         }
         $model = new BabyCheck();
         $return = [];
+
+        $near_height_list = [];
+        $height_list = $model->where(['baby_id'=>$baby_id,'type'=>1])->group('check_date')->limit(3)->select()->toArray();
+        if(!empty($height_list)){
+            foreach ($height_list as $v){
+                $check_data = json_decode($v['check_data'],true);
+                $baby_data = json_decode($v['baby_data'],true);
+                $near_height_list[] = [
+                    'id'    => $v['id'],
+                    'check_date'  => date('Y-m-d',$v['check_date']),
+                    'height'    => $check_data['height'],
+                    'height_pot'    => $check_data['height_pot'],
+                    'ai_predicting_height'  => $check_data['ai_predicting_height'],
+                    'bf_predicting_height'  => $check_data['bf_predicting_height'],
+                    'genetic_height'    => $baby_data['genetic_height'],
+                    'sup_height'        => $baby_data['sup_height'],
+                    'genetic_height_cha' => round($check_data['height'] - $baby_data['genetic_height'],2),
+                    'sup_height_cha'   => round($check_data['height'] - $baby_data['sup_height'],2),
+                ];
+            }
+        }
+        $return['near_height_list'] = $near_height_list;
         $height_id = $model->where(['baby_id'=>$baby_id,'type'=>1])->max('id');
         if($height_id){
             $return['height_check'] = self::check_result($user_id, $height_id);
