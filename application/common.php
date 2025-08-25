@@ -1103,7 +1103,7 @@ function abFloatval($num)
 }
 
 //获取当前年龄
-function now_age($birthdayTimestamp,$currentTimestamp,$str = true){
+function now_age($birthdayTimestamp,$currentTimestamp,$str = true,$decimal = false){
     // 创建生日的DateTime对象
     $birthdayDate = new DateTime();
     $birthdayDate->setTimestamp($birthdayTimestamp);
@@ -1115,6 +1115,11 @@ function now_age($birthdayTimestamp,$currentTimestamp,$str = true){
     $age = $ageInterval->y;
     $months = $ageInterval->m;
     $days = $ageInterval->d;
+    if($decimal){
+        $totalDays = $currentDate->diff($birthdayDate)->days;
+        $decimalAge = round($totalDays / 365.25, 2);
+        return $decimalAge;
+    }
     // 输出年龄
     if($str){
         return $age . "岁" . $months . "月" . $days . "天";
