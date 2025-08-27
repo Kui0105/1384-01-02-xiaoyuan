@@ -734,8 +734,9 @@ class BabyLogic extends LogicBase{
                 $return_data['check_msg'] = $check_result['check_result'];//测评建议
                 //1-18岁 身高图
                 $int_month_arr = [0,12,24,36,48,60,72,84,96,108,120,132,144,156,168,180,192,204,216];
-                $full_data = Db::name('height_moban')->where('sex',$return_data['sex'])->where('month','in',$int_month_arr)->field('height,level,month')->order('level asc,id asc')->select();
+                $full_data = Db::name('height_moban')->where('sex',$return_data['sex'])->where('month','in',$int_month_arr)->field('weight,height,level,month')->order('level asc,id asc')->select();
                 $full_height_by_level = $full_height_by_level_copy = [];
+                $full_weight_by_level = $full_weight_by_level_copy = [];
                 foreach ($full_data as $item) {
                     $key = $item['level'];
                     if (!isset($full_height_by_level[$key])) {
@@ -743,7 +744,7 @@ class BabyLogic extends LogicBase{
                         $n=0;
                     }
                     $full_height_by_level[$key][] = [$n,(float)$item['height']];
-                    $n++;
+
 
                     if(!isset($full_height_by_level_copy[$key])){
                         $full_height_by_level_copy[$key] = [];
@@ -752,20 +753,37 @@ class BabyLogic extends LogicBase{
                     // $full_height_by_level[] = [
                     //     $key,$item['height']
                     // ];
+
+                    if (!isset($full_weight_by_level[$key])) {
+                        $full_weight_by_level[$key] = [];
+                    }
+                    $full_weight_by_level[$key][] = [$n,(float)$item['weight']];
+                    $n++;
+                    if(!isset($full_weight_by_level_copy[$key])){
+                        $full_weight_by_level_copy[$key] = [];
+                    }
+                    $full_weight_by_level_copy[$key][] = (float)$item['weight'];
                 }
+
                 $return_data['full_height_by_level'] = $full_height_by_level;
                 $return_data['full_height_by_level_copy'] = $full_height_by_level_copy;
                 $return_data['full_height_x'] = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18];
+                $return_data['full_weight_x'] = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18];
+                $return_data['full_weight_by_level'] = $full_weight_by_level;
+                $return_data['full_weight_by_level_copy'] = $full_weight_by_level_copy;
 
                 $now_age_arr = now_age($return_data['birthday'],$check_result['check_date'],false);
 
                 $all_check = Db::name('baby_check')->where(['baby_id'=>$check_result['baby_id'],'type'=>1])->group('check_date')->order('check_date asc')->field('check_date,baby_data')->select();
-                $now_full_height_x = [];
+                $now_full_height_x = $now_full_weight_x = [];
                 foreach ($all_check as $item){
                     $baby_data = json_decode($item['baby_data'],true);
                     $now_age_str = now_age($baby_data['birthday'],$item['check_date'],false,true);
                     $now_full_height_x[] = [
                         (float)$now_age_str,(float)$baby_data['height']
+                    ];
+                    $now_full_weight_x[] = [
+                        (float)$now_age_str,(float)$baby_data['weight']
                     ];
                 }
                 // $now_full_height_x = array_fill(0, count($return_data['full_height_x']), null);
@@ -773,27 +791,28 @@ class BabyLogic extends LogicBase{
                 //     $now_full_height_x[$now_age_arr['year']] = $return_data['height'];
                 // }
                 $return_data['now_full_height_x'] = $now_full_height_x;
-
+                $return_data['now_full_weight_x'] = $now_full_weight_x;
 
                 $now_year = $now_age_arr['year'];
                 //1-18岁 体重图
-                $weight_full_data = Db::name('height_moban')->where('sex',$return_data['sex'])->where('month','in',$int_month_arr)->field('weight,level,month')->order('id asc')->select();
-                $full_weight_by_level = [];
-                foreach ($weight_full_data as $item) {
-                    $key = $item['level'];
-                    if (!isset($full_weight_by_level[$key])) {
-                        $full_weight_by_level[$key] = [];
-                    }
-                    $full_weight_by_level[$key][] = $item['weight'];
-                }
-                $return_data['full_weight_by_level'] = $full_weight_by_level;
-                $return_data['full_weight_x'] = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18];
+                // $weight_full_data = Db::name('height_moban')->where('sex',$return_data['sex'])->where('month','in',$int_month_arr)->field('weight,level,month')->order('id asc')->select();
+                // $full_weight_by_level = [];
+                // foreach ($weight_full_data as $item) {
+                //     $key = $item['level'];
+                //     if (!isset($full_weight_by_level[$key])) {
+                //         $full_weight_by_level[$key] = [];
+                //     }
+                //     $full_weight_by_level[$key][] = $item['weight'];
+                // }
+                // $return_data['full_weight_by_level'] = $full_weight_by_level;
+                // $return_data['full_weight_x'] = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18];
+                //
+                // $now_full_weight_x = array_fill(0, count($return_data['full_weight_x']), null);
+                // if (isset($now_age_arr['year']) && isset($return_data['weight'])) {
+                //     $now_full_weight_x[$now_age_arr['year']] = $return_data['weight'];
+                // }
+                // $return_data['now_full_weight_x'] = $now_full_weight_x;
 
-                $now_full_weight_x = array_fill(0, count($return_data['full_weight_x']), null);
-                if (isset($now_age_arr['year']) && isset($return_data['weight'])) {
-                    $now_full_weight_x[$now_age_arr['year']] = $return_data['weight'];
-                }
-                $return_data['now_full_weight_x'] = $now_full_weight_x;
                 //2年区间图
                 if($now_year<=0){
                     $start_year = 0;
@@ -809,26 +828,67 @@ class BabyLogic extends LogicBase{
                 $return_data['area_height_str'] = $area_height_str;
 
                 $area_int_month_arr = [$start_year*12,$end_year*12];
-                $area_full_data = Db::name('height_moban')->where('sex',$return_data['sex'])->where('month','in',$area_int_month_arr)->field('height,level,month')->order('id asc')->select();
-                $area_full_height_by_level = [];
+                $area_full_data = Db::name('height_moban')->where('sex',$return_data['sex'])->where('month','in',$area_int_month_arr)->field('height,level,month')->order('level asc,id asc')->select();
+                $area_full_height_by_level = $area_full_height_by_level_copy = [];
                 foreach ($area_full_data as $item) {
                     $key = $item['level'];
+                    if (!isset($area_full_height_by_level_copy[$key])) {
+                        $area_full_height_by_level_copy[$key] = [];
+
+                    }
+                    $area_full_height_by_level_copy[$key][] = (float)$item['height'];
+
                     if (!isset($area_full_height_by_level[$key])) {
                         $area_full_height_by_level[$key] = [];
+                        $n = 0;
                     }
-                    $area_full_height_by_level[$key][] = $item['height'];
+                    if($n==1){
+                        $n = 12;
+                    }
+                    $area_full_height_by_level[$key][] = [$n,(float)$item['height']];
+                    $n++;
                 }
-                $insertArr = [null,null,null,null,null,null,null,null,null,null,null];
-                foreach ($area_full_height_by_level as &$al){
-                    array_splice($al, 1, 0, $insertArr);
-                }
+
+               // foreach ($area_full_height_by_level as &$son){
+               //     $secondElement = $son[1];
+               //     array_pop($son);
+               //     for ($i = 1; $i < 12; $i++) {
+               //         $son[] = [$i, null];
+               //     }
+               //     $son[] = $secondElement;
+               //     usort($son, function($a, $b) {
+               //         return $a[0] - $b[0];
+               //     });
+               // }
+
+                // $insertArr = [null,null,null,null,null,null,null,null,null,null];
+                // foreach ($area_full_height_by_level_copy as &$al){
+                //     array_splice($al, 1, 0, $insertArr);
+                // }
                 $return_data['area_full_height_by_level'] = $area_full_height_by_level;
+                $return_data['area_full_height_by_level_copy'] = $area_full_height_by_level_copy;
+
                 $return_data['area_full_height_x'] = [0,1,2,3,4,5,6,7,8,9,10,11,12];
 
-                $area_now_full_height_x = array_fill(0, count($return_data['area_full_height_x']), null);
-                if (isset($now_age_arr['month']) && isset($return_data['height'])) {
-                    $area_now_full_height_x[$now_age_arr['month']] = $return_data['height'];
+                // 计算当前年龄和下一岁的时间范围
+                $start_time = strtotime(date('Y-m-d', $return_data['birthday']) . ' +' . $now_year . ' years');
+                $end_time = strtotime(date('Y-m-d', $return_data['birthday']) . ' +' . ($now_year + 1) . ' years');
+
+
+                $now_area_check = Db::name('baby_check')->where(['baby_id'=>$check_result['baby_id'],'type'=>1])->whereBetween('check_date', [ $start_time,$end_time])->group('check_date')->order('check_date asc')->field('check_date,baby_data')->select();
+                $area_now_full_height_x = [];
+                foreach ($now_area_check as $item){
+                    $baby_data = json_decode($item['baby_data'],true);
+                    $now_age_str = now_age($baby_data['birthday'],$item['check_date'],false,true);
+                    $area_now_full_height_x[] = [
+                        (float)$now_age_str,(float)$baby_data['height']
+                    ];
                 }
+
+                // $area_now_full_height_x = array_fill(0, count($return_data['area_full_height_x']), null);
+                // if (isset($now_age_arr['month']) && isset($return_data['height'])) {
+                //     $area_now_full_height_x[$now_age_arr['month']] = $return_data['height'];
+                // }
                 $return_data['area_now_full_height_x'] = $area_now_full_height_x;
                 break;
             case 2://脾胃
