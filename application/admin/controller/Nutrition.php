@@ -153,13 +153,13 @@ class Nutrition extends AdminBase
             'dietary_fiber_18_2'      => ConfigServer::get('nutrition', 'dietary_fiber_18_2'),
 
             'unhealthy_3_1'       => ConfigServer::get('nutrition', 'unhealthy_3_1'),
-            'unhealthy_3_2'       => ConfigServer::get('nutrition', 'unhealthy_3_2'),
+            // 'unhealthy_3_2'       => ConfigServer::get('nutrition', 'unhealthy_3_2'),
             'unhealthy_6_1'       => ConfigServer::get('nutrition', 'unhealthy_6_1'),
-            'unhealthy_6_2'       => ConfigServer::get('nutrition', 'unhealthy_6_2'),
+            // 'unhealthy_6_2'       => ConfigServer::get('nutrition', 'unhealthy_6_2'),
             'unhealthy_12_1'      => ConfigServer::get('nutrition', 'unhealthy_12_1'),
-            'unhealthy_12_2'      => ConfigServer::get('nutrition', 'unhealthy_12_2'),
+            // 'unhealthy_12_2'      => ConfigServer::get('nutrition', 'unhealthy_12_2'),
             'unhealthy_18_1'      => ConfigServer::get('nutrition', 'unhealthy_18_1'),
-            'unhealthy_18_2'      => ConfigServer::get('nutrition', 'unhealthy_18_2'),
+            // 'unhealthy_18_2'      => ConfigServer::get('nutrition', 'unhealthy_18_2'),
 
         ];
         $this->assign('config', $config);
@@ -236,13 +236,13 @@ class Nutrition extends AdminBase
             ConfigServer::set('nutrition', 'dietary_fiber_18_2', abFloatval($post['dietary_fiber_18_2']));
 
             ConfigServer::set('nutrition', 'unhealthy_3_1', abFloatval($post['unhealthy_3_1']));//不健康
-            ConfigServer::set('nutrition', 'unhealthy_3_2', abFloatval($post['unhealthy_3_2']));
+            // ConfigServer::set('nutrition', 'unhealthy_3_2', abFloatval($post['unhealthy_3_2']));
             ConfigServer::set('nutrition', 'unhealthy_6_1', abFloatval($post['unhealthy_6_1']));
-            ConfigServer::set('nutrition', 'unhealthy_6_2', abFloatval($post['unhealthy_6_2']));
+            // ConfigServer::set('nutrition', 'unhealthy_6_2', abFloatval($post['unhealthy_6_2']));
             ConfigServer::set('nutrition', 'unhealthy_12_1', abFloatval($post['unhealthy_12_1']));
-            ConfigServer::set('nutrition', 'unhealthy_12_2', abFloatval($post['unhealthy_12_2']));
+            // ConfigServer::set('nutrition', 'unhealthy_12_2', abFloatval($post['unhealthy_12_2']));
             ConfigServer::set('nutrition', 'unhealthy_18_1', abFloatval($post['unhealthy_18_1']));
-            ConfigServer::set('nutrition', 'unhealthy_18_2', abFloatval($post['unhealthy_18_2']));
+            // ConfigServer::set('nutrition', 'unhealthy_18_2', abFloatval($post['unhealthy_18_2']));
 
             $this->_success('操作成功');
         }

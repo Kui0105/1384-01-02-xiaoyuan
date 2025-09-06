@@ -430,6 +430,10 @@ class BabyLogic extends LogicBase{
         if(empty($baby_data)){
             return '';
         }
+        $baby_data['height_pot'] = ($baby_data['height_pot'] > 100 || $baby_data['height_pot'] < 0 ) ? 0 : $baby_data['height_pot'];
+        $baby_data['weight_pot'] = ($baby_data['weight_pot'] > 100 || $baby_data['weight_pot'] < 0 ) ? 0 : $baby_data['weight_pot'];
+        $baby_data['height'] = round($baby_data['height'],1);
+        $baby_data['weight'] = round($baby_data['weight'],1);
         $baby_data['head_img'] = addImgDomain($baby_data['head_img']);
         $baby_data['birthday_str'] = now_age($baby_data['birthday'],time(),true);
         // $baby_data['grow_level'] = json_decode($baby_data['grow_level'],true);
@@ -955,6 +959,18 @@ class BabyLogic extends LogicBase{
                 break;
             case 5://运动
                 $return_data['check_result'] = json_decode($check_result['check_result'],true);
+                $grade = json_decode($check_result['check_data'],true)['grade'];
+                $sex = json_decode($check_result['baby_data'],true)['sex'];
+                $ques_arr = sport_grade_to_select($grade,$sex);
+                $danwei_k_arr = array_column($ques_arr,'dw','key');
+                foreach ($return_data['check_result'] as &$r){
+                    if($r['key'] != 'bmi'){
+                        $r['dw'] = "(".$danwei_k_arr[$r['key']].")";
+                    }else{
+                        $r['dw'] = "";
+                    }
+
+                }
                 break;
             case 6://营养
                 $return_data['check_result'] = json_decode($check_result['check_result'],true);
@@ -1079,12 +1095,14 @@ class BabyLogic extends LogicBase{
         $check_result = [];
         $ques_arr = sport_grade_to_select($grade,$baby_data['sex']);
         $ques_k_arr = array_column($ques_arr,'name','key');
+        $danwei_k_arr = array_column($ques_arr,'dw','key');
         foreach ($ques_k_arr as $k => $v){
             if(empty($data[$k])){
                 self::$error =  $v.'错误';
                 return  false;
             }
 
+            $dw = $danwei_k_arr[$k];
             if($k == 'chinning'){
                 $functionName = "sport_sit_up_result";
             }else if(in_array($k,['run_400','run_800','run_1000'])){
@@ -1183,6 +1201,7 @@ class BabyLogic extends LogicBase{
                 'name'      => $v,
                 'post'      => $data[$k],
                 'result'     => $result,
+                'dw'        => $dw,
             ];
         }
 
