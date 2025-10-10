@@ -196,6 +196,28 @@ class BabyLogic extends LogicBase{
             }
         }
         $json_grow_level = json_encode($grow_level);
+        $near_weight_moban = $near_moban;
+        foreach ($near_weight_moban as $near_k => $near_v){
+            if($near_v['weight'] < $data_weight){
+                if(isset($near_weight_moban[$near_k-1])){
+                    unset($near_weight_moban[$near_k-1]);
+                }
+            }
+        }
+        if(count($near_weight_moban) < 2){
+            $weight_pot = 50;
+        }else{
+            $near_weight_moban = array_merge($near_weight_moban);
+            $weight_pot = bcdiv($near_weight_moban[1]['weight'] -  $near_weight_moban[0]['weight'],(level_to_num($near_weight_moban[1]['level']) - level_to_num($near_weight_moban[0]['level'])),4);
+
+            $weight_pot = round(($data_weight - $near_weight_moban[0]['weight']) * $weight_pot * 10 ,1) ;
+            if($near_weight_moban[0]['level'] >=4){
+                $weight_pot = 50 + $weight_pot;
+            }else{
+                $weight_pot = level_to_num($near_weight_moban[0]['level']) + $weight_pot;
+            }
+        }
+
         foreach ($near_moban as $near_k => $near_v){
             if($near_v['height'] < $data_height){
                 if(isset($near_moban[$near_k-1])){
@@ -206,7 +228,7 @@ class BabyLogic extends LogicBase{
         }
         if(count($near_moban) < 2){
             $height_pot = 50;
-            $weight_pot = 50;
+            // $weight_pot = 50;
             if($baby_data['sex']==1){
                 $bf_predicting_height = 172.7;
             }else{
@@ -214,15 +236,17 @@ class BabyLogic extends LogicBase{
             }
         }else{
             $near_moban = array_merge($near_moban);
-            $height_pot = bcdiv($near_moban[1]['height'] -  $near_moban[0]['height'],(level_to_num($near_moban[1]['level']) - level_to_num($near_moban[0]['level'])),2) * 100;
-            $weight_pot = bcdiv($near_moban[1]['weight'] -  $near_moban[0]['weight'],(level_to_num($near_moban[1]['level']) - level_to_num($near_moban[0]['level'])),2) * 100;
+            $height_pot = bcdiv($near_moban[1]['height'] -  $near_moban[0]['height'],(level_to_num($near_moban[1]['level']) - level_to_num($near_moban[0]['level'])),2) * 10;
+            // $weight_pot = bcdiv($near_moban[1]['weight'] -  $near_moban[0]['weight'],(level_to_num($near_moban[1]['level']) - level_to_num($near_moban[0]['level'])),2) * 10;
+
+            // $weight_pot = round(($data_height - $near_moban[0]['weight']) * $weight_pot / 10,2);
             if($near_moban[0]['level'] >=4){
                 $height_pot = 50 + $height_pot;
-                $weight_pot = 50 + $weight_pot;
+                // $weight_pot = 50 + $weight_pot;
             }else{
                 //身高百分位
                 $height_pot = 50 - $height_pot;
-                $weight_pot = 50 - $weight_pot;
+                // $weight_pot = 50 - $weight_pot;
             }
             //百分位预测身高
             $bf_predicting_height = Db::name('height_moban')->where('month',216)->where('sex',$baby_data['sex'])->where('level',$near_moban[1]['level'])->value('height');
@@ -432,8 +456,8 @@ class BabyLogic extends LogicBase{
         }
         $baby_data['height_pot'] = ($baby_data['height_pot'] > 100 || $baby_data['height_pot'] < 0 ) ? 0 : $baby_data['height_pot'];
         $baby_data['weight_pot'] = ($baby_data['weight_pot'] > 100 || $baby_data['weight_pot'] < 0 ) ? 0 : $baby_data['weight_pot'];
-        $baby_data['height'] = round($baby_data['height'],1);
-        $baby_data['weight'] = round($baby_data['weight'],1);
+        $baby_data['height'] = bcdiv(round($baby_data['height'],1),1,1);
+        $baby_data['weight'] = bcdiv(round($baby_data['weight'],1),1,1);
         $baby_data['head_img'] = addImgDomain($baby_data['head_img']);
         $baby_data['birthday_str'] = now_age($baby_data['birthday'],time(),true);
         // $baby_data['grow_level'] = json_decode($baby_data['grow_level'],true);
