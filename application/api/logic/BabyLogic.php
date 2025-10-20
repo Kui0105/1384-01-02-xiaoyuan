@@ -282,8 +282,8 @@ class BabyLogic extends LogicBase{
             'bmi'           => $bmi,
             'bf_predicting_height' => $bf_predicting_height,
             'ai_predicting_height' => $ai_predicting_height,
-            'height_pot'    => $height_pot,
-            'weight_pot'    => $weight_pot,
+            'height_pot'    => round($height_pot),
+            'weight_pot'    => round($weight_pot),
             'weight_key'    => $weight_key,
             'moban_str'     => ['before_moban'=>$before_moban,'near_moban'=>$near_moban],//,'after_moban'=>$after_moban[3]
             'create_time'   => $time,
@@ -807,11 +807,12 @@ class BabyLogic extends LogicBase{
                 foreach ($all_check as $item){
                     $baby_data = json_decode($item['baby_data'],true);
                     $now_age_str = now_age($baby_data['birthday'],$item['check_date'],false,true);
+                    $sstr = now_age($baby_data['birthday'],$item['check_date']);
                     $now_full_height_x[] = [
-                        (float)$now_age_str,(float)$baby_data['height']
+                        (float)$now_age_str,(float)$baby_data['height'],$sstr
                     ];
                     $now_full_weight_x[] = [
-                        (float)$now_age_str,(float)$baby_data['weight']
+                        (float)$now_age_str,(float)$baby_data['weight'],$sstr
                     ];
                 }
                 // $now_full_height_x = array_fill(0, count($return_data['full_height_x']), null);
@@ -907,9 +908,10 @@ class BabyLogic extends LogicBase{
                 $area_now_full_height_x = [];
                 foreach ($now_area_check as $item){
                     $baby_data = json_decode($item['baby_data'],true);
-                    $now_age_str = now_age($baby_data['birthday'],$item['check_date'],false,true);
+                    $now_age_str = now_age($baby_data['birthday'],$item['check_date'],false,true,true);
+                    $sstr = now_age($baby_data['birthday'],$item['check_date']);
                     $area_now_full_height_x[] = [
-                        (float)$now_age_str,(float)$baby_data['height']
+                        (float)$now_age_str,(float)$baby_data['height'],$sstr
                     ];
                 }
 
