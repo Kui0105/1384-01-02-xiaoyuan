@@ -205,17 +205,30 @@ class BabyLogic extends LogicBase{
             }
         }
         if(count($near_weight_moban) < 2){
-            $weight_pot = 50;
+            $weight_pot = 100;
         }else{
             $near_weight_moban = array_merge($near_weight_moban);
-            $weight_pot = bcdiv($near_weight_moban[1]['weight'] -  $near_weight_moban[0]['weight'],(level_to_num($near_weight_moban[1]['level']) - level_to_num($near_weight_moban[0]['level'])),4);
+//             var_dump(level_to_num($near_weight_moban[0]['level']));
+//             var_dump(level_to_num($near_weight_moban[1]['level']));
+// var_dump($data_weight);
+// var_dump($near_weight_moban[0]['weight']);
+//             var_dump($near_weight_moban[1]['weight']);
 
-            $weight_pot = round(($data_weight - $near_weight_moban[0]['weight']) * $weight_pot * 10 ,1) ;
-            if($near_weight_moban[0]['level'] >=4){
-                $weight_pot = 50 + $weight_pot;
-            }else{
-                $weight_pot = level_to_num($near_weight_moban[0]['level']) + $weight_pot;
-            }
+            $weight_pot = bcadd(level_to_num($near_weight_moban[0]['level']),(level_to_num($near_weight_moban[1]['level']) - level_to_num($near_weight_moban[0]['level']))*(($data_weight -  $near_weight_moban[0]['weight'])/($near_weight_moban[1]['weight'] -  $near_weight_moban[0]['weight'])),2);
+            // var_dump($weight_pot);
+            //
+            // var_dump($data_weight -  $near_weight_moban[0]['weight']);
+            // var_dump($near_weight_moban[1]['weight'] -  $near_weight_moban[0]['weight']);
+            // var_dump($near_weight_moban);die;
+
+            // $weight_pot = bcdiv($near_weight_moban[1]['weight'] -  $near_weight_moban[0]['weight'],(level_to_num($near_weight_moban[1]['level']) - level_to_num($near_weight_moban[0]['level'])),4);
+            //
+            // $weight_pot = round(($data_weight - $near_weight_moban[0]['weight']) * $weight_pot * 10 ,1) ;
+            // if($near_weight_moban[0]['level'] >=4){
+            //     $weight_pot = 50 + $weight_pot;
+            // }else{
+            //     $weight_pot = level_to_num($near_weight_moban[0]['level']) + $weight_pot;
+            // }
         }
 
         foreach ($near_moban as $near_k => $near_v){
@@ -227,7 +240,7 @@ class BabyLogic extends LogicBase{
             }
         }
         if(count($near_moban) < 2){
-            $height_pot = 50;
+            $height_pot = 100;
             // $weight_pot = 50;
             if($baby_data['sex']==1){
                 $bf_predicting_height = 172.7;
@@ -236,22 +249,25 @@ class BabyLogic extends LogicBase{
             }
         }else{
             $near_moban = array_merge($near_moban);
-            $height_pot = bcdiv($near_moban[1]['height'] -  $near_moban[0]['height'],(level_to_num($near_moban[1]['level']) - level_to_num($near_moban[0]['level'])),2) * 10;
+            $height_pot = bcadd(level_to_num($near_moban[0]['level']),(level_to_num($near_moban[1]['level']) - level_to_num($near_moban[0]['level']))*(($data_height -  $near_moban[0]['height'])/($near_moban[1]['height'] -  $near_moban[0]['height'])),2);
+            // $height_pot = bcdiv($data_height -  $near_moban[0]['height'],(level_to_num($near_moban[1]['level']) - level_to_num($near_moban[0]['level'])),2) * 10;
+            // $height_pot = bcdiv($near_moban[1]['height'] -  $near_moban[0]['height'],(level_to_num($near_moban[1]['level']) - level_to_num($near_moban[0]['level'])),2) * 10;
             // $weight_pot = bcdiv($near_moban[1]['weight'] -  $near_moban[0]['weight'],(level_to_num($near_moban[1]['level']) - level_to_num($near_moban[0]['level'])),2) * 10;
 
             // $weight_pot = round(($data_height - $near_moban[0]['weight']) * $weight_pot / 10,2);
-            if($near_moban[0]['level'] >=4){
-                $height_pot = 50 + $height_pot;
-                // $weight_pot = 50 + $weight_pot;
-            }else{
-                //身高百分位
-                $height_pot = 50 - $height_pot;
-                // $weight_pot = 50 - $weight_pot;
-            }
+            // if($near_moban[0]['level'] >=4){
+            //     $height_pot = 50 + $height_pot;
+            //     // $weight_pot = 50 + $weight_pot;
+            // }else{
+            //     //身高百分位
+            //     $height_pot = 50 - $height_pot;
+            //     // $weight_pot = 50 - $weight_pot;
+            // }
             //百分位预测身高
             $bf_predicting_height = Db::name('height_moban')->where('month',216)->where('sex',$baby_data['sex'])->where('level',$near_moban[1]['level'])->value('height');
+            $bf_predicting_height -= ($near_moban[1]['height'] - $data_height);
         }
-
+        $bf_predicting_height = round($bf_predicting_height,2);
         //AI预测身高
         $ai_predicting_height = $baby_data['sex'] == 1? bcmul(($baby_data['father_height']+$baby_data['mother_height'])/2,0.78,2) + 45.99:bcmul(($baby_data['father_height']+$baby_data['mother_height'])/2,0.75,2) + 37.85;
 
@@ -720,19 +736,19 @@ class BabyLogic extends LogicBase{
                 $result_data = json_decode($check_result['check_data'],true);
                 switch ($result_data['grow_level']['grow_level']){
                     case 0:
-                        $return_data['height_str'] = '身高矮小（身高百分位低于3%）';
+                        $return_data['height_str'] = '身高矮小';//（身高百分位低于3%）
                         break;
                     case 1:
-                        $return_data['height_str'] = '身高偏矮（身高百分位低于25%）';
+                        $return_data['height_str'] = '身高偏矮';//（身高百分位低于25%）
                         break;
                     case 2:
                         $return_data['height_str'] = '身高正常';
                         break;
                     case 3:
-                        $return_data['height_str'] = '身高偏高（身高百分位高于75%）';
+                        $return_data['height_str'] = '身高偏高';//（身高百分位高于75%）
                         break;
                     case 4:
-                        $return_data['height_str'] = '身高超高（身高百分位高于97%）';
+                        $return_data['height_str'] = '身高超高';//（身高百分位高于97%）
                         break;
                 }
                 $grow_level = $result_data['grow_level'];
@@ -752,7 +768,7 @@ class BabyLogic extends LogicBase{
                 $return_data['cha_height'] = $result_data['cha_height'];//标准差
                 $return_data['ai_predicting_height'] = $result_data['ai_predicting_height'];//AI测评身高
                 $return_data['ai_predicting_height_str'] = (($return_data['sup_height'] > $result_data['ai_predicting_height'])?'矮':'高').abs(round($result_data['ai_predicting_height'] - $return_data['sup_height'],2)).'cm';//AI测评身高字符串
-                $return_data['bf_predicting_height'] = $result_data['bf_predicting_height'];//百分位测评身高
+                $return_data['bf_predicting_height'] = round($result_data['bf_predicting_height'],2);//百分位测评身高
                 $return_data['bf_predicting_height_str'] = (($return_data['sup_height'] > $result_data['bf_predicting_height'])?'矮':'高').abs(round($result_data['bf_predicting_height'] - $return_data['sup_height'],2)).'cm';//百分位测评身高字符串
                 $return_data['arg_18_height'] = $return_data['sex']==1?'172.7':'160.6';//平均成年身高
                 $return_data['bmi'] = $result_data['bmi'];//BMI
@@ -802,17 +818,18 @@ class BabyLogic extends LogicBase{
 
                 $now_age_arr = now_age($return_data['birthday'],$check_result['check_date'],false);
 
-                $all_check = Db::name('baby_check')->where(['baby_id'=>$check_result['baby_id'],'type'=>1])->group('check_date')->order('check_date asc')->field('check_date,baby_data')->select();
+                $all_check = Db::name('baby_check')->where(['baby_id'=>$check_result['baby_id'],'type'=>1])->group('check_date')->order('check_date asc')->field('check_date,baby_data,check_data')->select();
                 $now_full_height_x = $now_full_weight_x = [];
                 foreach ($all_check as $item){
+                    $check_data     = json_decode($item['check_data'],true);
                     $baby_data = json_decode($item['baby_data'],true);
                     $now_age_str = now_age($baby_data['birthday'],$item['check_date'],false,true);
                     $sstr = now_age($baby_data['birthday'],$item['check_date']);
                     $now_full_height_x[] = [
-                        (float)$now_age_str,(float)$baby_data['height'],$sstr
+                        (float)$now_age_str,(float)$check_data['height'],$sstr
                     ];
                     $now_full_weight_x[] = [
-                        (float)$now_age_str,(float)$baby_data['weight'],$sstr
+                        (float)$now_age_str,(float)$check_data['weight'],$sstr
                     ];
                 }
                 // $now_full_height_x = array_fill(0, count($return_data['full_height_x']), null);
@@ -1014,7 +1031,7 @@ class BabyLogic extends LogicBase{
             return  false;
         }
         $model = new BabyCheck();
-        $id = $model->where(['user_id'=>$user_id,'type'=>1])->max('id');
+        $id = $model->where(['baby_id'=>$baby_id,'type'=>1])->max('id');
         if(!$id){
             self::$error = '无身高测评记录';
             return  false;
