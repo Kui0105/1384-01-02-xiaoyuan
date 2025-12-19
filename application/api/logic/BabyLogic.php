@@ -296,8 +296,8 @@ class BabyLogic extends LogicBase{
             'arg_height'    => $arg_height,
             'cha_height'    => $cha_height,
             'bmi'           => $bmi,
-            'bf_predicting_height' => $bf_predicting_height,
-            'ai_predicting_height' => $ai_predicting_height,
+            'bf_predicting_height' => round($bf_predicting_height,2),
+            'ai_predicting_height' => round($ai_predicting_height,2),
             'height_pot'    => round($height_pot),
             'weight_pot'    => round($weight_pot),
             'weight_key'    => $weight_key,
@@ -478,11 +478,11 @@ class BabyLogic extends LogicBase{
         $baby_data['birthday_str'] = now_age($baby_data['birthday'],time(),true);
         // $baby_data['grow_level'] = json_decode($baby_data['grow_level'],true);
         $grow_level = json_decode($baby_data['grow_level'],true);
-        if(!empty($grow_level)){
-            $grow_level['grow_level'] = 4 - $grow_level['grow_level'];
-            $grow_level['height'] = array_reverse($grow_level['height']);
-            $grow_level['level_name'] = array_reverse($grow_level['level_name']);
-        }
+        // if(!empty($grow_level)){
+        //     $grow_level['grow_level'] = 4 - $grow_level['grow_level'];
+        //     $grow_level['height'] = array_reverse($grow_level['height']);
+        //     $grow_level['level_name'] = array_reverse($grow_level['level_name']);
+        // }
         $baby_data['grow_level'] = $grow_level;
         $baby_data['count'] = Db::name('baby')->where(['user_id'=>$user_id,'del'=>0])->count();
         $baby_data['check_height_status'] = false;
@@ -752,11 +752,11 @@ class BabyLogic extends LogicBase{
                         break;
                 }
                 $grow_level = $result_data['grow_level'];
-                if(!empty($grow_level)){
-                    $grow_level['grow_level'] = 4 - $grow_level['grow_level'];
-                    $grow_level['height'] = array_reverse($grow_level['height']);
-                    $grow_level['level_name'] = array_reverse($grow_level['level_name']);
-                }
+                // if(!empty($grow_level)){
+                //     $grow_level['grow_level'] = 4 - $grow_level['grow_level'];
+                //     $grow_level['height'] = array_reverse($grow_level['height']);
+                //     $grow_level['level_name'] = array_reverse($grow_level['level_name']);
+                // }
                 $return_data['grow_level'] = $grow_level;
 
                 $return_data['height'] = floatval($result_data['height']);//身高
@@ -766,7 +766,7 @@ class BabyLogic extends LogicBase{
                 $return_data['arg_height_str'] = (($result_data['arg_height'] > $result_data['height'])?'矮':'高').abs(round($result_data['arg_height'] - $result_data['height'],2)).'cm';//全国平均身高字符串
                 $return_data['height_pot'] = $result_data['height_pot'];//身高百分位
                 $return_data['cha_height'] = $result_data['cha_height'];//标准差
-                $return_data['ai_predicting_height'] = $result_data['ai_predicting_height'];//AI测评身高
+                $return_data['ai_predicting_height'] = round($result_data['ai_predicting_height'],2);//AI测评身高
                 $return_data['ai_predicting_height_str'] = (($return_data['sup_height'] > $result_data['ai_predicting_height'])?'矮':'高').abs(round($result_data['ai_predicting_height'] - $return_data['sup_height'],2)).'cm';//AI测评身高字符串
                 $return_data['bf_predicting_height'] = round($result_data['bf_predicting_height'],2);//百分位测评身高
                 $return_data['bf_predicting_height_str'] = (($return_data['sup_height'] > $result_data['bf_predicting_height'])?'矮':'高').abs(round($result_data['bf_predicting_height'] - $return_data['sup_height'],2)).'cm';//百分位测评身高字符串
@@ -1012,11 +1012,16 @@ class BabyLogic extends LogicBase{
                     }else{
                         $r['dw'] = "";
                     }
-
                 }
                 break;
             case 6://营养
                 $return_data['check_result'] = json_decode($check_result['check_result'],true);
+                foreach ($return_data['check_result']['check_result'] as &$item) {
+                    if (isset($item['num'])) {
+                        $item['num'] = round($item['num'], 2);
+                    }
+                }
+                // var_dump($return_data['check_result']['check_result']);die;
                 break;
         }
         return $return_data;
@@ -1291,8 +1296,8 @@ class BabyLogic extends LogicBase{
                     'check_date'  => date('Y-m-d',$v['check_date']),
                     'height'    => $check_data['height'],
                     'height_pot'    => $check_data['height_pot'],
-                    'ai_predicting_height'  => $check_data['ai_predicting_height'],
-                    'bf_predicting_height'  => $check_data['bf_predicting_height'],
+                    'ai_predicting_height'  => round($check_data['ai_predicting_height'],2),
+                    'bf_predicting_height'  => round($check_data['bf_predicting_height'],2),
                     'genetic_height'    => $baby_data['genetic_height'],
                     'sup_height'        => $baby_data['sup_height'],
                     'genetic_height_cha' => round($check_data['height'] - $baby_data['genetic_height'],2),
@@ -1345,8 +1350,10 @@ class BabyLogic extends LogicBase{
 
         $all_child = array_merge(...array_column($data, 'child'));
 
+        $id_to_value = array_column($all_child, 'value','id');
+
         $all_id = array_column(array_filter($all_child, function($child) {
-            return $child['value'] > 0;
+            return $child['value'] >= 0;
         }), 'id');
 
         $all_food = [];
@@ -1433,18 +1440,29 @@ class BabyLogic extends LogicBase{
         $sug_arr = [];
         if(!empty($all_food)){
             foreach ($all_food as $fd){
-                $check_result['protein_lysine']['num'] += $fd['protein_lysine'];
-                $check_result['vb']['num'] += $fd['vb'];
-                $check_result['vd']['num'] += $fd['vd'];
-                $check_result['iron']['num'] += $fd['iron'];
-                $check_result['zinc']['num'] += $fd['zinc'];
-                $check_result['va']['num'] += $fd['va'];
-                $check_result['calcium']['num'] += $fd['calcium'];
-                $check_result['dietary_fiber']['num'] += $fd['dietary_fiber'];
-                $check_result['unhealthy']['num'] += $fd['unhealthy'];
+                $multiplier = bcadd($id_to_value[$fd['id']], '1', 2);
+                $check_result['protein_lysine']['num'] = bcadd($check_result['protein_lysine']['num'],bcmul($fd['protein_lysine'], $multiplier, 2), 2);
+                $check_result['vb']['num'] = bcadd($check_result['vb']['num'],bcmul($fd['vb'], $multiplier, 2),2);
+                $check_result['vd']['num'] = bcadd($check_result['vd']['num'],bcmul($fd['vd'], $multiplier, 2),2);
+                $check_result['iron']['num'] = bcadd($check_result['iron']['num'],bcmul($fd['iron'], $multiplier, 2),2);
+                $check_result['zinc']['num'] = bcadd($check_result['zinc']['num'],bcmul($fd['iron'], $multiplier, 2),2);
+                $check_result['va']['num'] = bcadd($check_result['va']['num'],bcmul($fd['iron'], $multiplier, 2),2);
+                $check_result['calcium']['num'] = bcadd($check_result['calcium']['num'],bcmul($fd['iron'], $multiplier, 2),2);
+                $check_result['dietary_fiber']['num'] = bcadd($check_result['dietary_fiber']['num'],bcmul($fd['iron'], $multiplier, 2),2);
+                $check_result['unhealthy']['num'] = bcadd($check_result['unhealthy']['num'],bcmul($fd['iron'], $multiplier, 2),2);
+
+                // $check_result['protein_lysine']['num'] += round($fd['protein_lysine'] * ($id_to_value[$fd['id']] + 1),2);
+                // $check_result['vb']['num'] += round($fd['vb'] * ($id_to_value[$fd['id']] + 1),2);
+                // $check_result['vd']['num'] += round($fd['vd'] * ($id_to_value[$fd['id']] + 1),2);
+                // $check_result['iron']['num'] += round($fd['iron'] * ($id_to_value[$fd['id']] + 1),2);
+                // $check_result['zinc']['num'] += round($fd['zinc'] * ($id_to_value[$fd['id']] + 1),2);
+                // $check_result['va']['num'] += round($fd['va'] * ($id_to_value[$fd['id']] + 1),2);
+                // $check_result['calcium']['num'] += round($fd['calcium'] * ($id_to_value[$fd['id']] + 1),2);
+                // $check_result['dietary_fiber']['num'] += round($fd['dietary_fiber'] * ($id_to_value[$fd['id']] + 1),2);
+                // $check_result['unhealthy']['num'] += round($fd['unhealthy'] * ($id_to_value[$fd['id']] + 1),2);
             }
         }
-
+// var_dump($check_result);die;
         $now_age_arr = now_age($baby_data['birthday'],$post_time,false);
         $now_year = $now_age_arr['year'];
         if($now_year <= 3){

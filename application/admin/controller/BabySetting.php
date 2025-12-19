@@ -243,6 +243,7 @@ class BabySetting extends AdminBase
             ConfigServer::set('baby_nutrition', 'va', $post['va']);
             ConfigServer::set('baby_nutrition', 'calcium', $post['calcium']);
             ConfigServer::set('baby_nutrition', 'dietary_fiber', $post['dietary_fiber']);
+            ConfigServer::set('baby_nutrition', 'unhealthy', $post['unhealthy']);
             $this->_success('修改成功');
         }
     }
