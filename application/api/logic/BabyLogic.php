@@ -1445,11 +1445,11 @@ class BabyLogic extends LogicBase{
                 $check_result['vb']['num'] = bcadd($check_result['vb']['num'],bcmul($fd['vb'], $multiplier, 2),2);
                 $check_result['vd']['num'] = bcadd($check_result['vd']['num'],bcmul($fd['vd'], $multiplier, 2),2);
                 $check_result['iron']['num'] = bcadd($check_result['iron']['num'],bcmul($fd['iron'], $multiplier, 2),2);
-                $check_result['zinc']['num'] = bcadd($check_result['zinc']['num'],bcmul($fd['iron'], $multiplier, 2),2);
-                $check_result['va']['num'] = bcadd($check_result['va']['num'],bcmul($fd['iron'], $multiplier, 2),2);
-                $check_result['calcium']['num'] = bcadd($check_result['calcium']['num'],bcmul($fd['iron'], $multiplier, 2),2);
-                $check_result['dietary_fiber']['num'] = bcadd($check_result['dietary_fiber']['num'],bcmul($fd['iron'], $multiplier, 2),2);
-                $check_result['unhealthy']['num'] = bcadd($check_result['unhealthy']['num'],bcmul($fd['iron'], $multiplier, 2),2);
+                $check_result['zinc']['num'] = bcadd($check_result['zinc']['num'],bcmul($fd['zinc'], $multiplier, 2),2);
+                $check_result['va']['num'] = bcadd($check_result['va']['num'],bcmul($fd['va'], $multiplier, 2),2);
+                $check_result['calcium']['num'] = bcadd($check_result['calcium']['num'],bcmul($fd['calcium'], $multiplier, 2),2);
+                $check_result['dietary_fiber']['num'] = bcadd($check_result['dietary_fiber']['num'],bcmul($fd['dietary_fiber'], $multiplier, 2),2);
+                $check_result['unhealthy']['num'] = bcadd($check_result['unhealthy']['num'],bcmul($fd['unhealthy'], $multiplier, 2),2);
 
                 // $check_result['protein_lysine']['num'] += round($fd['protein_lysine'] * ($id_to_value[$fd['id']] + 1),2);
                 // $check_result['vb']['num'] += round($fd['vb'] * ($id_to_value[$fd['id']] + 1),2);
