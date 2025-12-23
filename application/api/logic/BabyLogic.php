@@ -269,7 +269,63 @@ class BabyLogic extends LogicBase{
         }
         $bf_predicting_height = round($bf_predicting_height,2);
         //AI预测身高
-        $ai_predicting_height = $baby_data['sex'] == 1? bcmul(($baby_data['father_height']+$baby_data['mother_height'])/2,0.78,2) + 45.99:bcmul(($baby_data['father_height']+$baby_data['mother_height'])/2,0.75,2) + 37.85;
+        // $ai_predicting_height = $baby_data['sex'] == 1? bcmul(($baby_data['father_height']+$baby_data['mother_height'])/2,0.78,2) + 45.99:bcmul(($baby_data['father_height']+$baby_data['mother_height'])/2,0.75,2) + 37.85;
+        $ai_predicting_height = true;
+        if($baby_data['sex'] == 1){
+            if($sum_month < 72 || $sum_month > 213){
+                $ai_predicting_height = 0;
+            }
+        }else{
+            if($sum_month < 72 || $sum_month > 210){
+                $ai_predicting_height = 0;
+            }
+        }
+        // if($ai_predicting_height === true){
+        //     $ai_min_month = Db::name('height_new_moban')->where('sex', $baby_data['sex'])->where('month','<=',$sum_month)->max('month');
+        //     $ai_max_month = Db::name('height_new_moban')->where('sex', $baby_data['sex'])->where('month','>',$sum_month)->min('month');
+        //     $min_cha = abs(bcsub($sum_month,$ai_min_month));
+        //     $max_cha = abs(bcsub($ai_max_month,$sum_month));
+        //     if($min_cha < $max_cha){
+        //         $ai_value = Db::name('height_new_moban')->where('sex', $baby_data['sex'])->where('month',$ai_min_month)->value('value');
+        //     }else{
+        //         $ai_value = Db::name('height_new_moban')->where('sex', $baby_data['sex'])->where('month',$ai_max_month)->value('value');
+        //     }
+        //     $ai_predicting_height = $data_height/$ai_value/100;
+        // }
+        if($ai_predicting_height === true){
+            $nearby_months = Db::name('height_new_moban')
+                ->where('sex', $baby_data['sex'])
+                ->where(function($query) use ($sum_month) {
+                    $query->where('month', '<=', $sum_month)
+                        ->whereOr('month', '>', $sum_month);
+                })
+                ->order('month asc')
+                ->select();
+            $ai_value = null;
+            if (!empty($nearby_months)) {
+                $closest_month = null;
+                $min_diff = PHP_INT_MAX;
+                foreach ($nearby_months as $month_data) {
+                    $diff = abs($month_data['month'] - $sum_month);
+                    if ($diff < $min_diff) {
+                        $min_diff = $diff;
+                        $closest_month = $month_data;
+                    }
+                }
+                if ($closest_month) {
+                    $ai_value = $closest_month['value'];
+                }
+            }
+            if ($ai_value !== null) {
+                // $ai_predicting_height = $data_height / $ai_value / 100;
+                $ai_predicting_height = bcdiv($data_height,$ai_value/100,2);
+            } else {
+                $ai_predicting_height = 0;
+            }
+        }
+//         var_dump($sum_month);
+//         var_dump($ai_value);
+// var_dump($ai_predicting_height);die;
 
         $weight_arr = array_column(weight_arr($baby_data['sex']),'age');
         $weight_key = 24;
@@ -1326,6 +1382,18 @@ class BabyLogic extends LogicBase{
         if($nutrition_id){
             $return['nutrition_check'] = self::check_result($user_id, $nutrition_id);
         }
+        $near_nutrition_list = [];
+        $nutrition_list = $model->where(['baby_id'=>$baby_id,'type'=>6])->group('check_date')->limit(3)->select()->toArray();
+        if(!empty($nutrition_list)){
+            foreach ($nutrition_list as $v){
+                $near_nutrition_list[] = [
+                    'id'    => $v['id'],
+                    'check_date'  => date('Y-m-d',$v['check_date']),
+                    'check_result'    => json_decode($v['check_result'],true),
+                ];
+            }
+        }
+        $return['near_nutrition_list'] = $near_nutrition_list;
         $return['baby_info'] = self::baby_info($user_id);
         return $return;
     }
