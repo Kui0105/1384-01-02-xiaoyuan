@@ -1342,7 +1342,7 @@ class BabyLogic extends LogicBase{
         $return = [];
 
         $near_height_list = [];
-        $height_list = $model->where(['baby_id'=>$baby_id,'type'=>1])->group('check_date')->limit(3)->select()->toArray();
+        $height_list = $model->where(['baby_id'=>$baby_id,'type'=>1])->group('check_date')->order('check_date desc')->limit(3)->select()->toArray();
         if(!empty($height_list)){
             foreach ($height_list as $v){
                 $check_data = json_decode($v['check_data'],true);
@@ -1383,7 +1383,7 @@ class BabyLogic extends LogicBase{
             $return['nutrition_check'] = self::check_result($user_id, $nutrition_id);
         }
         $near_nutrition_list = [];
-        $nutrition_list = $model->where(['baby_id'=>$baby_id,'type'=>6])->group('check_date')->limit(3)->select()->toArray();
+        $nutrition_list = $model->where(['baby_id'=>$baby_id,'type'=>6])->group('check_date')->order('check_date desc')->limit(3)->select()->toArray();
         if(!empty($nutrition_list)){
             foreach ($nutrition_list as $v){
                 $near_nutrition_list[] = [
