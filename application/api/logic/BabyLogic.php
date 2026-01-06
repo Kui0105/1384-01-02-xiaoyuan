@@ -158,11 +158,16 @@ class BabyLogic extends LogicBase{
             return $res;
         }
 
+        $moban_18 = Db::name('height_moban')->where('sex',$baby_data['sex'])->where('month',216)->order('month desc,height asc')->limit(7)->select();
         //同龄平均身高
         $arg_height = $before_moban[3]['height'];
         // $arg_height = round(($after_moban[3]['height'] - $before_moban[3]['height']) / 6 * ($sum_month - $before_moban[3]['month']) + $before_moban[3]['height'],2);
         //标准差
-        $cha_height = bcdiv($data_height - $arg_height,5.3,2);
+        // $cha_height = bcdiv($data_height - $arg_height,5.3,2);
+        //当前标准差
+        $cha_height = bcdiv($before_moban[6]['height'] - $before_moban[0]['height'],3.72,2);
+        //成年标准差
+        $cha_18 = bcdiv($moban_18[6]['height'] - $moban_18[0]['height'],3.72,2);
         //体重BMI
         $bmi = bcdiv($data_weight,($data_height/100)*($data_height/100),2);
         // $bmi_str = bmi_str($bmi);
@@ -269,17 +274,18 @@ class BabyLogic extends LogicBase{
         }
         $bf_predicting_height = round($bf_predicting_height,2);
         //AI预测身高
+        $ai_predicting_height =  bcadd($moban_18[3]['height'] , ($data_height - $before_moban[3]['height'])/$cha_height * $cha_18,2);
         // $ai_predicting_height = $baby_data['sex'] == 1? bcmul(($baby_data['father_height']+$baby_data['mother_height'])/2,0.78,2) + 45.99:bcmul(($baby_data['father_height']+$baby_data['mother_height'])/2,0.75,2) + 37.85;
-        $ai_predicting_height = true;
-        if($baby_data['sex'] == 1){
-            if($sum_month < 72 || $sum_month > 213){
-                $ai_predicting_height = 0;
-            }
-        }else{
-            if($sum_month < 72 || $sum_month > 210){
-                $ai_predicting_height = 0;
-            }
-        }
+        // $ai_predicting_height = true;
+        // if($baby_data['sex'] == 1){
+        //     if($sum_month < 72 || $sum_month > 213){
+        //         $ai_predicting_height = 0;
+        //     }
+        // }else{
+        //     if($sum_month < 72 || $sum_month > 210){
+        //         $ai_predicting_height = 0;
+        //     }
+        // }
         // if($ai_predicting_height === true){
         //     $ai_min_month = Db::name('height_new_moban')->where('sex', $baby_data['sex'])->where('month','<=',$sum_month)->max('month');
         //     $ai_max_month = Db::name('height_new_moban')->where('sex', $baby_data['sex'])->where('month','>',$sum_month)->min('month');
@@ -292,37 +298,37 @@ class BabyLogic extends LogicBase{
         //     }
         //     $ai_predicting_height = $data_height/$ai_value/100;
         // }
-        if($ai_predicting_height === true){
-            $nearby_months = Db::name('height_new_moban')
-                ->where('sex', $baby_data['sex'])
-                ->where(function($query) use ($sum_month) {
-                    $query->where('month', '<=', $sum_month)
-                        ->whereOr('month', '>', $sum_month);
-                })
-                ->order('month asc')
-                ->select();
-            $ai_value = null;
-            if (!empty($nearby_months)) {
-                $closest_month = null;
-                $min_diff = PHP_INT_MAX;
-                foreach ($nearby_months as $month_data) {
-                    $diff = abs($month_data['month'] - $sum_month);
-                    if ($diff < $min_diff) {
-                        $min_diff = $diff;
-                        $closest_month = $month_data;
-                    }
-                }
-                if ($closest_month) {
-                    $ai_value = $closest_month['value'];
-                }
-            }
-            if ($ai_value !== null) {
-                // $ai_predicting_height = $data_height / $ai_value / 100;
-                $ai_predicting_height = bcdiv($data_height,$ai_value/100,2);
-            } else {
-                $ai_predicting_height = 0;
-            }
-        }
+        // if($ai_predicting_height === true){
+        //     $nearby_months = Db::name('height_new_moban')
+        //         ->where('sex', $baby_data['sex'])
+        //         ->where(function($query) use ($sum_month) {
+        //             $query->where('month', '<=', $sum_month)
+        //                 ->whereOr('month', '>', $sum_month);
+        //         })
+        //         ->order('month asc')
+        //         ->select();
+        //     $ai_value = null;
+        //     if (!empty($nearby_months)) {
+        //         $closest_month = null;
+        //         $min_diff = PHP_INT_MAX;
+        //         foreach ($nearby_months as $month_data) {
+        //             $diff = abs($month_data['month'] - $sum_month);
+        //             if ($diff < $min_diff) {
+        //                 $min_diff = $diff;
+        //                 $closest_month = $month_data;
+        //             }
+        //         }
+        //         if ($closest_month) {
+        //             $ai_value = $closest_month['value'];
+        //         }
+        //     }
+        //     if ($ai_value !== null) {
+        //         // $ai_predicting_height = $data_height / $ai_value / 100;
+        //         $ai_predicting_height = bcdiv($data_height,$ai_value/100,2);
+        //     } else {
+        //         $ai_predicting_height = 0;
+        //     }
+        // }
 //         var_dump($sum_month);
 //         var_dump($ai_value);
 // var_dump($ai_predicting_height);die;
