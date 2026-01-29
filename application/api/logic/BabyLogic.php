@@ -275,6 +275,8 @@ class BabyLogic extends LogicBase{
         $bf_predicting_height = round($bf_predicting_height,2);
         //AI预测身高
         $ai_predicting_height =  bcadd($moban_18[3]['height'] , ($data_height - $before_moban[3]['height'])/$cha_height * $cha_18,2);
+
+
         // $ai_predicting_height = $baby_data['sex'] == 1? bcmul(($baby_data['father_height']+$baby_data['mother_height'])/2,0.78,2) + 45.99:bcmul(($baby_data['father_height']+$baby_data['mother_height'])/2,0.75,2) + 37.85;
         // $ai_predicting_height = true;
         // if($baby_data['sex'] == 1){
@@ -332,6 +334,119 @@ class BabyLogic extends LogicBase{
 //         var_dump($sum_month);
 //         var_dump($ai_value);
 // var_dump($ai_predicting_height);die;
+
+
+        //AI写的
+        // AI预测身高算法 - 按照新需求重新实现
+        $genetic_weight = 0;
+        $current_height_weight = 0;
+
+        // 根据性别和年龄确定权重
+        $age_in_years = $now_age_arr['year'] + $now_age_arr['month'] / 12;
+
+        if ($baby_data['sex'] == 2) { // 女孩
+            if ($age_in_years < 3) {
+                $genetic_weight = 0.7;
+                $current_height_weight = 0.3;
+            } elseif ($age_in_years < 5) {
+                $genetic_weight = 0.6;
+                $current_height_weight = 0.4;
+            } elseif ($age_in_years < 8) {
+                $genetic_weight = 0.5;
+                $current_height_weight = 0.5;
+            } elseif ($age_in_years < 10) {
+                $genetic_weight = 0.4;
+                $current_height_weight = 0.6;
+            } elseif ($age_in_years < 12) {
+                $genetic_weight = 0.3;
+                $current_height_weight = 0.7;
+            } elseif ($age_in_years < 14) {
+                $genetic_weight = 0.2;
+                $current_height_weight = 0.8;
+            } elseif ($age_in_years < 16) {
+                $genetic_weight = 0.1;
+                $current_height_weight = 0.9;
+            } else { // 16-18
+                $genetic_weight = 0.05;
+                $current_height_weight = 0.95;
+            }
+        } else { // 男孩
+            if ($age_in_years < 3) {
+                $genetic_weight = 0.7;
+                $current_height_weight = 0.3;
+            } elseif ($age_in_years < 10) {
+                $genetic_weight = 0.5;
+                $current_height_weight = 0.5;
+            } elseif ($age_in_years < 14) {
+                $genetic_weight = 0.3;
+                $current_height_weight = 0.7;
+            } else { // 14-18
+                $genetic_weight = 0.1;
+                $current_height_weight = 0.9;
+            }
+        }
+
+        // 获取18岁时的P50身高（第4个模板数据，索引为3）
+        $p50_18_height = $moban_18[3]['height'];
+
+        // 基础预测值 = 遗传身高 × 遗传权重 + 18岁P50身高 × 当前身高权重
+        $base_prediction = $baby_data['genetic_height'] * $genetic_weight + $p50_18_height * $current_height_weight;
+// var_dump('基础预测值:'.$base_prediction.'遗传身高:'.$baby_data['genetic_height'].'遗传权重:'.$genetic_weight.'18岁P50身高:'.$p50_18_height.'当前身高权重:'.$current_height_weight);
+        // BMI修正值
+        $bmi_correction = 0;
+        $weight_pot_diff = $weight_pot - $height_pot;
+        if ($weight_pot_diff >= 20) {
+            $bmi_correction = -0.5; // 超重
+        } elseif ($weight_pot_diff <= -20) {
+            $bmi_correction = 0.5; // 偏瘦
+        }
+
+        // 骨龄修正值
+        $bone_age_correction = 0;
+        if ($data['bone']) { // 如果提供了骨龄数据
+            // 这里需要根据骨龄计算逻辑来计算骨龄与实际年龄的差值
+            // 假设$data['bone']是骨龄时间戳，我们需要与实际年龄比较
+            $actual_age_months = $now_age_arr['year'] * 12 + $now_age_arr['month'];
+
+            /// 处理骨龄数据（可能是岁数也可能是月份）
+            $bone_input = $data['bone'];
+            $bone_age_months = 0;
+            if (is_numeric($bone_input)) {
+                // 如果是纯数字，判断是否超过18（可能是岁数）还是超过216（18岁=216个月）
+                if ($bone_input <= 18) {
+                    // 假设是岁数
+                    $bone_age_months = $bone_input * 12;
+                } else {
+                    // 假设是月数
+                    $bone_age_months = $bone_input;
+                }
+            }
+
+            $bone_age_difference = $bone_age_months - $actual_age_months;
+
+            if ($bone_age_difference > 12) { // 骨龄>实际年龄+1岁
+                $bone_age_correction = max(-3, -($bone_age_difference - 12));
+            } elseif ($bone_age_difference < -12) { // 骨龄<实际年龄-1岁
+                $bone_age_correction = min(3, abs($bone_age_difference + 12));
+            }
+            // 否则骨龄修正值为0
+        }
+
+        // 最终AI预测身高 = 基础预测值 + BMI修正值 + 骨龄修正值
+        $ai_predicting_height = $base_prediction + $bmi_correction + $bone_age_correction;
+// var_dump('最终AI预测身高:'.$ai_predicting_height.'基础预测值:'.$base_prediction.'BMI修正值:'.$bmi_correction.'骨龄修正值:'.$bone_age_correction);die;
+        // 四舍五入保留1位小数
+        $ai_predicting_height = round($ai_predicting_height, 1);
+        // AI预测身高
+
+
+
+
+
+
+
+
+
 
         $weight_arr = array_column(weight_arr($baby_data['sex']),'age');
         $weight_key = 24;
