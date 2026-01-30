@@ -148,10 +148,10 @@ class BabyLogic extends LogicBase{
 
         if($now_age_arr['day'] == 0){
             $before_moban = Db::name('height_moban')->where('sex',$baby_data['sex'])->where('month','<=',$sum_month)->order('month desc,height asc')->limit(7)->select();
-            // $after_moban = Db::name('height_moban')->where('sex',$baby_data['sex'])->where('month','>',$sum_month)->order('month asc,height asc')->limit(7)->select();
+            $after_moban = Db::name('height_moban')->where('sex',$baby_data['sex'])->where('month','>',$sum_month)->order('month asc,height asc')->limit(7)->select();
         }else{
             $before_moban = Db::name('height_moban')->where('sex',$baby_data['sex'])->where('month','<=',$sum_month)->order('month desc,height asc')->limit(7)->select();
-            // $after_moban = Db::name('height_moban')->where('sex',$baby_data['sex'])->where('month','>=',$sum_month)->order('month asc,height asc')->limit(7)->select();
+            $after_moban = Db::name('height_moban')->where('sex',$baby_data['sex'])->where('month','>=',$sum_month)->order('month asc,height asc')->limit(7)->select();
         }
         if(empty($before_moban)){// || empty($after_moban)
             $res['msg'] = '测评失败';
@@ -160,8 +160,8 @@ class BabyLogic extends LogicBase{
 
         $moban_18 = Db::name('height_moban')->where('sex',$baby_data['sex'])->where('month',216)->order('month desc,height asc')->limit(7)->select();
         //同龄平均身高
-        $arg_height = $before_moban[3]['height'];
-        // $arg_height = round(($after_moban[3]['height'] - $before_moban[3]['height']) / 6 * ($sum_month - $before_moban[3]['month']) + $before_moban[3]['height'],2);
+        // $arg_height = $before_moban[3]['height'];
+        $arg_height = round(($after_moban[3]['height'] - $before_moban[3]['height']) / 6 * ($sum_month - $before_moban[3]['month']) + $before_moban[3]['height'],2);
         //标准差
         // $cha_height = bcdiv($data_height - $arg_height,5.3,2);
         //当前标准差
@@ -248,9 +248,9 @@ class BabyLogic extends LogicBase{
             $height_pot = 100;
             // $weight_pot = 50;
             if($baby_data['sex']==1){
-                $bf_predicting_height = 172.7;
+                $bf_predicting_height = 183.9;
             }else{
-                $bf_predicting_height = 160.6;
+                $bf_predicting_height = 170.7;
             }
         }else{
             $near_moban = array_merge($near_moban);
@@ -387,7 +387,35 @@ class BabyLogic extends LogicBase{
         }
 
         // 获取18岁时的P50身高（第4个模板数据，索引为3）
-        $p50_18_height = $moban_18[3]['height'];
+        // $p50_18_height = $moban_18[3]['height'];
+
+        $height_percentile_index = 3; // 默认使用P50对应的索引
+
+        // 根据孩子当前身高在同龄人中的百分位确定对应18岁的P值
+        if ($height_pot <= 3) {
+            // P3水平
+            $height_percentile_index = 0;
+        } elseif ($height_pot <= 15) {
+            // P15水平
+            $height_percentile_index = 1;
+        } elseif ($height_pot <= 25) {
+            // P25水平
+            $height_percentile_index = 2;
+        } elseif ($height_pot <= 75) {
+            // P50水平（中间范围）
+            $height_percentile_index = 3;
+        } elseif ($height_pot <= 85) {
+            // P75水平
+            $height_percentile_index = 4;
+        } elseif ($height_pot <= 97) {
+            // P85水平
+            $height_percentile_index = 5;
+        } else {
+            // P97水平
+            $height_percentile_index = 6;
+        }
+
+        $p50_18_height = $moban_18[$height_percentile_index]['height'];
 
         // 基础预测值 = 遗传身高 × 遗传权重 + 18岁P50身高 × 当前身高权重
         $base_prediction = $baby_data['genetic_height'] * $genetic_weight + $p50_18_height * $current_height_weight;

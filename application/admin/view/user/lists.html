@@ -105,7 +105,7 @@
 
             <script type="text/html" id="user-info">
                 <img src="{{d.abs_avatar}}" style="height:80px;width: 80px;margin-right: 10px;" class="image-show">
-                <div class="layui-input-inline" style="text-align:left;">
+                <div class="layui-input-inline" style="text-align:left;width: 300px">
                     <p>用户编号：{{d.sn}}</p>
                     <p>用户昵称：{{d.nickname}}</p>
                 </div>
@@ -378,7 +378,7 @@
             ,cols: [[
                 {type: 'checkbox'}
                 ,{field: 'id', width: 80, title: 'ID', sort: true, hide:true}
-                ,{title: '用户信息',width: 380,align: 'center', toolbar: '#user-info'}
+                ,{title: '用户信息',align: 'left', toolbar: '#user-info'}
                 ,{field: 'new_level_name', title: '用户等级',align:"center",width: 100}
                 ,{field: 'group_name', title: '用户分组',align:"center",width: 100}
                 // ,{field: 'user_growth', title: '成长值',align:"center",width: 100}
