@@ -99,6 +99,7 @@ class BabyLogic extends LogicBase{
                 'last_height'   => $data['last_height']??'',
             ];
             $res = self::height_check($user_id,$check_data);
+            // var_dump($res);die;
             if($res['status'] === false){
                 Db::rollback();
                 self::$error =  $res['msg'];
@@ -463,11 +464,15 @@ class BabyLogic extends LogicBase{
         // 最终AI预测身高 = 基础预测值 + BMI修正值 + 骨龄修正值
         $ai_predicting_height = $base_prediction + $bmi_correction + $bone_age_correction;
 // var_dump('最终AI预测身高:'.$ai_predicting_height.'基础预测值:'.$base_prediction.'BMI修正值:'.$bmi_correction.'骨龄修正值:'.$bone_age_correction);die;
+        // 如果当前身高低于模板值中第一个的身高，则$ai_predicting_height减去（模板值第一个身高-当前身高）
+        if ($data_height < $near_moban[0]['height']) {
+            $ai_predicting_height = $ai_predicting_height - ($near_moban[0]['height'] - $data_height);
+        }
         // 四舍五入保留1位小数
         $ai_predicting_height = round($ai_predicting_height, 1);
         // AI预测身高
 
-
+        //新增ai预测算法
 
 
 
