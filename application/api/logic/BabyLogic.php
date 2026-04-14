@@ -152,9 +152,9 @@ class BabyLogic extends LogicBase{
             $after_moban = Db::name('height_moban')->where('sex',$baby_data['sex'])->where('month','>',$sum_month)->order('month asc,height asc')->limit(7)->select();
         }else{
             $before_moban = Db::name('height_moban')->where('sex',$baby_data['sex'])->where('month','<=',$sum_month)->order('month desc,height asc')->limit(7)->select();
-            $after_moban = Db::name('height_moban')->where('sex',$baby_data['sex'])->where('month','>=',$sum_month)->order('month asc,height asc')->limit(7)->select();
+            $after_moban = Db::name('height_moban')->where('sex',$baby_data['sex'])->where('month','>',$sum_month)->order('month asc,height asc')->limit(7)->select();
         }
-        if(empty($before_moban)){// || empty($after_moban)
+        if(empty($before_moban) || empty($after_moban)){
             $res['msg'] = '测评失败';
             return $res;
         }
@@ -203,6 +203,7 @@ class BabyLogic extends LogicBase{
         }
         $json_grow_level = json_encode($grow_level);
         $near_weight_moban = $near_moban;
+        $near_height_moban = $near_moban;
         foreach ($near_weight_moban as $near_k => $near_v){
             if($near_v['weight'] < $data_weight){
                 if(isset($near_weight_moban[$near_k-1])){
@@ -273,6 +274,151 @@ class BabyLogic extends LogicBase{
             $bf_predicting_height = Db::name('height_moban')->where('month',216)->where('sex',$baby_data['sex'])->where('level',$near_moban[1]['level'])->value('height');
             $bf_predicting_height -= ($near_moban[1]['height'] - $data_height);
         }
+
+        if(in_array($now_age_arr,[0,6])){
+            if($data_height <= $before_moban[0]['height']){
+                $height_pot = 3;
+                // $bf_predicting_height = $data_height;
+            }else if($data_height >= $before_moban[6]['height']){
+                $height_pot = 97;
+                // $bf_predicting_height = $data_height;
+            }else{
+                foreach ($before_moban as $before_k => $before_v){
+                    if($data_height == $before_v['height']){
+                        $height_pot = level_to_num($before_v['level']);
+                        // $bf_predicting_height = $data_height;
+                        break;
+                    }
+                    if ($data_height < $before_v['height']) {
+                        // 找到大百分位（第一个大于当前身高的值）
+                        $big_percentile_index = $before_k;
+                        // 小百分位是大百分位的前一个索引
+                        $small_percentile_index = $big_percentile_index - 1;
+                        
+                        // 小百分位值和大百分位值
+                        $small_percentile = level_to_num($before_moban[$small_percentile_index]['level']);
+                        $big_percentile = level_to_num($before_v['level']);
+                        
+                        // 小百分位身高和大百分位身高
+                        $small_height = $before_moban[$small_percentile_index]['height'];
+                        $big_height = $before_v['height'];
+                        
+                        // 计算百分位
+                        $height_pot = bcadd($small_percentile , ($data_height - $small_height) / ($big_height - $small_height) * ($big_percentile - $small_percentile),0);
+                        // if($height_pot == $big_percentile){
+                            // $bf_predicting_height = $big_height;
+                        // }else{
+                            // $bf_predicting_height = $small_height;
+                        // }
+
+                        break;
+                    }
+                }
+            }
+        }else{
+            //1.年龄转换：整岁年龄+月龄÷12
+            // (1)如目标年龄为4岁11个月，身高为107cm，年龄转换则为4+11÷12≈4.92岁，4.92岁低领为4.5，高龄为5岁
+            $age_pot = bcadd($now_age_arr['year'],$now_age_arr['month']/12,2);
+            if($now_age_arr['month'] > 6){
+                $min_age_pot = bcadd($now_age_arr['year'],0.5,1);
+                $max_age_pot = bcadd($now_age_arr['year'],1,1);
+            }else{
+                $min_age_pot = bcadd($now_age_arr['year'],0,1);
+                $max_age_pot = bcadd($now_age_arr['year'],0.5,1);
+            }
+
+            //(1)插值比例=（目标年龄-低龄）÷（高龄-低龄）
+            // ①（4.92-4.5）÷（5-4.5）=0.84
+            $cha_pot = bcdiv(($age_pot-$min_age_pot),($max_age_pot-$min_age_pot),2);
+            //(2)计算出当前年龄P3、P10、P25、P50、P75、P90、P97插值
+            // ①插值=低龄身高+插值比例x（高龄身高-低龄身高）
+            //②四舍五入保留一位小数
+            $p3_pot  = bcadd($before_moban[0]['height'],$cha_pot*($after_moban[0]['height'] - $before_moban[0]['height']),1);
+            $p10_pot = bcadd($before_moban[1]['height'],$cha_pot*($after_moban[1]['height'] - $before_moban[1]['height']),1);
+            $p25_pot = bcadd($before_moban[2]['height'],$cha_pot*($after_moban[2]['height'] - $before_moban[2]['height']),1);
+            $p50_pot = bcadd($before_moban[3]['height'],$cha_pot*($after_moban[3]['height'] - $before_moban[3]['height']),1);
+            $p75_pot = bcadd($before_moban[4]['height'],$cha_pot*($after_moban[4]['height'] - $before_moban[4]['height']),1);
+            $p90_pot = bcadd($before_moban[5]['height'],$cha_pot*($after_moban[5]['height'] - $before_moban[5]['height']),1);
+            $p97_pot = bcadd($before_moban[6]['height'],$cha_pot*($after_moban[6]['height'] - $before_moban[6]['height']),1);
+
+            $new_height_arr = [
+                $p3_pot,
+                $p10_pot,
+                $p25_pot,
+                $p50_pot,
+                $p75_pot,
+                $p90_pot,
+                $p97_pot
+            ];
+            //3.百分位=小百分位+（当前身高-小百分位身高数值）÷（大百分位身高数值-小百分位身高数值）x（大百分位-小百分位）
+            // (1)通过已知当前年龄插值取值
+            // ①25+（107-106.8）÷（109.6-106.8）x（50-25）=26.7857=27%，则当前4岁11个月，身高107cm的女孩百分位为27%
+            // (2)计算百分位值小于3%则直接为3%，大于97%则直接为97%
+            if($data_height <= $p3_pot || $data_height >= $p97_pot || in_array($data_height,$new_height_arr)){
+                // $bf_predicting_height = $data_height;
+                if($data_height <= $p3_pot){
+                    $height_pot = 3;
+                }else if($data_height >= $p97_pot){
+                    $height_pot = 97;
+                }else{
+                    // 根据在new_height_arr中的位置设置对应的height_pot值
+                    $index = array_search($data_height, $new_height_arr);
+                    switch($index){
+                        case 1: // p10_pot
+                            $height_pot = 10;
+                            break;
+                        case 2: // p25_pot
+                            $height_pot = 25;
+                            break;
+                        case 3: // p50_pot
+                            $height_pot = 50;
+                            break;
+                        case 4: // p75_pot
+                            $height_pot = 75;
+                            break;
+                        case 5: // p90_pot
+                            $height_pot = 90;
+                            break;
+                        default:
+                            $height_pot = 123123;
+                            break;
+                    }
+                }
+            }else {
+                foreach ($new_height_arr as $new_height_k => $new_height_v) {
+                    if ($data_height < $new_height_v) {
+                        // 找到大百分位（第一个大于当前身高的值）
+                        $big_percentile_index = $new_height_k;
+                        // 小百分位是大百分位的前一个索引
+                        $small_percentile_index = $big_percentile_index - 1;
+
+                        // 百分位序列
+                        $percentiles = [3, 10, 25, 50, 75, 90, 97];
+
+                        // 小百分位值和大百分位值
+                        $small_percentile = $percentiles[$small_percentile_index];
+                        $big_percentile   = $percentiles[$big_percentile_index];
+
+                        // 小百分位身高和大百分位身高
+                        $small_height = $new_height_arr[$small_percentile_index];
+                        $big_height   = $new_height_v;
+
+                        // 计算百分位
+                        $height_pot = bcadd($small_percentile, ($data_height - $small_height) / ($big_height - $small_height) * ($big_percentile - $small_percentile), 0);
+                        // $kkk = 'p'.$height_pot.'_pot';
+                        // $bf_predicting_height = $$kkk;
+                        // if($height_pot == $small_percentile){
+                        //     $bf_predicting_height = $small_height;
+                        // }else{
+                        //     $bf_predicting_height = $big_height;
+                        // }
+                        break;
+                    }
+                }
+            }
+        }
+
+        //百分预测身高
         $bf_predicting_height = round($bf_predicting_height,2);
         //AI预测身高
         $ai_predicting_height =  bcadd($moban_18[3]['height'] , ($data_height - $before_moban[3]['height'])/$cha_height * $cha_18,2);
@@ -465,8 +611,8 @@ class BabyLogic extends LogicBase{
         $ai_predicting_height = $base_prediction + $bmi_correction + $bone_age_correction;
 // var_dump('最终AI预测身高:'.$ai_predicting_height.'基础预测值:'.$base_prediction.'BMI修正值:'.$bmi_correction.'骨龄修正值:'.$bone_age_correction);die;
         // 如果当前身高低于模板值中第一个的身高，则$ai_predicting_height减去（模板值第一个身高-当前身高）
-        if ($data_height < $near_moban[0]['height']) {
-            $ai_predicting_height = $ai_predicting_height - ($near_moban[0]['height'] - $data_height);
+        if ($data_height < $near_height_moban[0]['height']) {
+            $ai_predicting_height = $ai_predicting_height - ($near_height_moban[0]['height'] - $data_height);
         }
         // 四舍五入保留1位小数
         $ai_predicting_height = round($ai_predicting_height, 1);
