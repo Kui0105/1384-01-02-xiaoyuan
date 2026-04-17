@@ -614,9 +614,31 @@ class BabyLogic extends LogicBase{
         if ($data_height < $near_height_moban[0]['height']) {
             $ai_predicting_height = $ai_predicting_height - ($near_height_moban[0]['height'] - $data_height);
         }
+
+
         // 四舍五入保留1位小数
         $ai_predicting_height = round($ai_predicting_height, 1);
         // AI预测身高
+
+        // 小元AI预测身高约束规则
+        $age_in_years = $now_age_arr['year'] + $now_age_arr['month'] / 12;
+        if ($baby_data['sex'] == 2) { // 女孩
+            if ($age_in_years >= 16) {
+                $ai_predicting_height = $data_height; // 16岁及以上取当前身高
+            } elseif ($age_in_years >= 15) {
+                $ai_predicting_height = $data_height + 0.5; // 15岁当前身高+0.5cm
+            } elseif ($age_in_years >= 14) {
+                $ai_predicting_height = $data_height + 1; // 14岁当前身高+1cm
+            }
+        } else { // 男孩
+            if ($age_in_years >= 18) {
+                $ai_predicting_height = $data_height; // 18岁及以上取当前身高
+            } elseif ($age_in_years >= 17) {
+                $ai_predicting_height = $data_height + 0.5; // 17岁当前身高+0.5cm
+            } elseif ($age_in_years >= 16) {
+                $ai_predicting_height = $data_height + 1; // 16岁当前身高+1cm
+            }
+        }
 
         //新增ai预测算法
 
