@@ -274,8 +274,9 @@ class BabyLogic extends LogicBase{
             $bf_predicting_height = Db::name('height_moban')->where('month',216)->where('sex',$baby_data['sex'])->where('level',$near_moban[1]['level'])->value('height');
             $bf_predicting_height -= ($near_moban[1]['height'] - $data_height);
         }
-
-        if(in_array($now_age_arr,[0,6])){
+// var_dump($now_age_arr);
+        if(in_array($now_age_arr['month'],[0,6])){
+            // var_dump(111);
             if($data_height <= $before_moban[0]['height']){
                 $height_pot = 3;
                 // $bf_predicting_height = $data_height;
@@ -302,7 +303,8 @@ class BabyLogic extends LogicBase{
                         // 小百分位身高和大百分位身高
                         $small_height = $before_moban[$small_percentile_index]['height'];
                         $big_height = $before_v['height'];
-                        
+                        //3 + (145 - 143.3) / (147.7 - 143.3) * (75 - 50)
+                        //
                         // 计算百分位
                         $height_pot = bcadd($small_percentile , ($data_height - $small_height) / ($big_height - $small_height) * ($big_percentile - $small_percentile),0);
                         // if($height_pot == $big_percentile){
@@ -316,6 +318,7 @@ class BabyLogic extends LogicBase{
                 }
             }
         }else{
+            // var_dump(222);
             //1.年龄转换：整岁年龄+月龄÷12
             // (1)如目标年龄为4岁11个月，身高为107cm，年龄转换则为4+11÷12≈4.92岁，4.92岁低领为4.5，高龄为5岁
             $age_pot = bcadd($now_age_arr['year'],$now_age_arr['month']/12,2);
@@ -417,7 +420,7 @@ class BabyLogic extends LogicBase{
                 }
             }
         }
-
+// var_dump($height_pot);die;
         //百分预测身高
         $bf_predicting_height = round($bf_predicting_height,2);
         //AI预测身高
