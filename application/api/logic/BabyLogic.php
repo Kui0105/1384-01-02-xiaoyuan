@@ -274,7 +274,6 @@ class BabyLogic extends LogicBase{
             $bf_predicting_height = Db::name('height_moban')->where('month',216)->where('sex',$baby_data['sex'])->where('level',$near_moban[1]['level'])->value('height');
             $bf_predicting_height -= ($near_moban[1]['height'] - $data_height);
         }
-// var_dump($now_age_arr);
         if(in_array($now_age_arr['month'],[0,6])){
             // var_dump(111);
             if($data_height <= $before_moban[0]['height']){
@@ -383,7 +382,7 @@ class BabyLogic extends LogicBase{
                             $height_pot = 90;
                             break;
                         default:
-                            $height_pot = 123123;
+                            $height_pot = 90;
                             break;
                     }
                 }
@@ -420,7 +419,32 @@ class BabyLogic extends LogicBase{
                 }
             }
         }
-// var_dump($height_pot);die;
+        // // 18岁低身高 + （当前百分位 - 小百分位）/（大百分位 - 小百分位）*（18岁高身高 - 18岁低身高）
+        // $percentiles = [3, 10, 25, 50, 75, 90, 97];
+        // // 18岁低身高  + （当前百分位 - 小百分位）/（大百分位-小百分位）*（18岁高身高-18岁低身高）
+        // $percentiles = [3,10,25,50,75,90,97];
+        $percentiles = [3,10,25,50,75,90,97];
+        $moban_18_height_arr = array_column($moban_18,'height');
+        $bf_predicting_height = 0;
+
+        if($height_pot <= 3){
+            $bf_predicting_height = $moban_18_height_arr[0];
+        }else if($height_pot >= 97){
+            $bf_predicting_height = $moban_18_height_arr[6];
+        }else if(in_array($height_pot,$percentiles)){
+            $bf_predicting_height = $moban_18_height_arr[array_search($height_pot,$percentiles)];
+        }else{
+            foreach($percentiles as $percentile_k => $percentile_v){
+                if($height_pot < $percentile_v){
+                    $big_percentile = $percentile_v;
+                    $small_percentile = $percentiles[$percentile_k - 1];
+                    $big_18_height = $moban_18_height_arr[$percentile_k];
+                    $small_18_height = $moban_18_height_arr[$percentile_k - 1];
+                    $bf_predicting_height = bcadd($small_18_height,($height_pot - $small_percentile) / ($big_percentile - $small_percentile) * ($big_18_height - $small_18_height),2);
+                    break;
+                }
+            }
+        }
         //百分预测身高
         $bf_predicting_height = round($bf_predicting_height,2);
         //AI预测身高
