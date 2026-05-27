@@ -155,7 +155,7 @@ class BabyLogic extends LogicBase{
             $after_moban = Db::name('height_moban')->where('sex',$baby_data['sex'])->where('month','>',$sum_month)->order('month asc,height asc')->limit(7)->select();
         }
         if(empty($before_moban) || empty($after_moban)){
-            $res['msg'] = '测评失败';
+            $res['msg'] = '测评区间仅18岁以下';
             return $res;
         }
 
@@ -895,6 +895,7 @@ class BabyLogic extends LogicBase{
         $baby_data['check_spleen_status'] = false;
         $baby_data['check_bone_status'] = false;
         $baby_data['check_sport_status'] = false;
+        $baby_data['check_nutrition_status'] = false;
         $baby_check_type_arr = Db::name('baby_check')->where('baby_id',$baby_data['id'])->where('is_del',0)->group('type')->column('type');
         if(in_array(1,$baby_check_type_arr)){
             $baby_data['check_height_status'] = true;
@@ -910,6 +911,9 @@ class BabyLogic extends LogicBase{
         }
         if(in_array(5,$baby_check_type_arr)){
             $baby_data['check_sport_status'] = true;
+        }
+        if(in_array(6,$baby_check_type_arr)){
+            $baby_data['check_nutrition_status'] = true;
         }
         return $baby_data;
     }
