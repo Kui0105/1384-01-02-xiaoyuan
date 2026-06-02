@@ -3,6 +3,9 @@
     .layui-form-label{
         width: 100px;
     }
+    .layui-input-inline .layui-layedit {
+        width: 500px;
+    }
 </style>
 
 <div class="layui-fluid">
@@ -272,12 +275,49 @@
         base: '/static/plug/layui-admin/dist/layuiadmin/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use(['index','table','like'], function(){
+    }).use(['index','table','likeedit','like','layedit'], function(){
         var $ = layui.$
             ,form = layui.form
+            ,likeedit = layui.layedit
             ,like = layui.like;
 
+        var editorConfig = {
+            height: 150,
+            hideTool: ['image', 'face', 'link', 'unlink', 'code', 'help'],
+            fontSize: {
+                code: ["1", "2", "3", "4", "5", "6", "7", "8"],
+                text: ["9px", "13px","14px", "16px", "18px", "24px", "32px", "48px"]
+            },
+            tool: [
+                'strong', 'italic', 'underline', 'del',
+                '|',
+                'left', 'center', 'right',
+                '|',
+                'fontSize', 'colorpicker'
+            ]
+        };
+
+        var editorIndexes = [];
+        var textareas = $('.layui-form textarea');
+
+        textareas.attr('lay-verify', 'content');
+
+        textareas.each(function () {
+            editorIndexes.push(likeedit.build(this.id, editorConfig));
+        });
+
+        form.verify({
+            content: function() {
+                layui.each(editorIndexes, function(_, index) {
+                    likeedit.sync(index);
+                });
+            }
+        });
+
         form.on('submit(setSleep)',function (data) {
+            layui.each(editorIndexes, function(_, index) {
+                likeedit.sync(index);
+            });
             like.ajax({
                 url: '{:url("BabySetting/setSleep")}'
                 ,data: data.field

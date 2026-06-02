@@ -139,7 +139,7 @@ class SignLogic
         $height_p = ConfigServer::get('point_way','height_limit',0);
         $height_int = ConfigServer::get('point_way','height',0);
         // if($height_p){
-            $now_num = AccountLog::where(['source_type'=>'height','user_id'=>$user_id])->whereTime('create_time', 'month')->count();
+            $now_num = AccountLog::where(['source_type'=>AccountLog::check_height,'user_id'=>$user_id])->whereTime('create_time', 'month')->count();
             if(!$now_num){
                 $height_status = false;
             }
@@ -157,7 +157,7 @@ class SignLogic
         $order_p = ConfigServer::get('point_way','order_limit',0);
         $order_int = ConfigServer::get('point_way','order',0);
         if($order_p){
-            $now_num = AccountLog::where(['source_type'=>'order','user_id'=>$user_id])->whereTime('create_time', 'today')->count();
+            $now_num = AccountLog::where(['source_type'=>AccountLog::order_send,'user_id'=>$user_id])->whereTime('create_time', 'today')->count();
             if($order_p > $now_num){
                 $order_status = false;
             }
@@ -172,7 +172,7 @@ class SignLogic
         $invite_p = ConfigServer::get('point_way','invite_limit',0);
         $invite_int = ConfigServer::get('point_way','invite',0);
         if($invite_p){
-            $now_num = AccountLog::where(['source_type'=>'invite','user_id'=>$user_id])->whereTime('create_time', 'today')->count();
+            $now_num = AccountLog::where(['source_type'=>AccountLog::invite_user,'user_id'=>$user_id])->whereTime('create_time', 'today')->count();
             if($invite_p > $now_num){
                 $invite_status = false;
             }
@@ -187,7 +187,7 @@ class SignLogic
         $like_p = ConfigServer::get('point_way','like_limit',0);
         $like_int = ConfigServer::get('point_way','like',0);
         if($like_p){
-            $now_num = AccountLog::where(['source_type'=>'like','user_id'=>$user_id])->whereTime('create_time', 'today')->count();
+            $now_num = AccountLog::where(['source_type'=>AccountLog::community_like,'user_id'=>$user_id])->whereTime('create_time', 'today')->count();
             if($like_p > $now_num){
                 $like_status = false;
             }
@@ -202,7 +202,7 @@ class SignLogic
         $comment_p = ConfigServer::get('point_way','comment_limit',0);
         $comment_int = ConfigServer::get('point_way','comment',0);
         if($comment_p){
-            $now_num = AccountLog::where(['source_type'=>'comment','user_id'=>$user_id])->whereTime('create_time', 'today')->count();
+            $now_num = AccountLog::where(['source_type'=>AccountLog::community_comment,'user_id'=>$user_id])->whereTime('create_time', 'today')->count();
             if($comment_p > $now_num){
                 $comment_status = false;
             }
@@ -217,7 +217,7 @@ class SignLogic
         $share_p = ConfigServer::get('point_way','share_limit',0);
         $share_int = ConfigServer::get('point_way','share',0);
         if($share_p){
-            $now_num = AccountLog::where(['source_type'=>'share','user_id'=>$user_id])->whereTime('create_time', 'today')->count();
+            $now_num = AccountLog::where(['source_type'=>AccountLog::share_article,'user_id'=>$user_id])->whereTime('create_time', 'today')->count();
             if($share_p > $now_num){
                 $share_status = false;
             }
@@ -232,7 +232,7 @@ class SignLogic
         $video_p = ConfigServer::get('point_way','video_limit',0);
         $video_int = ConfigServer::get('point_way','video',0);
         if($video_p){
-            $now_num = AccountLog::where(['source_type'=>'video','user_id'=>$user_id])->whereTime('create_time', 'today')->count();
+            $now_num = AccountLog::where(['source_type'=>AccountLog::watch_video,'user_id'=>$user_id])->whereTime('create_time', 'today')->count();
             if($video_p > $now_num){
                 $video_status = false;
             }

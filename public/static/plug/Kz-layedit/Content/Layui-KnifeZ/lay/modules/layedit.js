@@ -1512,8 +1512,8 @@ layui.define(['layer', 'form', 'code'], function (exports) {
                    // 字体大小
                    , fontSize: function (range) {
                         var alt = set.fontSize || {
-                            code: ["1", "2", "3", "4", "5", "6","7"],
-                            text: ["9px", "13px", "16px", "18px", "24px", "32px","48px"]
+                            code: ["1", "2", "3", "4", "5", "6","7","8"],
+                            text: ["9px", "13px", "14px", "16px", "18px", "24px", "32px","48px"]
                         }, arr = {}, arr2 = {};
                         var codes = alt.code;
                         var texts = alt.text;
