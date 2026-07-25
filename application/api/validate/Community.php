@@ -11,9 +11,6 @@ class Community extends Validate
     protected $rule = [
         'name'      => 'require',
         'content'   => 'require|checkLength',
-        'latitude'  => 'require',
-        'longitude' => 'require',
-        'address'   => 'require',
     ];
 
     protected $message = [

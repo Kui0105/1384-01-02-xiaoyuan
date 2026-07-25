@@ -18,10 +18,10 @@ class CommunityLogic extends LogicBase{
             'status'    => 1,
             'name'      => $post['name']??'',
             'content'   => $post['content']??'',
-            'imgs'      => $post['imgs']?implode(',',clearDomain(explode(',',$post['imgs']))):'',
-            'latitude'  => $post['latitude'],
-            'longitude' => $post['longitude'],
-            'address'   => $post['address'],
+            'imgs'      => !empty($post['imgs']) ? implode(',', clearDomain(explode(',', $post['imgs']))) : '',
+            'latitude'  => $post['latitude'] ?? '',
+            'longitude' => $post['longitude'] ?? '',
+            'address'   => $post['address'] ?? '',
             'create_time'   => time(),
         ];
         Community::insert($insert_data);
