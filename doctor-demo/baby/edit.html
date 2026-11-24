@@ -89,6 +89,13 @@
             </div>
         </div>
 
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">诊断症状</label>
+            <div class="layui-input-block">
+                <textarea name="diagnosis" placeholder="请输入诊断症状" class="layui-textarea"></textarea>
+            </div>
+        </div>
+
         <div class="layui-form-item" style="display:none;">
             <button class="layui-btn" id="baby-edit-submit" lay-submit lay-filter="baby-edit-submit">确定</button>
         </div>
@@ -117,9 +124,9 @@
             var params = getQueryParams();
             if(params.id){
                 var MOCK = {
-                    1:{name:'林小满',sex:1,age:5,birthday:'2021-03-15',height:108,weight:18.5,mobile:'13900139001',father_height:175,mother_height:163,allergy:'花生过敏'},
-                    2:{name:'陈一诺',sex:0,age:4,birthday:'2022-07-08',height:104,weight:17.2,mobile:'13900139002',father_height:178,mother_height:165,allergy:'无'},
-                    3:{name:'王梓涵',sex:1,age:6,birthday:'2020-11-22',height:120,weight:22.4,mobile:'13900139003',father_height:172,mother_height:160,allergy:'牛奶过敏'}
+                    1:{name:'林小满',sex:1,age:5,birthday:'2021-03-15',height:108,weight:18.5,mobile:'13900139001',father_height:175,mother_height:163,allergy:'花生过敏',diagnosis:'身高偏矮，建议营养干预'},
+                    2:{name:'陈一诺',sex:0,age:4,birthday:'2022-07-08',height:104,weight:17.2,mobile:'13900139002',father_height:178,mother_height:165,allergy:'无',diagnosis:'正常发育'},
+                    3:{name:'王梓涵',sex:1,age:6,birthday:'2020-11-22',height:120,weight:22.4,mobile:'13900139003',father_height:172,mother_height:160,allergy:'牛奶过敏',diagnosis:'体重偏高，建议控制饮食'}
                 };
                 var row = MOCK[params.id];
                 if(row){ form.val('baby-form', row); }

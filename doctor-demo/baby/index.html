@@ -10,6 +10,10 @@
         .card { background: #fff; border-radius: 8px; padding: 16px; }
         .page-title { font-size: 17px; font-weight: 600; color: #333; margin-bottom: 14px; }
         .page-title .layui-icon { color: #3A91FB; margin-right: 6px; }
+        .detail-list { padding: 6px 4px; }
+        .detail-row { display:flex; padding:9px 0; border-bottom:1px dashed #eee; font-size:13px; }
+        .detail-row .k { width:110px; color:#999; flex-shrink:0; }
+        .detail-row .v { flex:1; color:#333; word-break:break-all; }
     </style>
 <script src="/assets/demo-auth.js"></script>
 </head>
@@ -66,7 +70,8 @@
             {{# } else { }}<span style="color:#aaa">暂无</span>{{# } }}
         </script>
         <script type="text/html" id="op-tpl">
-            <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="edit">编辑</a>
+            <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="detail">查看详情</a>
+            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
             <a class="layui-btn layui-btn-xs" lay-event="report">测评报告</a>
             <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
         </script>
@@ -76,12 +81,12 @@
 <script>
     // ===== Mock 儿童档案 =====
     var MOCK_BABIES = [
-        {id:1, name:'林小满', sex:1, age:5, birthday:'2021-03-15', mobile:'13900139001', father_height:175, mother_height:163, allergy:'花生过敏', create_time:'2026-11-20 10:30:20', report_count:1},
-        {id:2, name:'陈一诺', sex:2, age:4, birthday:'2022-07-08', mobile:'13900139002', father_height:178, mother_height:165, allergy:'无', create_time:'2026-11-18 14:22:08', report_count:1},
-        {id:3, name:'王梓涵', sex:1, age:6, birthday:'2020-11-22', mobile:'13900139003', father_height:172, mother_height:160, allergy:'牛奶过敏', create_time:'2026-11-15 09:15:43', report_count:2},
-        {id:4, name:'刘思琪', sex:2, age:3, birthday:'2023-05-30', mobile:'13900139004', father_height:180, mother_height:168, allergy:'无', create_time:'2026-11-12 16:40:11', report_count:0},
-        {id:5, name:'周子墨', sex:1, age:5, birthday:'2021-09-02', mobile:'13900139005', father_height:176, mother_height:162, allergy:'鸡蛋过敏', create_time:'2026-11-08 11:05:36', report_count:1},
-        {id:6, name:'吴欣怡', sex:2, age:7, birthday:'2019-12-18', mobile:'13900139006', father_height:173, mother_height:161, allergy:'无', create_time:'2026-11-05 15:33:52', report_count:0}
+        {id:1, name:'林小满', sex:1, age:5, birthday:'2021-03-15', height:108, weight:18.5, mobile:'13900139001', father_height:175, mother_height:163, allergy:'花生过敏', diagnosis:'身高偏矮，建议营养干预', create_time:'2026-11-20 10:30:20', report_count:1},
+        {id:2, name:'陈一诺', sex:2, age:4, birthday:'2022-07-08', height:104, weight:17.2, mobile:'13900139002', father_height:178, mother_height:165, allergy:'无', diagnosis:'正常发育', create_time:'2026-11-18 14:22:08', report_count:1},
+        {id:3, name:'王梓涵', sex:1, age:6, birthday:'2020-11-22', height:120, weight:22.4, mobile:'13900139003', father_height:172, mother_height:160, allergy:'牛奶过敏', diagnosis:'体重偏高，建议控制饮食', create_time:'2026-11-15 09:15:43', report_count:2},
+        {id:4, name:'刘思琪', sex:2, age:3, birthday:'2023-05-30', height:100, weight:16.0, mobile:'13900139004', father_height:180, mother_height:168, allergy:'无', diagnosis:'正常发育', create_time:'2026-11-12 16:40:11', report_count:0},
+        {id:5, name:'周子墨', sex:1, age:5, birthday:'2021-09-02', height:112, weight:19.6, mobile:'13900139005', father_height:176, mother_height:162, allergy:'鸡蛋过敏', diagnosis:'轻微过敏体质', create_time:'2026-11-08 11:05:36', report_count:1},
+        {id:6, name:'吴欣怡', sex:2, age:7, birthday:'2019-12-18', height:126, weight:24.0, mobile:'13900139006', father_height:173, mother_height:161, allergy:'无', diagnosis:'正常发育', create_time:'2026-11-05 15:33:52', report_count:0}
     ];
 
     layui.use(['table','form','laydate','layer'], function(){
@@ -94,18 +99,13 @@
             ,data: MOCK_BABIES
             ,cols: [[
                 {type:'checkbox', fixed:'left'}
-                ,{field:'id', title:'ID', width:70}
-                ,{field:'name', title:'姓名', width:100}
-                ,{field:'sex', title:'性别', templet:'#sex-tpl', align:'center', width:70}
-                ,{field:'age', title:'年龄', width:70, templet:function(d){return d.age+'岁';}}
-                ,{field:'birthday', title:'出生日期', width:120}
-                ,{field:'mobile', title:'手机号码', width:140}
-                ,{field:'father_height', title:'父亲身高', templet:'#height-tpl', width:100}
-                ,{field:'mother_height', title:'母亲身高', templet:'#mheight-tpl', width:100}
-                ,{field:'allergy', title:'过敏史', width:110}
-                ,{field:'report_count', title:'测评报告', toolbar:'#report-tpl', width:120}
-                ,{field:'create_time', title:'创建时间', width:165}
-                ,{fixed:'right', title:'操作', toolbar:'#op-tpl', width:220, align:'center'}
+                ,{field:'name', title:'姓名', width:110}
+                ,{field:'sex', title:'性别', templet:'#sex-tpl', align:'center', width:80}
+                ,{field:'age', title:'年龄', width:80, templet:function(d){return d.age+'岁';}}
+                ,{field:'mobile', title:'电话', width:140}
+                ,{field:'allergy', title:'过敏', width:130}
+                ,{field:'create_time', title:'创建时间', width:170}
+                ,{fixed:'right', title:'操作', toolbar:'#op-tpl', width:300, align:'center'}
             ]]
             ,page:true, limit:10, text:{none:'暂无数据！'}
         });
@@ -165,7 +165,8 @@
         // 行事件
         table.on('tool(baby-table)', function(obj){
             var d = obj.data;
-            if(obj.event==='edit'){ openEdit(d); }
+            if(obj.event==='detail'){ openDetail(d); }
+            else if(obj.event==='edit'){ openEdit(d); }
             else if(obj.event==='del'){
                 layer.confirm('确定删除档案：<span style="color:red">'+d.name+'</span>？<br><span style="color:#999;font-size:12px">删除后不可恢复，请谨慎操作</span>', {icon:3}, function(idx){
                     layer.msg('模拟删除成功（mock）', {icon:1}); layer.close(idx); obj.del();
@@ -173,6 +174,31 @@
             }
             else if(obj.event==='report'){ openReport(d); }
         });
+
+        function openDetail(d){
+            var rows = [
+                ['ID', d.id],
+                ['姓名', d.name],
+                ['性别', d.sex == 1 ? '男' : '女'],
+                ['年龄', d.age + '岁'],
+                ['出生日期', d.birthday || '-'],
+                ['身高', d.height != null ? d.height+'cm' : '-'],
+                ['体重', d.weight != null ? d.weight+'kg' : '-'],
+                ['手机号码', d.mobile || '-'],
+                ['父亲身高', d.father_height != null ? d.father_height+'cm' : '-'],
+                ['母亲身高', d.mother_height != null ? d.mother_height+'cm' : '-'],
+                ['过敏史', d.allergy || '-'],
+                ['诊断症状', d.diagnosis || '-'],
+                ['测评报告', (d.report_count || 0) + ' 份'],
+                ['创建时间', d.create_time || '-']
+            ];
+            var html = '<div class="detail-list">';
+            $.each(rows, function(i, row){
+                html += '<div class="detail-row"><span class="k">'+row[0]+'</span><span class="v">'+row[1]+'</span></div>';
+            });
+            html += '</div>';
+            layer.open({type:1, title:'档案详情 - '+d.name, content:html, area:['560px','560px'], btn:['关闭']});
+        }
 
         function openReport(d){
             layer.open({
