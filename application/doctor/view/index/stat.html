@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>工作台</title>
+    <link rel="stylesheet" href="/static/plug/layui-admin/dist/layuiadmin/layui/css/layui.css" media="all">
+    <style>
+        body { background: #f5f7fa; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", Arial, sans-serif; padding: 20px; }
+        .welcome {
+            background: linear-gradient(135deg,#3A91FB 0%,#1E6FD9 100%); color: #fff;
+            border-radius: 10px; padding: 24px 28px; margin-bottom: 18px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .welcome h2 { font-size: 21px; font-weight: 600; margin-bottom: 6px; }
+        .welcome p { font-size: 13px; opacity: .85; }
+        .welcome .date { font-size: 13px; opacity: .9; text-align: right; line-height: 1.9; }
+
+        .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 18px; }
+        .stat-card {
+            background: #fff; border-radius: 10px; padding: 20px;
+            display: flex; align-items: center; border: 1px solid #eef0f3;
+        }
+        .stat-card .s-icon {
+            width: 52px; height: 52px; border-radius: 12px; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center; font-size: 26px; margin-right: 15px;
+        }
+        .stat-card .s-label { font-size: 13px; color: #888; margin-bottom: 6px; }
+        .stat-card .s-value { font-size: 26px; font-weight: 600; color: #252B33; line-height: 1; }
+        .stat-card .s-trend { font-size: 11px; margin-top: 6px; color: #999; }
+        .stat-card .s-trend em { font-style: normal; color: #16b777; margin-left: 4px; }
+
+        .panel { background: #fff; border-radius: 10px; border: 1px solid #eef0f3; padding: 18px 20px; }
+        .panel-title { font-size: 15px; font-weight: 600; color: #333; margin-bottom: 16px; padding-left: 10px; border-left: 3px solid #3A91FB; }
+        .chart-box { height: 260px; }
+        .quick-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-top: 18px; }
+        .quick-btn {
+            background: #fff; border: 1px solid #eef0f3; border-radius: 10px;
+            padding: 18px 10px; text-align: center; cursor: pointer; transition: all .15s;
+        }
+        .quick-btn:hover { border-color: #3A91FB; box-shadow: 0 4px 14px rgba(58,145,251,.12); }
+        .quick-btn .q-icon { font-size: 26px; color: #3A91FB; }
+        .quick-btn .q-text { font-size: 13px; color: #555; margin-top: 8px; }
+    </style>
+</head>
+<body>
+    <div class="welcome">
+        <div>
+            <h2>您好，张敏医生 👋</h2>
+            <p>欢迎使用小元优长医生工作台，今天也一起守护孩子健康成长。</p>
+        </div>
+        <div class="date" id="date-box"></div>
+    </div>
+
+    <div class="stat-grid">
+        <div class="stat-card">
+            <div class="s-icon" style="background:#EBF4FF;color:#3A91FB"><i class="layui-icon layui-icon-form"></i></div>
+            <div><div class="s-label">儿童档案总数</div><div class="s-value">128</div><div class="s-trend">本月新增 <em>+12</em></div></div>
+        </div>
+        <div class="stat-card">
+            <div class="s-icon" style="background:#E8F8F1;color:#16b777"><i class="layui-icon layui-icon-file-b"></i></div>
+            <div><div class="s-label">测评报告</div><div class="s-value">356</div><div class="s-trend">本月新增 <em>+28</em></div></div>
+        </div>
+        <div class="stat-card">
+            <div class="s-icon" style="background:#FFF3E8;color:#FF8B3D"><i class="layui-icon layui-icon-read"></i></div>
+            <div><div class="s-label">成长科普阅读</div><div class="s-value">2,480</div><div class="s-trend">较上周 <em>+8.6%</em></div></div>
+        </div>
+        <div class="stat-card">
+            <div class="s-icon" style="background:#F3EBFF;color:#8B5CF6"><i class="layui-icon layui-icon-video"></i></div>
+            <div><div class="s-label">视频课堂观看</div><div class="s-value">1,136</div><div class="s-trend">较上周 <em>+5.2%</em></div></div>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-title">近7日儿童档案新增趋势</div>
+        <div class="chart-box" id="chart"></div>
+    </div>
+
+    <div class="panel" style="margin-top:16px;">
+        <div class="panel-title">快捷入口</div>
+        <div class="quick-row">
+            <div class="quick-btn" data-go="baby"><div class="q-icon"><i class="layui-icon layui-icon-add-1"></i></div><div class="q-text">新增儿童档案</div></div>
+            <div class="quick-btn" data-go="baby"><div class="q-icon"><i class="layui-icon layui-icon-file"></i></div><div class="q-text">上传测评报告</div></div>
+            <div class="quick-btn" data-go="science"><div class="q-icon"><i class="layui-icon layui-icon-read"></i></div><div class="q-text">浏览成长科普</div></div>
+            <div class="quick-btn" data-go="video"><div class="q-icon"><i class="layui-icon layui-icon-video"></i></div><div class="q-text">观看视频课堂</div></div>
+        </div>
+    </div>
+
+    <script src="/static/plug/layui-admin/dist/layuiadmin/layui/layui.js"></script>
+    <script>
+        layui.use(['layer'], function(){
+            var $ = layui.$, layer = layui.layer;
+
+            // 日期
+            var now = new Date();
+            var week = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'];
+            $('#date-box').html(now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0')
+                + '<br>' + week[now.getDay()]);
+
+            // 趋势迷你图（纯 CSS 柱状，无外部依赖）
+            var data = [8, 14, 11, 19, 15, 24, 21];
+            var labels = ['周一','周二','周三','周四','周五','周六','周日'];
+            var max = Math.max.apply(null, data);
+            var html = '<div style="display:flex;align-items:flex-end;height:210px;gap:14px;padding:10px 6px 0;">';
+            $.each(data, function(i, v){
+                var h = Math.round(v / max * 160);
+                html += '<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;">'
+                    + '<div style="font-size:12px;color:#888;margin-bottom:4px;">'+v+'</div>'
+                    + '<div style="width:60%;max-width:38px;height:'+h+'px;background:linear-gradient(180deg,#5FA8FF,#3A91FB);border-radius:4px 4px 0 0;"></div>'
+                    + '<div style="font-size:12px;color:#999;margin-top:8px;">'+labels[i]+'</div>'
+                    + '</div>';
+            });
+            html += '</div>';
+            $('#chart').html(html);
+
+            // 快捷入口（通知父框架切换菜单）
+            $('.quick-btn').on('click', function(){
+                var go = $(this).data('go');
+                var parentWin = window.parent;
+                if(parentWin && parentWin.$){
+                    var $menu = parentWin.$('.menu-item').filter(function(){ return $(this).data('url').indexOf('/doctor/' + go + '/') > -1; }).first();
+                    if($menu.length){ $menu.trigger('click'); return; }
+                }
+                var urlMap = {baby:'/doctor/baby/index.html', science:'/doctor/science/index.html', video:'/doctor/video/index.html'};
+                location.href = urlMap[go];
+            });
+        });
+    </script>
+</body>
+</html>

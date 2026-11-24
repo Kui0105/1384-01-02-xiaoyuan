@@ -1,0 +1,258 @@
+{layout name="layout1" /}
+<style>
+    .layui-table-cell { height: auto; }
+    .doctor-avatar { width: 48px; height: 48px; border-radius: 6px; object-fit: cover; display: inline-flex; align-items: center; justify-content: center; background: #EBF4FF; color: #3A91FB; font-size: 20px; }
+</style>
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <div class="layui-collapse like-layui-collapse" lay-accordion="" style="border:1px dashed #c4c4c4">
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title like-layui-colla-title" style="background-color: #fff">操作提示</h2>
+                    <div class="layui-colla-content layui-show">
+                        <p>* 医生账号由管理端创建，状态启用后医生端可登录。</p>
+                        <p>* 儿童档案、测评报告由医生端创建上传，管理端仅可查看。</p>
+                        <p>* 本页数据为演示用 mock 数据。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">所属诊所</label>
+                    <div class="layui-input-block">
+                        <select name="clinic_id" id="clinic_id">
+                            <option value="">全部诊所</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">医生姓名</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="name" id="name" placeholder="请输入" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">联系电话</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="mobile" id="mobile" placeholder="请输入" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <button class="layui-btn layui-btn-sm {$view_theme_color}" lay-submit lay-filter="doctor-search">
+                        <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                    </button>
+                    <button class="layui-btn layui-btn-sm layui-btn-primary" lay-submit lay-filter="doctor-clear-search">重置</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-card-body">
+            <div style="padding-bottom: 10px;">
+                <button class="layui-btn layui-btn-sm {$view_theme_color}" data-type="add">新增医生</button>
+                <button class="layui-btn layui-btn-sm layui-btn-danger" data-type="batchdel">删除所选</button>
+            </div>
+
+            <table id="doctor-lists" lay-filter="doctor-lists"></table>
+
+            <script type="text/html" id="avatar-tpl">
+                {{#  if(d.image){ }}
+                <img src="{{d.image}}" class="doctor-avatar image-show">
+                {{#  } else { }}
+                <span class="doctor-avatar">{{d.name.substring(0,1)}}</span>
+                {{#  } }}
+            </script>
+
+            <script type="text/html" id="clinic-tpl">
+                {{d.clinic_name || '-'}}
+            </script>
+
+            <script type="text/html" id="status-tpl">
+                <input type="checkbox" name="status" value="{{d.id}}" lay-filter="status-switch" lay-skin="switch" lay-text="启用|停用" {{ d.status == 1 ? 'checked' : '' }}>
+            </script>
+
+            <script type="text/html" id="operation">
+                <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>
+                <a class="layui-btn layui-btn-xs" lay-event="baby">儿童档案</a>
+                <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+            </script>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ============ Mock 数据 ============
+    var MOCK_CLINICS = [
+        {id: 1, name: '天使儿童诊所（总院）'},
+        {id: 2, name: '天使儿童诊所（分院）'},
+        {id: 3, name: '阳光儿科诊所'},
+        {id: 4, name: '成长关爱诊所'}
+    ];
+
+    var MOCK_DOCTORS = [
+        {id: 1001, image: '', name: '张敏', mobile: '13800138001', clinic_id: 1, clinic_name: '天使儿童诊所（总院）', status: 1, create_time: '2026-09-12 10:20:35'},
+        {id: 1002, image: '', name: '李文博', mobile: '13800138002', clinic_id: 1, clinic_name: '天使儿童诊所（总院）', status: 1, create_time: '2026-09-15 14:08:12'},
+        {id: 1003, image: '', name: '王雪', mobile: '13800138003', clinic_id: 2, clinic_name: '天使儿童诊所（分院）', status: 0, create_time: '2026-10-02 09:35:20'},
+        {id: 1004, image: '', name: '陈建国', mobile: '13800138004', clinic_id: 3, clinic_name: '阳光儿科诊所', status: 1, create_time: '2026-10-18 16:42:08'},
+        {id: 1005, image: '', name: '刘慧', mobile: '13800138005', clinic_id: 4, clinic_name: '成长关爱诊所', status: 1, create_time: '2026-11-01 11:15:46'},
+        {id: 1006, image: '', name: '赵宇', mobile: '13800138006', clinic_id: 3, clinic_name: '阳光儿科诊所', status: 0, create_time: '2026-11-08 15:27:33'}
+    ];
+
+    layui.config({
+        version: "{$front_version}",
+        base: '/static/plug/layui-admin/dist/layuiadmin/'
+    }).extend({
+        index: 'lib/index'
+    }).use(['index', 'table', 'form', 'like'], function(){
+        var $ = layui.$
+            , form = layui.form
+            , table = layui.table
+            , layer = layui.layer
+            , like = layui.like;
+
+        // 图片放大
+        $(document).on('click', '.image-show', function () {
+            var src = $(this).attr('src');
+            if (src) like.showImg(src, 600);
+        });
+
+        // 填充诊所下拉
+        var clinicOptions = '<option value="">全部诊所</option>';
+        $.each(MOCK_CLINICS, function (i, c) {
+            clinicOptions += '<option value="' + c.id + '">' + c.name + '</option>';
+        });
+        $('#clinic_id').html(clinicOptions);
+        form.render('select');
+
+        // 渲染表格（本地数据）
+        table.render({
+            elem: '#doctor-lists'
+            , data: MOCK_DOCTORS
+            , cols: [[
+                {type: 'checkbox', fixed: 'left'}
+                ,{field: 'id', title: 'ID', width: 80}
+                ,{field: 'image', title: '医生图片', templet: '#avatar-tpl', width: 90}
+                ,{field: 'name', title: '医生姓名', width: 120}
+                ,{field: 'mobile', title: '联系电话/登录账号', width: 170}
+                ,{field: 'clinic_name', title: '所属诊所', templet: '#clinic-tpl', width: 200}
+                ,{field: 'status', title: '状态', templet: '#status-tpl', align: 'center', width: 100}
+                ,{field: 'create_time', title: '创建时间', width: 170}
+                ,{fixed: 'right', title: '操作', align: 'center', toolbar: '#operation', width: 250}
+            ]]
+            , page: true
+            , limit: 10
+            , text: {none: '暂无数据！'}
+        });
+
+        // 搜索（本地过滤）
+        form.on('submit(doctor-search)', function(data){
+            var field = data.field;
+            var result = MOCK_DOCTORS.filter(function (row) {
+                if (field.clinic_id && row.clinic_id != field.clinic_id) return false;
+                if (field.name && row.name.indexOf(field.name) === -1) return false;
+                if (field.mobile && row.mobile.indexOf(field.mobile) === -1) return false;
+                return true;
+            });
+            table.reload('doctor-lists', {data: result, page: {curr: 1}});
+        });
+
+        // 重置
+        form.on('submit(doctor-clear-search)', function(){
+            $('input[name=name]').val('');
+            $('input[name=mobile]').val('');
+            $('#clinic_id').val('');
+            form.render('select');
+            table.reload('doctor-lists', {data: MOCK_DOCTORS, page: {curr: 1}});
+        });
+
+        // 状态开关
+        form.on('switch(status-switch)', function(obj){
+            var id = this.value;
+            var status = obj.elem.checked ? 1 : 0;
+            $.each(MOCK_DOCTORS, function (i, row) {
+                if (row.id == id) row.status = status;
+            });
+            layer.msg(status == 1 ? '已启用' : '已停用', {icon: 1, time: 1000});
+        });
+
+        // 工具栏事件
+        var active = {
+            add: function(){
+                layer.open({
+                    type: 2
+                    ,title: '新增医生'
+                    ,content: '{:url("doctor/edit")}'
+                    ,area: ['90%','90%']
+                    ,btn: ['确定', '取消']
+                    ,yes: function(index, layero){
+                        var iframeWindow = window['layui-layer-iframe' + index]
+                            ,submitID = 'doctor-edit-submit'
+                            ,submit = layero.find('iframe').contents().find('#' + submitID);
+                        iframeWindow.layui.form.on('submit(' + submitID + ')', function(data){
+                            layer.msg('模拟新增成功（mock）', {icon: 1, time: 1000});
+                            layer.close(index);
+                            table.reload('doctor-lists');
+                        });
+                        submit.trigger('click');
+                    }
+                });
+            }
+            ,batchdel: function(){
+                var checkStatus = table.checkStatus('doctor-lists')
+                    ,checkData = checkStatus.data;
+                if(checkData.length === 0){
+                    return layer.msg('请选择数据');
+                }
+                layer.confirm('确定删除所选医生？', function(index){
+                    layer.msg('模拟删除成功（mock）', {icon: 1, time: 1000});
+                    layer.close(index);
+                    table.reload('doctor-lists');
+                });
+            }
+        };
+        $('.layui-btn[data-type]').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+        // 行工具条
+        table.on('tool(doctor-lists)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'del'){
+                layer.confirm('确定要删除医生：<span style="color:red">' + data.name + '</span>？', function(index){
+                    layer.msg('模拟删除成功（mock）', {icon: 1, time: 1000});
+                    layer.close(index);
+                    obj.del();
+                });
+            } else if(obj.event === 'edit'){
+                layer.open({
+                    type: 2
+                    ,title: '编辑医生 - ' + data.name
+                    ,content: '{:url("doctor/edit")}?id=' + data.id
+                    ,area: ['90%','90%']
+                    ,btn: ['确定', '取消']
+                    ,yes: function(index, layero){
+                        var iframeWindow = window['layui-layer-iframe' + index]
+                            ,submitID = 'doctor-edit-submit'
+                            ,submit = layero.find('iframe').contents().find('#' + submitID);
+                        iframeWindow.layui.form.on('submit(' + submitID + ')', function(data){
+                            layer.msg('模拟保存成功（mock）', {icon: 1, time: 1000});
+                            layer.close(index);
+                            table.reload('doctor-lists');
+                        });
+                        submit.trigger('click');
+                    }
+                });
+            } else if(obj.event === 'baby'){
+                layer.open({
+                    type: 2
+                    ,title: '儿童档案 - ' + data.name
+                    ,content: '{:url("doctor/baby")}?doctor_id=' + data.id
+                    ,area: ['90%','90%']
+                });
+            }
+        });
+    });
+</script>

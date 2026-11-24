@@ -1,0 +1,148 @@
+{layout name="layout1" /}
+<style>
+    .layui-table-cell { height: auto; }
+</style>
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <div class="layui-collapse like-layui-collapse" lay-accordion="" style="border:1px dashed #c4c4c4">
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title like-layui-colla-title" style="background-color: #fff">操作提示</h2>
+                    <div class="layui-colla-content layui-show">
+                        <p>* 排序值越大，诊所展示越靠前；修改后保存即同步更新展示顺序。</p>
+                        <p>* 停用或删除诊所前，需先删除或转移该诊所下的医生。</p>
+                        <p>* 本页数据为演示用 mock 数据。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-card-body">
+            <div style="padding-bottom: 10px;">
+                <button class="layui-btn layui-btn-sm {$view_theme_color}" data-type="add">新增诊所</button>
+            </div>
+
+            <table id="clinic-lists" lay-filter="clinic-lists"></table>
+
+            <script type="text/html" id="status-tpl">
+                <input type="checkbox" name="status" value="{{d.id}}" lay-filter="clinic-status-switch" lay-skin="switch" lay-text="启用|停用" {{ d.status == 1 ? 'checked' : '' }}>
+            </script>
+
+            <script type="text/html" id="operation">
+                <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>
+                <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+            </script>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ============ Mock 诊所数据 ============
+    var MOCK_CLINICS = [
+        {id: 1, name: '天使儿童诊所（总院）', sort: 100, status: 1, create_time: '2026-08-01 09:20:15'},
+        {id: 2, name: '天使儿童诊所（分院）', sort: 90, status: 1, create_time: '2026-08-20 10:35:42'},
+        {id: 3, name: '阳光儿科诊所', sort: 80, status: 0, create_time: '2026-09-11 14:08:33'},
+        {id: 4, name: '成长关爱诊所', sort: 70, status: 1, create_time: '2026-10-05 16:52:10'}
+    ];
+
+    layui.config({
+        version: "{$front_version}",
+        base: '/static/plug/layui-admin/dist/layuiadmin/'
+    }).extend({
+        index: 'lib/index'
+    }).use(['index', 'table', 'form', 'like'], function(){
+        var $ = layui.$
+            , form = layui.form
+            , table = layui.table
+            , layer = layui.layer;
+
+        table.render({
+            elem: '#clinic-lists'
+            ,data: MOCK_CLINICS
+            ,cols: [[
+                {field: 'id', title: 'ID', width: 80}
+                ,{field: 'name', title: '诊所名称', width: 260}
+                ,{field: 'sort', title: '排序值', align: 'center', width: 100}
+                ,{field: 'status', title: '状态', templet: '#status-tpl', align: 'center', width: 100}
+                ,{field: 'create_time', title: '创建时间', width: 180}
+                ,{fixed: 'right', title: '操作', align: 'center', toolbar: '#operation', width: 160}
+            ]]
+            ,page: true
+            ,limit: 10
+            ,text: {none: '暂无数据！'}
+        });
+
+        // 状态开关（含联动提示）
+        form.on('switch(clinic-status-switch)', function(obj){
+            var id = this.value;
+            var status = obj.elem.checked ? 1 : 0;
+            $.each(MOCK_CLINICS, function (i, row) {
+                if (row.id == id) row.status = status;
+            });
+            if(status == 0){
+                layer.msg('已停用（提示：停用前需先转移该诊所下的医生）', {icon: 0, time: 2000});
+            } else {
+                layer.msg('已启用', {icon: 1, time: 1000});
+            }
+        });
+
+        // 工具栏
+        var active = {
+            add: function(){
+                layer.open({
+                    type: 2
+                    ,title: '新增诊所'
+                    ,content: '{:url("doctor/clinicEdit")}'
+                    ,area: ['600px','520px']
+                    ,btn: ['确定', '取消']
+                    ,yes: function(index, layero){
+                        var iframeWindow = window['layui-layer-iframe' + index]
+                            ,submitID = 'clinic-edit-submit'
+                            ,submit = layero.find('iframe').contents().find('#' + submitID);
+                        iframeWindow.layui.form.on('submit(' + submitID + ')', function(data){
+                            layer.msg('模拟新增成功（mock）', {icon: 1, time: 1000});
+                            layer.close(index);
+                            table.reload('clinic-lists');
+                        });
+                        submit.trigger('click');
+                    }
+                });
+            }
+        };
+        $('.layui-btn[data-type]').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+        // 行工具条
+        table.on('tool(clinic-lists)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'del'){
+                layer.confirm('删除诊所前，请确认已删除或转移其下医生。<br>确定删除诊所：<span style="color:red">' + data.name + '</span>？', function(index){
+                    layer.msg('模拟删除成功（mock）', {icon: 1, time: 1000});
+                    layer.close(index);
+                    obj.del();
+                });
+            } else if(obj.event === 'edit'){
+                layer.open({
+                    type: 2
+                    ,title: '编辑诊所 - ' + data.name
+                    ,content: '{:url("doctor/clinicEdit")}?id=' + data.id
+                    ,area: ['600px','520px']
+                    ,btn: ['确定', '取消']
+                    ,yes: function(index, layero){
+                        var iframeWindow = window['layui-layer-iframe' + index]
+                            ,submitID = 'clinic-edit-submit'
+                            ,submit = layero.find('iframe').contents().find('#' + submitID);
+                        iframeWindow.layui.form.on('submit(' + submitID + ')', function(data){
+                            layer.msg('模拟保存成功，展示顺序已更新（mock）', {icon: 1, time: 1200});
+                            layer.close(index);
+                            table.reload('clinic-lists');
+                        });
+                        submit.trigger('click');
+                    }
+                });
+            }
+        });
+    });
+</script>

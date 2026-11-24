@@ -308,14 +308,48 @@
             $('#think_page_trace_open').remove();
 
             // 展示二级菜单 fzr
-            localStorage.setItem("menus", '{$menu|json_encode|raw}');
+            var MENUS_DATA = JSON.parse('{$menu|json_encode|raw}');
+
+            // ===== 前端注入：医生导航入口（社区下方、内容上方），数据 mock =====
+            (function injectDoctorMenu(){
+                var doctorMenu = {
+                    id: 90001,
+                    name: '医生',
+                    icon: 'layui-icon-user',
+                    uri: '',
+                    sub: [
+                        {id: 90002, name: '医生列表', uri: '{:url("doctor/lists")}', sub: []},
+                        {id: 90003, name: '诊所列表', uri: '{:url("doctor/clinic")}', sub: []}
+                    ]
+                };
+                // 数据：插入到"内容"之前（即社区之后）
+                var idx = -1;
+                for (var i = 0; i < MENUS_DATA.length; i++) {
+                    if (MENUS_DATA[i].name === '内容') { idx = i; break; }
+                }
+                if (idx >= 0) { MENUS_DATA.splice(idx, 0, doctorMenu); }
+                else { MENUS_DATA.push(doctorMenu); }
+
+                // 一级菜单 DOM：插入到"内容"li 之前
+                var $contentLi = $('#LAY-system-side-menu li').filter(function(){
+                    return $(this).find('cite').text() === '内容';
+                }).first();
+                var $doctorLi = $( '<li data-id="90001" class="layui-nav-item">'
+                    + '<a href="javascript:" lay-tips="医生">'
+                    + '<i class="layui-icon layui-icon-user"></i><cite>医生</cite></a></li>' );
+                if ($contentLi.length) { $contentLi.before($doctorLi); }
+                else { $('#LAY-system-side-menu').append($doctorLi); }
+                element.render('nav');
+            })();
+
+            localStorage.setItem("menus", JSON.stringify(MENUS_DATA));
             $('.layui-nav-tree .layui-nav-item').click(function () {
                 // 一级菜单的样式切换
                 $(this).siblings().removeClass('activate');
                 $(this).addClass('activate');
                 // 获取一级菜单ID, 找出二级三级菜单那数据
                 var id = parseInt($(this).attr('data-id'));
-                var menus = JSON.parse('{$menu|json_encode|raw}');
+                var menus = MENUS_DATA;
                 var data = [];
                 menus.forEach(function (item) {
                     if (id === item['id']) {

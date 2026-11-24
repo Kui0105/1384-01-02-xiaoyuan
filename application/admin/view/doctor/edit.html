@@ -1,0 +1,91 @@
+{layout name="layout1" /}
+<style>
+    .layui-form-label { width: 130px; }
+    .layui-input-block { margin-left: 160px; }
+    .doctor-upload-img { width: 120px; height: 120px; border-radius: 4px; object-fit: cover; display: none; }
+</style>
+<div class="layui-fluid" style="padding-top: 15px;">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <form class="layui-form" lay-filter="doctor-edit-form">
+                <input type="hidden" name="id" value="">
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">医生图片</label>
+                    <div class="layui-input-block">
+                        <img class="doctor-upload-img" id="doctor-preview" src="">
+                        <button type="button" class="layui-btn layui-btn-sm" id="doctor-upload-btn">
+                            <i class="layui-icon layui-icon-upload"></i> 上传图片
+                        </button>
+                        <span style="color:#999;font-size:12px;margin-left:10px">（演示环境，上传为 mock）</span>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">医生姓名</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="name" required lay-verify="required" placeholder="请输入医生姓名" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">联系电话/登录账号</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="mobile" required lay-verify="required|phone" placeholder="请输入联系电话" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">所属诊所</label>
+                    <div class="layui-input-block">
+                        <select name="clinic_id" lay-verify="required">
+                            <option value="">请选择诊所</option>
+                            <option value="1">天使儿童诊所（总院）</option>
+                            <option value="2">天使儿童诊所（分院）</option>
+                            <option value="3">阳光儿科诊所</option>
+                            <option value="4">成长关爱诊所</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">登录密码</label>
+                    <div class="layui-input-block">
+                        <input type="password" name="password" placeholder="请输入登录密码（新增必填，编辑留空则不修改）" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">状态</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="status" value="1" title="启用" checked>
+                        <input type="radio" name="status" value="0" title="停用">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-input-block" style="display:none;">
+                        <button class="layui-btn" id="doctor-edit-submit" lay-submit lay-filter="doctor-edit-submit">确定</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.config({
+        version: "{$front_version}",
+        base: '/static/plug/layui-admin/dist/layuiadmin/'
+    }).extend({
+        index: 'lib/index'
+    }).use(['index', 'form', 'upload', 'like'], function(){
+        var $ = layui.$, form = layui.form, upload = layui.upload, layer = layui.layer;
+
+        $('#doctor-upload-btn').on('click', function(){
+            layer.msg('演示环境：图片上传为 mock，不会真实上传', {icon: 0});
+        });
+
+        form.render();
+    });
+</script>

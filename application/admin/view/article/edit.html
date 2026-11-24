@@ -104,6 +104,14 @@
             <input type="radio" name="is_show" lay-filter="is_show" style="width: 500px" value=0 title="隐藏"{if condition="$article.is_show eq 0" }checked{/if}>
         </div>
     </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">角色选择</label>
+        <div class="layui-input-inline" >
+            <input type="radio" name="role" value=0 title="全部可见" {if condition="$article.role eq 0" }checked{/if}>
+            <input type="radio" name="role" value=1 title="用户可见" {if condition="$article.role eq 1" }checked{/if}>
+            <input type="radio" name="role" value=2 title="医生可见" {if condition="$article.role eq 2" }checked{/if}>
+        </div>
+    </div>
     <div class="layui-form-item type_video" {if condition="$article.small_type eq 1" }style="display: none" {/if}>
         <label class="layui-form-label">视频：</label>
         <div class="upload-file-div video-style" id="video">

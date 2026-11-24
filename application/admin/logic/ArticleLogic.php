@@ -48,6 +48,11 @@ class ArticleLogic
             }
 
             $item['type_txt'] = $item['small_type']==1?'文章':'视频';
+
+            // 可见角色
+            $role_arr = [0 => '全部可见', 1 => '用户可见', 2 => '医生可见'];
+            $role = isset($item['role']) ? intval($item['role']) : 0;
+            $item['role_text'] = isset($role_arr[$role]) ? $role_arr[$role] : '全部可见';
         }
         return ['count' => $count, 'lists' => $list];
     }
@@ -68,6 +73,7 @@ class ArticleLogic
             'image'     => $post['image'],
             'content'   => $content,
             'is_show'   => $post['is_show'],
+            'role'      => $post['role'] ?? 0,
             'type'      => $post['type'],
             'small_type'    => $post['small_type'],
             'create_time'   => time(),
@@ -94,6 +100,7 @@ class ArticleLogic
             'image'     => $post['image'],
             'content'   => $post['content'],
             'is_show'   => $post['is_show'],
+            'role'      => $post['role'] ?? 0,
             'update_time'   => time(),
             'sort'      => $post['sort'],
             'foot_img'      => $post['foot_img']??'',

@@ -1,0 +1,111 @@
+{layout name="layout1" /}
+<style>
+    .layui-table-cell { height: auto; }
+</style>
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <div class="layui-collapse like-layui-collapse" lay-accordion="" style="border:1px dashed #c4c4c4">
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title like-layui-colla-title" style="background-color: #fff">操作提示</h2>
+                    <div class="layui-colla-content layui-show">
+                        <p>* 儿童档案由医生端创建，管理端仅可查看，不可编辑。</p>
+                        <p>* 测评报告由医生端根据儿童档案上传，支持 PDF、Word、Jpg、Png 格式。</p>
+                        <p>* 本页数据为演示用 mock 数据。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-card-body">
+            <table id="baby-lists" lay-filter="baby-lists"></table>
+
+            <script type="text/html" id="gender-tpl">
+                {{#  if(d.sex == 1){ }}男{{#  } else { }}女{{#  } }}
+            </script>
+
+            <script type="text/html" id="report-tpl">
+                {{#  if(d.report){ }}
+                <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="report">{{d.report}}</a>
+                {{#  } else { }}<span style="color:#999">暂无报告</span>{{#  } }}
+            </script>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ============ Mock 儿童档案数据 ============
+    var MOCK_BABIES = [
+        {id: 1, name: '林小满', sex: 1, age: 5, birthday: '2021-03-15', mobile: '13900139001', father_height: '175', mother_height: '163', allergy: '花生过敏', report: '营养测评报告.pdf'},
+        {id: 2, name: '陈一诺', sex: 2, age: 4, birthday: '2022-07-08', mobile: '13900139002', father_height: '178', mother_height: '165', allergy: '无', report: '睡眠测评报告.docx'},
+        {id: 3, name: '王梓涵', sex: 1, age: 6, birthday: '2020-11-22', mobile: '13900139003', father_height: '172', mother_height: '160', allergy: '牛奶过敏', report: '成长测评报告.jpg'},
+        {id: 4, name: '刘思琪', sex: 2, age: 3, birthday: '2023-05-30', mobile: '13900139004', father_height: '180', mother_height: '168', allergy: '无', report: ''}
+    ];
+
+    // ============ Mock 测评报告数据 ============
+    var MOCK_REPORTS = {
+        1: [{type: '营养测评', name: '营养测评报告.pdf', date: '2026-10-12 15:30:20'}],
+        2: [{type: '睡眠测评', name: '睡眠测评报告.docx', date: '2026-10-25 09:18:44'}],
+        3: [{type: '成长测评', name: '成长测评报告.jpg', date: '2026-11-02 14:05:36'}]
+    };
+
+    layui.config({
+        version: "{$front_version}",
+        base: '/static/plug/layui-admin/dist/layuiadmin/'
+    }).extend({
+        index: 'lib/index'
+    }).use(['index', 'table'], function(){
+        var $ = layui.$, table = layui.table, layer = layui.layer;
+
+        table.render({
+            elem: '#baby-lists'
+            ,data: MOCK_BABIES
+            ,cols: [[
+                {field: 'id', title: 'ID', width: 70}
+                ,{field: 'name', title: '姓名', width: 100}
+                ,{field: 'sex', title: '性别', templet: '#gender-tpl', align: 'center', width: 70}
+                ,{field: 'age', title: '年龄', align: 'center', width: 70, templet: function(d){ return d.age + '岁'; }}
+                ,{field: 'birthday', title: '出生日期', width: 120}
+                ,{field: 'mobile', title: '手机号码', width: 140}
+                ,{field: 'father_height', title: '父亲身高', width: 100, templet: function(d){ return d.father_height + 'cm'; }}
+                ,{field: 'mother_height', title: '母亲身高', width: 100, templet: function(d){ return d.mother_height + 'cm'; }}
+                ,{field: 'allergy', title: '过敏史', width: 120}
+                ,{field: 'report', title: '测评报告', toolbar: '#report-tpl', width: 140}
+            ]]
+            ,page: true
+            ,limit: 10
+            ,text: {none: '暂无数据！'}
+        });
+
+        table.on('tool(baby-lists)', function(obj){
+            if(obj.event === 'report'){
+                var reports = MOCK_REPORTS[obj.data.id] || [];
+                var html = '<div style="padding:15px;">';
+                if(reports.length){
+                    html += '<table class="layui-table" lay-size="sm"><thead><tr>'
+                        + '<th>测评类型</th><th>报告内容</th><th>上传日期</th></tr></thead><tbody>';
+                    $.each(reports, function(i, r){
+                        html += '<tr><td>' + r.type + '</td>'
+                            + '<td><a href="javascript:;" class="report-open" style="color:#3A91FB">' + r.name + '</a></td>'
+                            + '<td>' + r.date + '</td></tr>';
+                    });
+                    html += '</tbody></table>';
+                } else {
+                    html += '<div style="color:#999;text-align:center;padding:20px;">暂无测评报告</div>';
+                }
+                html += '</div>';
+                layer.open({
+                    type: 1
+                    ,title: '测评报告 - ' + obj.data.name
+                    ,content: html
+                    ,area: ['640px','auto']
+                    ,btn: ['关闭']
+                });
+                // 点击文件名查看报告（mock）
+                $(document).off('click', '.report-open').on('click', '.report-open', function(){
+                    layer.msg('演示环境：报告文件在线预览为 mock', {icon: 0});
+                });
+            }
+        });
+    });
+</script>

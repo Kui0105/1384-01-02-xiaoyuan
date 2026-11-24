@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>成长科普</title>
+    <link rel="stylesheet" href="/static/plug/layui-admin/dist/layuiadmin/layui/css/layui.css" media="all">
+    <style>
+        body { background:#f5f7fa; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",Arial,sans-serif; padding:16px; }
+        .card { background:#fff; border-radius:8px; padding:16px; }
+        .page-title { font-size:17px; font-weight:600; color:#333; margin-bottom:14px; }
+        .page-title .layui-icon { color:#3A91FB; margin-right:6px; }
+        .tabs { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; border-bottom:1px solid #eee; padding-bottom:12px; }
+        .tab {
+            padding:7px 18px; border-radius:18px; cursor:pointer; font-size:13px;
+            color:#666; background:#f5f5f5; transition:all .15s; user-select:none;
+        }
+        .tab:hover { color:#3A91FB; background:#EBF4FF; }
+        .tab.active { color:#fff; background:#3A91FB; }
+        .article-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+        .article {
+            border:1px solid #eef0f3; border-radius:8px; overflow:hidden; cursor:pointer;
+            background:#fff; transition:all .18s;
+        }
+        .article:hover { box-shadow:0 8px 22px rgba(0,0,0,.1); transform:translateY(-2px); }
+        .article .cover {
+            height:130px; display:flex; align-items:center; justify-content:center;
+            font-size:44px; color:#fff;
+        }
+        .article .body { padding:12px 14px; }
+        .article .title { font-size:14px; color:#333; line-height:1.5; height:42px; overflow:hidden; }
+        .article .meta { font-size:11px; color:#aaa; margin-top:8px; display:flex; justify-content:space-between; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="page-title"><i class="layui-icon layui-icon-read"></i>成长科普</div>
+        <div class="tabs" id="tabs"></div>
+        <div class="article-grid" id="list"></div>
+    </div>
+
+<script src="/static/plug/layui-admin/dist/layuiadmin/layui/layui.js"></script>
+<script>
+    // ===== Mock 分类 & 文章 =====
+    var MOCK_CATS = [
+        {id:1,name:'全部'}, {id:2,name:'营养饮食'}, {id:3,name:'身高管理'},
+        {id:4,name:'睡眠健康'}, {id:5,name:'免疫提升'}, {id:6,name:'心理健康'}
+    ];
+    var MOCK_ARTS = [
+        {id:1,cat:2,title:'儿童春季长高食谱，抓住黄金生长期',views:1248,color:'#3A91FB',icon:'&#xe60c;'},
+        {id:2,cat:2,title:'挑食偏食怎么办？营养师给出实用建议',views:986,color:'#16b777',icon:'&#xe66a;'},
+        {id:3,cat:3,title:'影响孩子身高的五大因素，家长必读',views:2103,color:'#FF8B3D',icon:'&#xe62d;'},
+        {id:4,cat:3,title:'骨骺线闭合前，如何科学助力长高',views:1755,color:'#8B5CF6',icon:'&#xe62f;'},
+        {id:5,cat:4,title:'孩子睡不好？可能是这些习惯导致的',views:1342,color:'#3A91FB',icon:'&#xe633;'},
+        {id:6,cat:4,title:'不同年龄段儿童的睡眠时长标准',views:892,color:'#16b777',icon:'&#xe60c;'},
+        {id:7,cat:5,title:'换季易感冒，如何提升孩子免疫力',views:1680,color:'#FF8B3D',icon:'&#xe620;'},
+        {id:8,cat:5,title:'疫苗接种常见问题解答',views:760,color:'#8B5CF6',icon:'&#xe63c;'},
+        {id:9,cat:6,title:'读懂孩子的情绪，做更好的倾听者',views:1120,color:'#3A91FB',icon:'&#xe6c1;'}
+    ];
+
+    layui.use(['layer'], function(){
+        var $ = layui.$, layer = layui.layer;
+        var currentCat = 1;
+
+        function renderTabs(){
+            var html = '';
+            $.each(MOCK_CATS, function(i,c){
+                html += '<div class="tab'+(c.id==currentCat?' active':'')+'" data-id="'+c.id+'">'+c.name+'</div>';
+            });
+            $('#tabs').html(html);
+        }
+        function renderList(){
+            var list = currentCat==1 ? MOCK_ARTS : MOCK_ARTS.filter(function(a){return a.cat==currentCat;});
+            var html = '';
+            if(!list.length){ html='<div style="grid-column:1/-1;text-align:center;color:#999;padding:40px;">暂无内容</div>'; }
+            $.each(list, function(i,a){
+                html += '<div class="article" data-id="'+a.id+'">'
+                    + '<div class="cover" style="background:linear-gradient(135deg,'+a.color+',rgba(0,0,0,.15))"><i class="layui-icon">'+a.icon+'</i></div>'
+                    + '<div class="body"><div class="title">'+a.title+'</div>'
+                    + '<div class="meta"><span>'+a.views+' 次阅读</span><span><i class="layui-icon layui-icon-right"></i></span></div></div></div>';
+            });
+            $('#list').html(html);
+        }
+
+        $(document).on('click','.tab',function(){ currentCat=$(this).data('id'); renderTabs(); renderList(); });
+        $(document).on('click','.article',function(){
+            layer.open({type:2, title:'科普详情', content:'/doctor/science/detail.html?id='+$(this).data('id'), area:['760px','80%']});
+        });
+
+        renderTabs(); renderList();
+    });
+</script>
+</body>
+</html>

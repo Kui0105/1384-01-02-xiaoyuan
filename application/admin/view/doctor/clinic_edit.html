@@ -1,0 +1,70 @@
+{layout name="layout1" /}
+<style>
+    .layui-form-label { width: 110px; }
+    .layui-input-block { margin-left: 140px; }
+</style>
+<div class="layui-fluid" style="padding-top: 20px;">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <form class="layui-form" lay-filter="clinic-edit-form">
+                <input type="hidden" name="id" value="">
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">诊所名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="name" required lay-verify="required" placeholder="请输入诊所名称" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">排序值</label>
+                    <div class="layui-input-block">
+                        <input type="number" name="sort" value="50" placeholder="数值越大展示越靠前" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">状态</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="status" value="1" title="启用" checked>
+                        <input type="radio" name="status" value="0" title="停用">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-input-block" style="display:none;">
+                        <button class="layui-btn" id="clinic-edit-submit" lay-submit lay-filter="clinic-edit-submit">确定</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.config({
+        version: "{$front_version}",
+        base: '/static/plug/layui-admin/dist/layuiadmin/'
+    }).extend({
+        index: 'lib/index'
+    }).use(['index', 'form'], function(){
+        var $ = layui.$, form = layui.form;
+
+        // 回显编辑数据（mock）
+        var id = layui.router().search.id;
+        if(id){
+            var MOCK = {
+                1: {name: '天使儿童诊所（总院）', sort: 100, status: 1},
+                2: {name: '天使儿童诊所（分院）', sort: 90, status: 1},
+                3: {name: '阳光儿科诊所', sort: 80, status: 0},
+                4: {name: '成长关爱诊所', sort: 70, status: 1}
+            };
+            var row = MOCK[id];
+            if(row){
+                form.val('clinic-edit-form', row);
+            }
+        }
+
+        form.render();
+    });
+</script>
