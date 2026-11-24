@@ -45,6 +45,21 @@
         </div>
 
         <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">身高</label>
+                <div class="layui-input-inline" style="width:200px;">
+                    <input type="number" name="height" step="0.1" lay-verify="number" placeholder="单位：cm" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">体重</label>
+                <div class="layui-input-inline" style="width:220px;">
+                    <input type="number" name="weight" step="0.1" lay-verify="number" placeholder="单位：kg" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
             <label class="layui-form-label">手机号码</label>
             <div class="layui-input-block">
                 <input type="text" name="mobile" lay-verify="phone" placeholder="请输入手机号码" class="layui-input">
@@ -101,9 +116,9 @@
             var params = getQueryParams();
             if(params.id){
                 var MOCK = {
-                    1:{name:'林小满',sex:1,age:5,birthday:'2021-03-15',mobile:'13900139001',father_height:175,mother_height:163,allergy:'花生过敏'},
-                    2:{name:'陈一诺',sex:0,age:4,birthday:'2022-07-08',mobile:'13900139002',father_height:178,mother_height:165,allergy:'无'},
-                    3:{name:'王梓涵',sex:1,age:6,birthday:'2020-11-22',mobile:'13900139003',father_height:172,mother_height:160,allergy:'牛奶过敏'}
+                    1:{name:'林小满',sex:1,age:5,birthday:'2021-03-15',height:108,weight:18.5,mobile:'13900139001',father_height:175,mother_height:163,allergy:'花生过敏'},
+                    2:{name:'陈一诺',sex:0,age:4,birthday:'2022-07-08',height:104,weight:17.2,mobile:'13900139002',father_height:178,mother_height:165,allergy:'无'},
+                    3:{name:'王梓涵',sex:1,age:6,birthday:'2020-11-22',height:120,weight:22.4,mobile:'13900139003',father_height:172,mother_height:160,allergy:'牛奶过敏'}
                 };
                 var row = MOCK[params.id];
                 if(row){ form.val('baby-form', row); }
