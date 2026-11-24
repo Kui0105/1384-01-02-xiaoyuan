@@ -7,7 +7,8 @@
     <style>
         body { background: #f5f7fa; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", Arial, sans-serif; padding: 18px; }
         .layui-table-cell { height: auto; padding: 11px 10px; line-height: 20px; }
-        .layui-table-view { margin-top: 4px; }
+        .layui-table-view { width: 100% !important; margin-top: 4px; }
+        .layui-table-box, .layui-table-body, .layui-table-main, .layui-table-header { width: 100% !important; }
         .card { background: #fff; border-radius: 8px; padding: 18px; }
         .page-title { font-size: 17px; font-weight: 600; color: #333; margin-bottom: 18px; }
         .page-title .layui-icon { color: #3A91FB; margin-right: 6px; }
@@ -99,14 +100,14 @@
             elem: '#baby-table'
             ,data: MOCK_BABIES
             ,cols: [[
-                {type:'checkbox', fixed:'left'}
-                ,{field:'name', title:'姓名', width:110}
-                ,{field:'sex', title:'性别', templet:'#sex-tpl', align:'center', width:80}
-                ,{field:'age', title:'年龄', width:80, templet:function(d){return d.age+'岁';}}
-                ,{field:'mobile', title:'电话', width:140}
-                ,{field:'allergy', title:'过敏', width:130}
-                ,{field:'create_time', title:'创建时间', width:170}
-                ,{fixed:'right', title:'操作', toolbar:'#op-tpl', width:300, align:'center'}
+                {type:'checkbox', fixed:'left', width:46}
+                ,{field:'name', title:'姓名', width:100}
+                ,{field:'sex', title:'性别', templet:'#sex-tpl', align:'center', width:70}
+                ,{field:'age', title:'年龄', width:70, templet:function(d){return d.age+'岁';}}
+                ,{field:'mobile', title:'电话', width:130}
+                ,{field:'allergy', title:'过敏', width:120}
+                ,{field:'create_time', title:'创建时间', width:160}
+                ,{title:'操作', toolbar:'#op-tpl', minWidth:220, align:'center'}
             ]]
             ,page:true, limit:10, text:{none:'暂无数据！'}
         });
