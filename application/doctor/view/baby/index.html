@@ -5,22 +5,24 @@
     <title>儿童档案</title>
     <link rel="stylesheet" href="/static/plug/layui-admin/dist/layuiadmin/layui/css/layui.css" media="all">
     <style>
-        body { background: #f5f7fa; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", Arial, sans-serif; padding: 16px; }
-        .layui-table-cell { height: auto; }
-        .card { background: #fff; border-radius: 8px; padding: 16px; }
-        .page-title { font-size: 17px; font-weight: 600; color: #333; margin-bottom: 14px; }
+        body { background: #f5f7fa; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", Arial, sans-serif; padding: 18px; }
+        .layui-table-cell { height: auto; padding: 11px 10px; line-height: 20px; }
+        .layui-table-view { margin-top: 4px; }
+        .card { background: #fff; border-radius: 8px; padding: 18px; }
+        .page-title { font-size: 17px; font-weight: 600; color: #333; margin-bottom: 18px; }
         .page-title .layui-icon { color: #3A91FB; margin-right: 6px; }
-        .detail-list { padding: 6px 4px; }
-        .detail-row { display:flex; padding:9px 0; border-bottom:1px dashed #eee; font-size:13px; }
-        .detail-row .k { width:110px; color:#999; flex-shrink:0; }
-        .detail-row .v { flex:1; color:#333; word-break:break-all; }
+        .detail-grid { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:1px; background:#e8eef6; border:1px solid #e8eef6; border-radius:6px; overflow:hidden; }
+        .detail-item { display:flex; background:#fff; min-height:42px; }
+        .detail-item .k { width:92px; padding:11px 10px; background:#f7f9fc; color:#888; font-size:13px; flex-shrink:0; }
+        .detail-item .v { flex:1; padding:11px 12px; color:#333; font-size:13px; word-break:break-all; }
+        .detail-item.full { grid-column: 1 / -1; }
     </style>
 </head>
 <body>
     <div class="card">
         <div class="page-title"><i class="layui-icon layui-icon-form"></i>儿童档案</div>
 
-        <div class="layui-form layui-form-pane" style="margin-bottom:12px;">
+        <div class="layui-form layui-form-pane" style="margin-bottom:16px;">
             <div class="layui-form-item">
                 <div class="layui-inline">
                     <label class="layui-form-label">儿童姓名</label>
@@ -47,7 +49,7 @@
             </div>
         </div>
 
-        <div style="padding-bottom:10px;">
+        <div style="padding-bottom:14px;">
             <button class="layui-btn layui-btn-sm" data-type="add"><i class="layui-icon layui-icon-add-1"></i> 新增档案</button>
             <button class="layui-btn layui-btn-sm layui-btn-danger" data-type="batchdel">删除所选</button>
         </div>
@@ -191,12 +193,12 @@
                 ['测评报告', (d.report_count || 0) + ' 份'],
                 ['创建时间', d.create_time || '-']
             ];
-            var html = '<div class="detail-list">';
+            var html = '<div style="padding:14px;"><div class="detail-grid">';
             $.each(rows, function(i, row){
-                html += '<div class="detail-row"><span class="k">'+row[0]+'</span><span class="v">'+row[1]+'</span></div>';
+                html += '<div class="detail-item"><span class="k">'+row[0]+'</span><span class="v">'+row[1]+'</span></div>';
             });
-            html += '</div>';
-            layer.open({type:1, title:'档案详情 - '+d.name, content:html, area:['560px','560px'], btn:['关闭']});
+            html += '</div></div>';
+            layer.open({type:1, title:'档案详情 - '+d.name, content:html, area:['680px','440px'], btn:['关闭']});
         }
 
         function openReport(d){
