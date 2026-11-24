@@ -20,10 +20,10 @@
 
     <table class="layui-table" lay-size="sm">
         <colgroup>
-            <col width="80"><col width="160"><col width="200"><col width="180"><col width="120">
+            <col width="70"><col width="120"><col width="90"><col width="90"><col width="180"><col width="180"><col width="100">
         </colgroup>
         <thead>
-            <tr><th>ID</th><th>测评类型</th><th>报告内容</th><th>上传日期</th><th>操作</th></tr>
+            <tr><th>ID</th><th>测评类型</th><th>身高</th><th>体重</th><th>报告内容</th><th>上传日期</th><th>操作</th></tr>
         </thead>
         <tbody id="report-body"></tbody>
     </table>
@@ -57,11 +57,11 @@
         $('#baby-name').text(params.name || '');
 
         var MOCK_REPORTS = {
-            1:[{id:1,type:'营养测评',file:'营养测评报告.pdf',date:'2026-11-20 15:30:20'}],
-            2:[{id:2,type:'睡眠测评',file:'睡眠测评报告.docx',date:'2026-11-18 09:18:44'}],
-            3:[{id:3,type:'成长测评',file:'成长测评报告.jpg',date:'2026-11-16 14:05:36'},
-               {id:4,type:'营养测评',file:'营养测评报告2.pdf',date:'2026-11-15 10:22:10'}],
-            5:[{id:5,type:'身高测评',file:'身高测评报告.png',date:'2026-11-09 16:41:28'}]
+            1:[{id:1,type:'营养测评',height:108,weight:18.5,file:'营养测评报告.pdf',date:'2026-11-20 15:30:20'}],
+            2:[{id:2,type:'睡眠测评',height:104,weight:17.2,file:'睡眠测评报告.docx',date:'2026-11-18 09:18:44'}],
+            3:[{id:3,type:'成长测评',height:120,weight:22.4,file:'成长测评报告.jpg',date:'2026-11-16 14:05:36'},
+               {id:4,type:'营养测评',height:119,weight:21.8,file:'营养测评报告2.pdf',date:'2026-11-15 10:22:10'}],
+            5:[{id:5,type:'身高测评',height:112,weight:19.6,file:'身高测评报告.png',date:'2026-11-09 16:41:28'}]
         };
         var reports = MOCK_REPORTS[params.id] || [];
 
@@ -70,12 +70,13 @@
             if(reports.length){
                 $.each(reports, function(i,r){
                     html += '<tr><td>'+r.id+'</td><td>'+r.type+'</td>'
+                        + '<td>'+(r.height != null ? r.height+'cm' : '-')+'</td><td>'+(r.weight != null ? r.weight+'kg' : '-')+'</td>'
                         + '<td><span class="file-link">'+r.file+'</span></td>'
                         + '<td>'+r.date+'</td>'
                         + '<td><button class="layui-btn layui-btn-xs layui-btn-danger btn-del" data-id="'+r.id+'">删除</button></td></tr>';
                 });
             } else {
-                html = '<tr><td colspan="5" style="text-align:center;color:#999;padding:24px;">暂无测评报告</td></tr>';
+                html = '<tr><td colspan="7" style="text-align:center;color:#999;padding:24px;">暂无测评报告</td></tr>';
             }
             $('#report-body').html(html);
         }
@@ -100,12 +101,18 @@
             var html = '<form class="layui-form" style="padding:20px;" lay-filter="add-report-form">'
                 + '<div class="layui-form-item"><label class="layui-form-label">测评类型</label><div class="layui-input-block">'
                 + '<input type="text" name="type" required lay-verify="required" placeholder="请输入测评类型" class="layui-input"></div></div>'
+                + '<div class="layui-form-item">'
+                + '<div class="layui-inline"><label class="layui-form-label">身高</label><div class="layui-input-inline" style="width:150px;">'
+                + '<input type="number" name="height" step="0.1" required lay-verify="required|number" placeholder="cm" class="layui-input"></div></div>'
+                + '<div class="layui-inline"><label class="layui-form-label">体重</label><div class="layui-input-inline" style="width:150px;">'
+                + '<input type="number" name="weight" step="0.1" required lay-verify="required|number" placeholder="kg" class="layui-input"></div></div>'
+                + '</div>'
                 + '<div class="layui-form-item"><label class="layui-form-label">上传附件</label><div class="layui-input-block">'
                 + '<button type="button" class="layui-btn" id="mock-upload"><i class="layui-icon layui-icon-upload"></i> 选择报告文件</button>'
                 + '<div id="file-name" style="color:#999;font-size:12px;margin-top:8px;">支持 PDF、Word、Jpg、Png</div></div></div>'
                 + '</form>';
             layer.open({
-                type:1, title:'新增测评报告', content:html, area:['520px','300px'],
+                type:1, title:'新增测评报告', content:html, area:['520px','430px'],
                 btn:['提交','取消'],
                 success:function(){
                     layui.form.render();
@@ -115,9 +122,13 @@
                 },
                 yes:function(index){
                     var type = $.trim($('input[name=type]').val());
+                    var height = $.trim($('input[name=height]').val());
+                    var weight = $.trim($('input[name=weight]').val());
                     if(!type){ layer.msg('请输入测评类型', {icon:2}); return; }
+                    if(!height || parseFloat(height) <= 0){ layer.msg('请输入身高', {icon:2}); return; }
+                    if(!weight || parseFloat(weight) <= 0){ layer.msg('请输入体重', {icon:2}); return; }
                     reports.push({
-                        id: Date.now()%100000, type:type,
+                        id: Date.now()%100000, type:type, height:parseFloat(height), weight:parseFloat(weight),
                         file:'测评报告_'+Date.now().toString().slice(-6)+'.pdf',
                         date: new Date().toLocaleString('zh-CN',{hour12:false}).replace(/\//g,'-')
                     });
