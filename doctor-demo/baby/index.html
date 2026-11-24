@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>儿童档案</title>
+    <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
+    <style>
+        body { background: #f5f7fa; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", Arial, sans-serif; padding: 16px; }
+        .layui-table-cell { height: auto; }
+        .card { background: #fff; border-radius: 8px; padding: 16px; }
+        .page-title { font-size: 17px; font-weight: 600; color: #333; margin-bottom: 14px; }
+        .page-title .layui-icon { color: #3A91FB; margin-right: 6px; }
+    </style>
+<script src="/assets/demo-auth.js"></script>
+</head>
+<body>
+    <div class="card">
+        <div class="page-title"><i class="layui-icon layui-icon-form"></i>儿童档案</div>
+
+        <div class="layui-form layui-form-pane" style="margin-bottom:12px;">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">儿童姓名</label>
+                    <div class="layui-input-inline" style="width:180px;">
+                        <input type="text" name="name" id="s-name" placeholder="请输入" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">手机号码</label>
+                    <div class="layui-input-inline" style="width:180px;">
+                        <input type="text" name="mobile" id="s-mobile" placeholder="请输入" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">创建时间</label>
+                    <div class="layui-input-inline" style="width:260px;">
+                        <input type="text" name="create_time" id="s-time" placeholder="选择日期范围" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <button class="layui-btn layui-btn-sm" id="btn-search"><i class="layui-icon layui-icon-search"></i> 搜索</button>
+                    <button class="layui-btn layui-btn-sm layui-btn-primary" id="btn-reset">重置</button>
+                </div>
+            </div>
+        </div>
+
+        <div style="padding-bottom:10px;">
+            <button class="layui-btn layui-btn-sm" data-type="add"><i class="layui-icon layui-icon-add-1"></i> 新增档案</button>
+            <button class="layui-btn layui-btn-sm layui-btn-danger" data-type="batchdel">删除所选</button>
+        </div>
+
+        <table id="baby-table" lay-filter="baby-table"></table>
+
+        <script type="text/html" id="sex-tpl">
+            {{# if(d.sex==1){ }}<span style="color:#3A91FB">男</span>{{# } else { }}<span style="color:#E46BB6">女</span>{{# } }}
+        </script>
+        <script type="text/html" id="height-tpl">
+            {{d.father_height ? d.father_height+'cm' : '-'}}
+        </script>
+        <script type="text/html" id="mheight-tpl">
+            {{d.mother_height ? d.mother_height+'cm' : '-'}}
+        </script>
+        <script type="text/html" id="report-tpl">
+            {{# if(d.report_count){ }}
+            <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="report">{{d.report_count}} 份报告</a>
+            {{# } else { }}<span style="color:#aaa">暂无</span>{{# } }}
+        </script>
+        <script type="text/html" id="op-tpl">
+            <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="edit">编辑</a>
+            <a class="layui-btn layui-btn-xs" lay-event="report">测评报告</a>
+            <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
+        </script>
+    </div>
+
+<script src="/assets/layui/layui.js"></script>
+<script>
+    // ===== Mock 儿童档案 =====
+    var MOCK_BABIES = [
+        {id:1, name:'林小满', sex:1, age:5, birthday:'2021-03-15', mobile:'13900139001', father_height:175, mother_height:163, allergy:'花生过敏', create_time:'2026-11-20 10:30:20', report_count:1},
+        {id:2, name:'陈一诺', sex:2, age:4, birthday:'2022-07-08', mobile:'13900139002', father_height:178, mother_height:165, allergy:'无', create_time:'2026-11-18 14:22:08', report_count:1},
+        {id:3, name:'王梓涵', sex:1, age:6, birthday:'2020-11-22', mobile:'13900139003', father_height:172, mother_height:160, allergy:'牛奶过敏', create_time:'2026-11-15 09:15:43', report_count:2},
+        {id:4, name:'刘思琪', sex:2, age:3, birthday:'2023-05-30', mobile:'13900139004', father_height:180, mother_height:168, allergy:'无', create_time:'2026-11-12 16:40:11', report_count:0},
+        {id:5, name:'周子墨', sex:1, age:5, birthday:'2021-09-02', mobile:'13900139005', father_height:176, mother_height:162, allergy:'鸡蛋过敏', create_time:'2026-11-08 11:05:36', report_count:1},
+        {id:6, name:'吴欣怡', sex:2, age:7, birthday:'2019-12-18', mobile:'13900139006', father_height:173, mother_height:161, allergy:'无', create_time:'2026-11-05 15:33:52', report_count:0}
+    ];
+
+    layui.use(['table','form','laydate','layer'], function(){
+        var $ = layui.$, table = layui.table, form = layui.form, laydate = layui.laydate, layer = layui.layer;
+
+        laydate.render({elem:'#s-time', range:true, trigger:'click'});
+
+        table.render({
+            elem: '#baby-table'
+            ,data: MOCK_BABIES
+            ,cols: [[
+                {type:'checkbox', fixed:'left'}
+                ,{field:'id', title:'ID', width:70}
+                ,{field:'name', title:'姓名', width:100}
+                ,{field:'sex', title:'性别', templet:'#sex-tpl', align:'center', width:70}
+                ,{field:'age', title:'年龄', width:70, templet:function(d){return d.age+'岁';}}
+                ,{field:'birthday', title:'出生日期', width:120}
+                ,{field:'mobile', title:'手机号码', width:140}
+                ,{field:'father_height', title:'父亲身高', templet:'#height-tpl', width:100}
+                ,{field:'mother_height', title:'母亲身高', templet:'#mheight-tpl', width:100}
+                ,{field:'allergy', title:'过敏史', width:110}
+                ,{field:'report_count', title:'测评报告', toolbar:'#report-tpl', width:120}
+                ,{field:'create_time', title:'创建时间', width:165}
+                ,{fixed:'right', title:'操作', toolbar:'#op-tpl', width:220, align:'center'}
+            ]]
+            ,page:true, limit:10, text:{none:'暂无数据！'}
+        });
+
+        // 搜索
+        $('#btn-search').on('click', function(){
+            var name = $.trim($('#s-name').val());
+            var mobile = $.trim($('#s-mobile').val());
+            var time = $('#s-time').val();
+            var result = MOCK_BABIES.filter(function(r){
+                if(name && r.name.indexOf(name)===-1) return false;
+                if(mobile && r.mobile.indexOf(mobile)===-1) return false;
+                if(time){
+                    var range = time.split(' - ');
+                    var d = r.create_time.substring(0,10);
+                    if(d < range[0] || d > range[1]) return false;
+                }
+                return true;
+            });
+            table.reload('baby-table', {data:result, page:{curr:1}});
+        });
+        $('#btn-reset').on('click', function(){
+            $('#s-name').val(''); $('#s-mobile').val(''); $('#s-time').val('');
+            table.reload('baby-table', {data:MOCK_BABIES, page:{curr:1}});
+        });
+
+        // 工具栏
+        var active = {
+            add: function(){ openEdit(null); },
+            batchdel: function(){
+                var checkData = table.checkStatus('baby-table').data;
+                if(checkData.length===0) return layer.msg('请选择数据');
+                layer.confirm('确定删除所选的 '+checkData.length+' 份档案？', {icon:3}, function(idx){
+                    layer.msg('模拟删除成功（mock）', {icon:1}); layer.close(idx); table.reload('baby-table');
+                });
+            }
+        };
+        $('.layui-btn[data-type]').on('click', function(){ active[$(this).data('type')] ? active[$(this).data('type')].call(this) : ''; });
+
+        function openEdit(data){
+            layer.open({
+                type:2, title: data ? '编辑档案 - '+data.name : '新增儿童档案',
+                content: '/baby/edit.html' + (data ? '?id='+data.id : ''),
+                area:['720px','560px'], btn:['确定','取消'],
+                yes:function(index, layero){
+                    var win = window['layui-layer-iframe'+index]
+                        ,sid='baby-edit-submit'
+                        ,submit=layero.find('iframe').contents().find('#'+sid);
+                    win.layui.form.on('submit('+sid+')', function(){
+                        layer.msg('模拟保存成功（mock）', {icon:1}); layer.close(index); table.reload('baby-table');
+                    });
+                    submit.trigger('click');
+                }
+            });
+        }
+
+        // 行事件
+        table.on('tool(baby-table)', function(obj){
+            var d = obj.data;
+            if(obj.event==='edit'){ openEdit(d); }
+            else if(obj.event==='del'){
+                layer.confirm('确定删除档案：<span style="color:red">'+d.name+'</span>？<br><span style="color:#999;font-size:12px">删除后不可恢复，请谨慎操作</span>', {icon:3}, function(idx){
+                    layer.msg('模拟删除成功（mock）', {icon:1}); layer.close(idx); obj.del();
+                });
+            }
+            else if(obj.event==='report'){ openReport(d); }
+        });
+
+        function openReport(d){
+            layer.open({
+                type:2, title:'测评报告 - '+d.name,
+                content:'/baby/report.html?id='+d.id+'&name='+encodeURIComponent(d.name),
+                area:['860px','600px']
+            });
+        }
+    });
+</script>
+</body>
+</html>

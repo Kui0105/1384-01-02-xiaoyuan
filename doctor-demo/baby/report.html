@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>测评报告</title>
+    <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
+    <style>
+        body { background:#fff; padding: 18px; font-family: "Microsoft YaHei", Arial, sans-serif; }
+        .rpt-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
+        .rpt-head h3 { font-size:16px; color:#333; }
+        .rpt-head h3 span { color:#3A91FB; }
+        .file-link { color:#3A91FB; cursor:pointer; }
+    </style>
+<script src="/assets/demo-auth.js"></script>
+</head>
+<body>
+    <div class="rpt-head">
+        <h3>测评报告 - <span id="baby-name"></span></h3>
+        <button class="layui-btn layui-btn-sm" id="btn-add-report"><i class="layui-icon layui-icon-add-1"></i> 新增报告</button>
+    </div>
+
+    <table class="layui-table" lay-size="sm">
+        <colgroup>
+            <col width="80"><col width="160"><col width="200"><col width="180"><col width="120">
+        </colgroup>
+        <thead>
+            <tr><th>ID</th><th>测评类型</th><th>报告内容</th><th>上传日期</th><th>操作</th></tr>
+        </thead>
+        <tbody id="report-body"></tbody>
+    </table>
+
+<script src="/assets/layui/layui.js"></script>
+<script>
+    layui.use(['layer','upload'], function(){
+        var $ = layui.$, layer = layui.layer;
+
+        // 兼容 iframe 与普通页面：优先取 location.search，其次取 hash 中的查询串。
+        // 不能直接用 layui.router().search，它在当前 layui 版本里返回的是字符串，
+        // 用 params.id / params.name 取值会失败，导致 mock 报告列表为空。
+        function getQueryParams(){
+            var params = {};
+            var search = location.search.replace(/^\?/, '');
+            if(!search && location.hash.indexOf('?') > -1){
+                search = location.hash.split('?')[1];
+            }
+            if(!search){ return params; }
+            $.each(search.split('&'), function(i, item){
+                if(!item){ return; }
+                var pair = item.split('=');
+                var key = decodeURIComponent(pair[0]).replace(/\+/g, ' ');
+                var val = decodeURIComponent(pair.slice(1).join('=')).replace(/\+/g, ' ');
+                params[key] = val;
+            });
+            return params;
+        }
+
+        var params = getQueryParams();
+        $('#baby-name').text(params.name || '');
+
+        var MOCK_REPORTS = {
+            1:[{id:1,type:'营养测评',file:'营养测评报告.pdf',date:'2026-11-20 15:30:20'}],
+            2:[{id:2,type:'睡眠测评',file:'睡眠测评报告.docx',date:'2026-11-18 09:18:44'}],
+            3:[{id:3,type:'成长测评',file:'成长测评报告.jpg',date:'2026-11-16 14:05:36'},
+               {id:4,type:'营养测评',file:'营养测评报告2.pdf',date:'2026-11-15 10:22:10'}],
+            5:[{id:5,type:'身高测评',file:'身高测评报告.png',date:'2026-11-09 16:41:28'}]
+        };
+        var reports = MOCK_REPORTS[params.id] || [];
+
+        function render(){
+            var html = '';
+            if(reports.length){
+                $.each(reports, function(i,r){
+                    html += '<tr><td>'+r.id+'</td><td>'+r.type+'</td>'
+                        + '<td><span class="file-link">'+r.file+'</span></td>'
+                        + '<td>'+r.date+'</td>'
+                        + '<td><button class="layui-btn layui-btn-xs layui-btn-danger btn-del" data-id="'+r.id+'">删除</button></td></tr>';
+                });
+            } else {
+                html = '<tr><td colspan="5" style="text-align:center;color:#999;padding:24px;">暂无测评报告</td></tr>';
+            }
+            $('#report-body').html(html);
+        }
+        render();
+
+        // 查看报告
+        $(document).on('click', '.file-link', function(){
+            layer.msg('演示环境：报告文件在线预览为 mock', {icon:0});
+        });
+
+        // 删除报告
+        $(document).on('click', '.btn-del', function(){
+            var id = $(this).data('id');
+            layer.confirm('确定删除该测评报告？', {icon:3}, function(idx){
+                reports = reports.filter(function(r){ return r.id != id; });
+                render(); layer.close(idx); layer.msg('模拟删除成功（mock）', {icon:1});
+            });
+        });
+
+        // 新增报告弹窗
+        $('#btn-add-report').on('click', function(){
+            var html = '<form class="layui-form" style="padding:20px;" lay-filter="add-report-form">'
+                + '<div class="layui-form-item"><label class="layui-form-label">测评类型</label><div class="layui-input-block">'
+                + '<input type="text" name="type" required lay-verify="required" placeholder="请输入测评类型" class="layui-input"></div></div>'
+                + '<div class="layui-form-item"><label class="layui-form-label">上传附件</label><div class="layui-input-block">'
+                + '<button type="button" class="layui-btn" id="mock-upload"><i class="layui-icon layui-icon-upload"></i> 选择报告文件</button>'
+                + '<div id="file-name" style="color:#999;font-size:12px;margin-top:8px;">支持 PDF、Word、Jpg、Png</div></div></div>'
+                + '</form>';
+            layer.open({
+                type:1, title:'新增测评报告', content:html, area:['520px','300px'],
+                btn:['提交','取消'],
+                success:function(){
+                    layui.form.render();
+                    $(document).off('click','#mock-upload').on('click','#mock-upload',function(){
+                        $('#file-name').html('<span style="color:#3A91FB">测评报告_20261124.pdf（mock）</span>');
+                    });
+                },
+                yes:function(index){
+                    var type = $.trim($('input[name=type]').val());
+                    if(!type){ layer.msg('请输入测评类型', {icon:2}); return; }
+                    reports.push({
+                        id: Date.now()%100000, type:type,
+                        file:'测评报告_'+Date.now().toString().slice(-6)+'.pdf',
+                        date: new Date().toLocaleString('zh-CN',{hour12:false}).replace(/\//g,'-')
+                    });
+                    render(); layer.close(index); layer.msg('模拟新增成功（mock）', {icon:1});
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

@@ -46,7 +46,19 @@
             6:{title:'儿童过敏原检测知多少',views:1542,duration:'14:05',date:'2026-03-02'},
             7:{title:'如何与孩子有效沟通',views:3210,duration:'16:32',date:'2026-02-25'}
         };
-        var id = layui.router().search.id;
+        function getQueryParams(){
+            var params = {};
+            var search = location.search.replace(/^\?/, '');
+            if(!search && location.hash.indexOf('?') > -1){ search = location.hash.split('?')[1]; }
+            if(!search){ return params; }
+            $.each(search.split('&'), function(i, item){
+                if(!item){ return; }
+                var pair = item.split('=');
+                params[decodeURIComponent(pair[0])] = decodeURIComponent(pair.slice(1).join('=')).replace(/\+/g, ' ');
+            });
+            return params;
+        }
+        var id = getQueryParams().id;
         var v = MOCK[id] || {title:'视频课堂',views:0,duration:'00:00',date:'2026-01-01'};
         $('#title').text(v.title);
         $('#meta').html('时长：'+v.duration+'　|　观看：'+v.views+'　|　发布：'+v.date);

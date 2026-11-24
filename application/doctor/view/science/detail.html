@@ -24,7 +24,7 @@
 
 <script src="/static/plug/layui-admin/dist/layuiadmin/layui/layui.js"></script>
 <script>
-    layui.use(function(){
+    layui.use(['jquery'], function(){
         var $ = layui.$;
         var MOCK = {
             1:{title:'儿童春季长高食谱，抓住黄金生长期',views:1248,date:'2026-03-12'},
@@ -37,7 +37,19 @@
             8:{title:'疫苗接种常见问题解答',views:760,date:'2026-01-20'},
             9:{title:'读懂孩子的情绪，做更好的倾听者',views:1120,date:'2026-01-15'}
         };
-        var id = layui.router().search.id;
+        function getQueryParams(){
+            var params = {};
+            var search = location.search.replace(/^\?/, '');
+            if(!search && location.hash.indexOf('?') > -1){ search = location.hash.split('?')[1]; }
+            if(!search){ return params; }
+            $.each(search.split('&'), function(i, item){
+                if(!item){ return; }
+                var pair = item.split('=');
+                params[decodeURIComponent(pair[0])] = decodeURIComponent(pair.slice(1).join('=')).replace(/\+/g, ' ');
+            });
+            return params;
+        }
+        var id = getQueryParams().id;
         var a = MOCK[id] || {title:'科普文章',views:0,date:'2026-01-01'};
         $('#title').text(a.title);
         $('#meta').html('发布时间：'+a.date+'　|　阅读：'+a.views+'　|　来源：小元优长成长科普');

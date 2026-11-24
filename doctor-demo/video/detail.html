@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>视频详情</title>
+    <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all">
+    <style>
+        body { background:#fff; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",Arial,sans-serif; }
+        .detail { max-width:820px; margin:0 auto; padding:24px; }
+        .player {
+            height:400px; border-radius:10px; background:linear-gradient(135deg,#1e3c72,#2a5298);
+            display:flex; flex-direction:column; align-items:center; justify-content:center;
+            color:#fff; position:relative;
+        }
+        .player .big-play { width:80px; height:80px; border-radius:50%; background:rgba(255,255,255,.92); display:flex; align-items:center; justify-content:center; font-size:40px; color:#3A91FB; cursor:pointer; }
+        .player .tip { margin-top:18px; font-size:13px; opacity:.8; }
+        .detail h1 { font-size:20px; color:#252B33; margin:20px 0 10px; }
+        .detail .meta { font-size:12px; color:#aaa; padding-bottom:14px; border-bottom:1px solid #eee; }
+        .detail .desc { font-size:14px; color:#555; line-height:2; margin-top:16px; }
+    </style>
+<script src="/assets/demo-auth.js"></script>
+</head>
+<body>
+    <div class="detail">
+        <div class="player">
+            <div class="big-play" id="btn-play"><i class="layui-icon layui-icon-play"></i></div>
+            <div class="tip">点击播放（演示环境，视频播放为 mock）</div>
+        </div>
+        <h1 id="title">加载中...</h1>
+        <div class="meta" id="meta"></div>
+        <div class="desc">
+            <p>本视频由专业儿科医生与营养师联合制作，围绕儿童成长的常见话题，用通俗易懂的方式为家长讲解科学知识与实践方法。</p>
+            <p>观看建议：可结合成长科普文章一起学习，并在日常生活中逐步实践。如有疑问，欢迎在评论区留言交流。</p>
+        </div>
+    </div>
+
+<script src="/assets/layui/layui.js"></script>
+<script>
+    layui.use(['layer'], function(){
+        var $ = layui.$, layer = layui.layer;
+        var MOCK = {
+            1:{title:'儿童身高管理的科学方法',views:3520,duration:'12:36',date:'2026-04-10'},
+            2:{title:'看懂孩子的生长曲线图',views:2180,duration:'08:42',date:'2026-04-05'},
+            3:{title:'0-6岁辅食添加全指南',views:4602,duration:'18:20',date:'2026-03-28'},
+            4:{title:'孩子挑食？试试这些创意做法',views:1936,duration:'10:15',date:'2026-03-20'},
+            5:{title:'手足口病预防与护理',views:2875,duration:'09:48',date:'2026-03-12'},
+            6:{title:'儿童过敏原检测知多少',views:1542,duration:'14:05',date:'2026-03-02'},
+            7:{title:'如何与孩子有效沟通',views:3210,duration:'16:32',date:'2026-02-25'}
+        };
+        function getQueryParams(){
+            var params = {};
+            var search = location.search.replace(/^\?/, '');
+            if(!search && location.hash.indexOf('?') > -1){ search = location.hash.split('?')[1]; }
+            if(!search){ return params; }
+            $.each(search.split('&'), function(i, item){
+                if(!item){ return; }
+                var pair = item.split('=');
+                params[decodeURIComponent(pair[0])] = decodeURIComponent(pair.slice(1).join('=')).replace(/\+/g, ' ');
+            });
+            return params;
+        }
+        var id = getQueryParams().id;
+        var v = MOCK[id] || {title:'视频课堂',views:0,duration:'00:00',date:'2026-01-01'};
+        $('#title').text(v.title);
+        $('#meta').html('时长：'+v.duration+'　|　观看：'+v.views+'　|　发布：'+v.date);
+        $('#btn-play').on('click', function(){ layer.msg('演示环境：视频播放为 mock', {icon:0}); });
+    });
+</script>
+</body>
+</html>

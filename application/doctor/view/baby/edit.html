@@ -86,7 +86,19 @@
             laydate.render({elem:'#birthday', trigger:'click'});
 
             // 编辑回显（mock）
-            var params = layui.router().search;
+            function getQueryParams(){
+                var params = {};
+                var search = location.search.replace(/^\?/, '');
+                if(!search && location.hash.indexOf('?') > -1){ search = location.hash.split('?')[1]; }
+                if(!search){ return params; }
+                $.each(search.split('&'), function(i, item){
+                    if(!item){ return; }
+                    var pair = item.split('=');
+                    params[decodeURIComponent(pair[0])] = decodeURIComponent(pair.slice(1).join('=')).replace(/\+/g, ' ');
+                });
+                return params;
+            }
+            var params = getQueryParams();
             if(params.id){
                 var MOCK = {
                     1:{name:'林小满',sex:1,age:5,birthday:'2021-03-15',mobile:'13900139001',father_height:175,mother_height:163,allergy:'花生过敏'},
